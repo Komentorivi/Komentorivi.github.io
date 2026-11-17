@@ -18,9 +18,9 @@
 <meta property="og:url" content="https://komentorivi.github.io/">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ItemList","name":"Komentorivin selainpelit","itemListElement":[
-{"@type":"ListItem","position":1,"item":{"@type":"VideoGame","name":"Mikä tää o?","url":"https://komentorivi.github.io/mika-taa-o-peli/","description":"Kuvanarvauspeli: avaa ruutuja ja tunnista kuva ennen kuin potti sulaa.","genre":"Tietovisa","inLanguage":["fi","en"],"gamePlatform":["Selain","Puhelin","Tietokone"],"isAccessibleForFree":true,"author":{"@type":"Person","name":"Komentorivi"}}},
-{"@type":"ListItem","position":2,"item":{"@type":"VideoGame","name":"Mökkiristikko","url":"https://komentorivi.github.io/mokkiristikko/","description":"Emoji-kuvaristikko, jota ratkotaan kilpaa. 75 ristikkoa kolmelle ikäluokalle.","genre":"Ristikko","inLanguage":"fi","gamePlatform":["Selain","Puhelin","Tietokone"],"isAccessibleForFree":true,"author":{"@type":"Person","name":"Komentorivi"}}},
-{"@type":"ListItem","position":3,"item":{"@type":"VideoGame","name":"Code Green","url":"https://komentorivi.github.io/code-green/","description":"Strategiapeli kahdella rintamalla: valloita maailma kartalla ja hakkeroi verkkoa.","genre":"Strategia","gamePlatform":["Selain","Tietokone","Puhelin"],"isAccessibleForFree":true,"author":{"@type":"Person","name":"Komentorivi"}}}
+{"@type":"ListItem","position":1,"item":{"@type":"VideoGame","name":"Mikä tää o?","url":"https://komentorivi.github.io/tietovisa/","description":"Kuvanarvauspeli: avaa ruutuja ja tunnista kuva ennen kuin potti sulaa.","genre":"Tietovisa","inLanguage":["fi","en"],"gamePlatform":["Selain","Puhelin","Tietokone"],"isAccessibleForFree":true,"author":{"@type":"Person","name":"Komentorivi"}}},
+{"@type":"ListItem","position":2,"item":{"@type":"VideoGame","name":"Mökkiristikko","url":"https://komentorivi.github.io/ristikko/","description":"Emoji-kuvaristikko, jota ratkotaan kilpaa. 75 ristikkoa kolmelle ikäluokalle.","genre":"Ristikko","inLanguage":"fi","gamePlatform":["Selain","Puhelin","Tietokone"],"isAccessibleForFree":true,"author":{"@type":"Person","name":"Komentorivi"}}},
+{"@type":"ListItem","position":3,"item":{"@type":"VideoGame","name":"Code Green","url":"https://komentorivi.github.io/strategiapeli/","description":"Strategiapeli kahdella rintamalla: valloita maailma kartalla ja hakkeroi verkkoa.","genre":"Strategia","gamePlatform":["Selain","Tietokone","Puhelin"],"isAccessibleForFree":true,"author":{"@type":"Person","name":"Komentorivi"}}}
 ]}
 </script>
 <meta name="twitter:card" content="summary_large_image">
@@ -64,6 +64,10 @@ h1{font:800 clamp(34px,7vw,56px)/1.05 var(--body); margin:0 0 12px; letter-spaci
 .shot img{width:100%; height:100%; object-fit:cover; display:block}
 .body{padding:18px 18px 20px; display:flex; flex-direction:column; gap:12px; flex:1}
 .game h2{font:800 26px/1.15 var(--body); margin:0; letter-spacing:-.01em}
+.game h2 a{color:inherit; text-decoration:none}
+.game h2 a:hover{text-decoration:underline; text-decoration-color:var(--accent)}
+.seo{color:var(--dim); font-size:17px; max-width:46em; padding:4px 0 26px}
+.seo a{color:var(--phos)}
 .game p{margin:0; color:var(--dim); font-size:17px}
 .tags{display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:0; list-style:none}
 .tags li{font:600 14px var(--body); padding:5px 11px; border-radius:999px; background:#ffffff10; color:var(--text)}
@@ -102,8 +106,8 @@ footer .row{display:flex; flex-wrap:wrap; gap:8px 22px; justify-content:space-be
         <img src="kuvat/mika-taa-o.webp" alt="Mikä tää o? -pelin kansikuva: ilveksen kuva paljastuu ruutu kerrallaan" width="630" height="500" loading="lazy">
       </a>
       <div class="body">
-        <h2>Mikä tää o?</h2>
-        <p>Avaa ruutuja, tunnista kuva ja vastaa ennen kuin potti sulaa. Haasta kaverit ja nouse viikkoliigassa.</p>
+        <h2><a href="tietovisa/">Mikä tää o?</a></h2>
+        <p>Avaa ruutuja, tunnista kuva ja vastaa ennen kuin potti sulaa. Haasta kaverit ja nouse viikkoliigassa. <a href="tietovisa/">Lue lisää kuvavisasta</a></p>
         <ul class="tags"><li>Puhelin</li><li>Tietokone</li><li>Tulostaulu</li></ul>
         <div class="btns">
           <a class="btn play" href="https://komentorivi.github.io/mika-taa-o-peli/">Pelaa</a>
@@ -118,8 +122,8 @@ footer .row{display:flex; flex-wrap:wrap; gap:8px 22px; justify-content:space-be
         <img src="kuvat/mokkiristikko.webp" alt="Mökkiristikko-pelin kansikuva: mökki järven rannalla ja kuvaristikko puhelimessa" width="630" height="500" loading="lazy">
       </a>
       <div class="body">
-        <h2>Mökkiristikko</h2>
-        <p>Kuvaristikko, jota ratkotaan kilpaa. 75 emoji-ristikkoa kolmelle ikäluokalle, lapsista aikuisiin.</p>
+        <h2><a href="ristikko/">Mökkiristikko</a></h2>
+        <p>Kuvaristikko, jota ratkotaan kilpaa. 75 emoji-ristikkoa kolmelle ikäluokalle, lapsista aikuisiin. <a href="ristikko/">Lue lisää ristikosta</a></p>
         <ul class="tags"><li>Puhelin</li><li>Tietokone</li><li>Koko perheelle</li></ul>
         <div class="btns">
           <a class="btn play" href="https://komentorivi.github.io/mokkiristikko/">Pelaa</a>
@@ -133,8 +137,8 @@ footer .row{display:flex; flex-wrap:wrap; gap:8px 22px; justify-content:space-be
         <img src="kuvat/code-green.webp" alt="Code Green -pelin kansikuva: maailmankartta ja verkkosolmut neonvihreällä" width="630" height="500" loading="lazy">
       </a>
       <div class="body">
-        <h2>Code Green</h2>
-        <p>Strategiapeli kahdella rintamalla: valloita maailma kartalla ja hakkeroi verkkoa. Agent Smith odottaa.</p>
+        <h2><a href="strategiapeli/">Code Green</a></h2>
+        <p>Strategiapeli kahdella rintamalla: valloita maailma kartalla ja hakkeroi verkkoa. Agent Smith odottaa. <a href="strategiapeli/">Lue lisää strategiapelistä</a></p>
         <ul class="tags"><li>Tietokone</li><li>Puhelin vaakatasossa</li><li>Verkkopeli</li></ul>
         <div class="btns">
           <a class="btn play" href="https://komentorivi.github.io/code-green/">Pelaa</a>
@@ -143,6 +147,8 @@ footer .row{display:flex; flex-wrap:wrap; gap:8px 22px; justify-content:space-be
       </div>
     </article>
   </main>
+
+  <p class="seo">Komentorivin pelit ovat ilmaisia suomalaisia nettipelejä, joita pelataan suoraan selaimessa ilman latausta: <a href="tietovisa/">kuvavisa ja tietovisa</a>, <a href="ristikko/">kuvaristikko lapsille ja aikuisille</a> ja <a href="strategiapeli/">vuoropohjainen strategiapeli</a>. Kaikki toimivat puhelimella ja tietokoneella, ja ne sopivat myös mökkipeleiksi koko porukalle.</p>
 
   <footer>
     <div class="row">
