@@ -220,7 +220,7 @@ table.pysty th:first-child{text-align:center}
     <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 2 p</span><span class="pill">Rakeisuuskäyrä 3 p</span><span class="pill">Tilavuus ja paino 2 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 4 p</span><span class="pill">Mustiksen spessu 3 p</span>
   </div>
 </header>
-<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 15.45 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 15.48 · korjauksia saattaa vielä tulla</span></p>
 <main id="koe"></main>
 <section class="tulos" id="tulos" hidden></section>
 
@@ -977,7 +977,7 @@ function uusiKoe(alkuSiemen) {
       }
       return [p, 3, `Kokonaismassa = ${R.m.join(' + ')} = <b class="num">${R.tot} g</b><br>Jäi %: ${R.jai.map((j, i) => `<span class="num">${i < SEULAT_K.length ? sk(SEULAT_K[i]) : 'pohja'}→${fi(j)}</span>`).join(' · ')}<br>
         Läpäisy % (alhaalta ylöspäin summaten): ${SEULAT_K.map((s, i) => `<span class="num">${sk(s)}→${fi(R.lap[i])}</span>`).join(' · ')}<br>
-        d₅₀ ≈ <b class="num">${dTxt(R.d50)} mm</b>${R.d60 ? `, d₆₀ ≈ ${dTxt(R.d60)} mm` : ''}${R.d10 ? `, d₁₀ ≈ ${dTxt(R.d10)} mm` : ', d₁₀ ei luettavissa seulonnasta'}${cu ? `, Cu = d₆₀ / d₁₀ = ${dTxt(R.d60)} / ${dTxt(R.d10)} = ${fi(cuNakyva(R))} → <b>${CU_NIMI[cuLuokka(cuNakyva(R))]}</b> (myös omista d-arvoistasi laskettu Cu hyväksytään)` : ' (Cu ei laskettavissa, koska d₁₀ puuttuu)'}. Sininen katkoviiva on oikea käyrä, mustat apuviivat näyttävät lukukohdat. ${(() => { const r = seulavali(R.lap, SEULAT_K, 50), h = dHeitto(R.d50); return r ? `<br><b>d₅₀ luetaan näin:</b> läpäisy 50 % on seulojen ${sk(r[0])} mm (${fi(r[2])} %) ja ${sk(r[1])} mm (${fi(r[3])} %) välissä → lue 50 %:n kohta käyrältä → d₅₀ ≈ <b>${dTxt(R.d50)} mm</b>. Hyväksytään ${dTxt(R.d50)} ± ${String(h).replace('.', ',')} mm (lukutarkkuus tällä raekoolla). Sama heitto d₆₀:lle ja d₁₀:lle.` : ''; })()}
+        d₅₀ ≈ <b class="num">${dLuku(R.d50)} mm</b>${R.d60 ? `, d₆₀ ≈ ${dLuku(R.d60)} mm` : ''}${R.d10 ? `, d₁₀ ≈ ${dLuku(R.d10)} mm` : ', d₁₀ ei luettavissa seulonnasta'}${cu ? `, Cu = d₆₀ / d₁₀ = ${dTxt(R.d60)} / ${dTxt(R.d10)} = ${fi(cuNakyva(R))} → <b>${CU_NIMI[cuLuokka(cuNakyva(R))]}</b> (myös omista d-arvoistasi laskettu Cu hyväksytään)` : ' (Cu ei laskettavissa, koska d₁₀ puuttuu)'}. Sininen katkoviiva on oikea käyrä, mustat apuviivat näyttävät lukukohdat. ${(() => { const r = seulavali(R.lap, SEULAT_K, 50), h = dHeitto(R.d50); return r ? `<br><b>d₅₀ luetaan näin:</b> läpäisy 50 % on seulojen ${sk(r[0])} mm (${fi(r[2])} %) ja ${sk(r[1])} mm (${fi(r[3])} %) välissä → lue 50 %:n kohta käyrältä → d₅₀ ≈ <b>${dLuku(R.d50)} mm</b>. Hyväksytään ${dLuku(R.d50 - h)}–${dLuku(R.d50 + h)} mm (lukutarkkuus tällä raekoolla), eli yksi tai kaksi desimaalia käy, esim. ${dTxt(R.d50)} tai ${dLuku(R.d50)}. Sama heitto d₆₀:lle ja d₁₀:lle.` : ''; })()}
         <br><b>Maalaji: ${NN.lyh} = ${NN.pitka}</b> (hienoaines ${fi(NN.hieno)} %, hiekka ${fi(NN.hiekka)} %, sora ${fi(NN.sora)} %). Pisteet: läpäisyt 1 p, d₅₀ 1 p, maalaji 1 p.
         ${tulkinta(R.lap[9], R.lap[4], R.d50)}`];
     },
@@ -1101,7 +1101,8 @@ $('#debug').onclick = () => {
   const aseta = (id, v, des = 3) => { const el = document.getElementById(id); if (!el || v == null || (typeof v === 'number' && !isFinite(v))) return; el.value = typeof v === 'number' ? String(Math.round(v * 10 ** des) / 10 ** des).replace('.', ',') : v; el.dispatchEvent(new Event('input', { bubbles: true })); };
   const dd = (v) => v == null ? 1 : dDes(v);
   aseta('tot2', T.R.tot, 0); T.R.jai.forEach((v, i) => aseta('j' + i, v, 1)); T.R.lap.forEach((v, i) => aseta('l' + i, v, 1));
-  aseta('d50', T.R.d50, dd(T.R.d50)); aseta('d60', T.R.d60, dd(T.R.d60)); aseta('d10', T.R.d10, dd(T.R.d10));
+  const d2 = (v) => v == null ? v : Number(v.toPrecision(2));   // sama tarkkuus kuin kuvan "Käyrältä luettu" -laatikossa
+  aseta('d50', d2(T.R.d50), 4); aseta('d60', d2(T.R.d60), 4); aseta('d10', d2(T.R.d10), 4);
   if (T.R.d10) aseta('cu2', cuNakyva(T.R), 1); { const l = document.getElementById('cuL'); if (l) l.value = cuLuokka(cuNakyva(T.R)); }
   T.KY.forEach(c => aseta('n' + c.kirjain, c.hyvaksy[0]));
   aseta('nimi2', nimea(T.R.lap[9], T.R.lap[4], T.R.d50).lyh);
