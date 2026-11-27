@@ -228,7 +228,7 @@ table.pysty th:first-child{text-align:center}
   <rect x="84" y="74" width="66" height="8" rx="4" fill="var(--soil)" stroke="var(--ink)" stroke-width="2"/>
   <path d="M117 58 v16" stroke="var(--ink)" stroke-width="1.5" opacity=".5"/>
 </svg></div>
-<p class="vastuu" role="note"><b>Huom:</b> Apumateriaali on opiskelijan tekemä. Se on koottu tekoälyn avulla Moodlessa jaetusta kurssimateriaalista, eikä tekijä vastaa siitä, että kaavat, luvut tai vastaukset ovat oikein. Jos jokin näyttää oudolta, kurssimateriaali on aina oikeassa. Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 23.05 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Apumateriaali on opiskelijan tekemä. Se on koottu tekoälyn avulla Moodlessa jaetusta kurssimateriaalista, eikä tekijä vastaa siitä, että kaavat, luvut tai vastaukset ovat oikein. Jos jokin näyttää oudolta, kurssimateriaali on aina oikeassa. Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 23.08 · korjauksia saattaa vielä tulla</span></p>
 <nav class="sisalto"><a href="#merkit">Merkit</a><a href="#synty">Maaperä ja pohjavesi</a><a href="#maalajit">Maalajit</a><a href="#nimeaminen">Nimeäminen</a><a href="#rakeisuus">Rakeisuus</a><a href="#tilavuus">Tilavuus ja paino</a><a href="#proctor">Proctor</a><a href="#tutkimukset">Pohjatutkimukset</a><a href="#sigma">Sigma viiva</a><a href="#painuma">Painuma</a><a href="#leikkaus">Leikkauslujuus</a><a href="#kysymykset">Koekysymykset</a></nav>
 </header>
 
@@ -237,7 +237,7 @@ table.pysty th:first-child{text-align:center}
 <tr><td>σ̄ ("sigma viiva")</td><td>pystysuora tehokas raepaine: paljonko yläpuolinen maa painaa neliömetriä kohti</td><td>kN/m²</td></tr>
 <tr><td>γ ("gamma")</td><td>tilavuuspaino</td><td>kN/m³</td></tr>
 <tr><td>γ<sub>sat</sub></td><td>vedellä kyllästetyn maan tilavuuspaino (pohjaveden alla)</td><td>kN/m³</td></tr>
-<tr><td>γ'</td><td>tehokas tilavuuspaino pohjaveden alla = γ<sub>sat</sub> − 10 (noste vähennetty)</td><td>kN/m³</td></tr>
+<tr><td><b>γ′</b></td><td>tehokas tilavuuspaino pohjaveden alla = γ<sub>sat</sub> − 10 (noste vähennetty)</td><td>kN/m³</td></tr>
 <tr><td>γ<sub>w</sub></td><td>veden tilavuuspaino ≈ 10</td><td>kN/m³</td></tr>
 <tr><td>σ</td><td>jännitys eli kuormitus (σ₀ alussa, σ₁ lopussa)</td><td>kN/m²</td></tr>
 <tr><td>ε ("epsilon") / Δε</td><td>muodonmuutos ödometrikäyrältä / sen muutos</td><td>%</td></tr>
@@ -328,7 +328,7 @@ table.pysty th:first-child{text-align:center}
 <tr><td class="num">n = V<sub>h</sub> / V · 100 %</td><td>huokoisuus</td></tr>
 <tr><td class="num">e = V<sub>h</sub> / V<sub>s</sub> · Sr = V<sub>w</sub> / V<sub>h</sub> · 100 %</td><td>huokosluku, kyllästysaste</td></tr>
 <tr><td class="num">γ = m · g / V · γ<sub>d</sub> = m<sub>d</sub> · g / V = γ / (1 + w)</td><td>tilavuuspainot (1 N/l = 1 kN/m³)</td></tr>
-<tr><td class="num">γ' = γ<sub>sat</sub> − 10</td><td>pohjaveden alla</td></tr></table></div>
+<tr><td class="num"><b>γ′</b> = γ<sub>sat</sub> − 10</td><td>pohjaveden alla</td></tr></table></div>
 <p>Esimerkki: V = 10 l, m = 22,7 kg, w = 6,5 %, ρ<sub>s</sub> = 2,68 → m<sub>d</sub> = 21,3 kg · m<sub>w</sub> = 1,4 kg · V<sub>s</sub> = 7,9 l · V<sub>w</sub> = 1,4 l · V<sub>ilma</sub> = 0,7 l · n = 21 % · γ<sub>d</sub> = 20,9 kN/m³.</p>
 <p><b>Kuivatilavuuspainon γ<sub>d</sub> suuruusluokka</b> (kN/m³). Karkeasti noin 14–23 kN/m³: mitä tiiviimpi ja karkeampi maa, sitä suurempi.</p>
 <div class="tw"><table><tr><th>Maalaji</th><th>Löyhä</th><th>Keskitiivis</th><th>Tiivis</th></tr>
@@ -370,7 +370,7 @@ D = 19,2 / 20,0 · 100 % = <b>96 %</b>. Tulosta verrataan työselityksen vähimm
 <li><b>Koekuoppa</b>: luotettavin pintakerrosten tutkimiseen. Tärykairaus ei ole luotettava kalliopinnan määritykseen.</li></ul></section>
 
 <section class="osa" id="sigma"><h2>Sigma viiva (tehokas raepaine)</h2>
-<p><span class="kaava"><span style="text-decoration:overline">σ</span> = Σ zᵢ · γᵢ</span> &nbsp; kerros kerrallaan ylhäältä alas, pohjaveden alla γ' = γ<sub>sat</sub> − 10.</p>
+<p><span class="kaava"><span style="text-decoration:overline">σ</span> = Σ zᵢ · γᵢ</span> &nbsp; kerros kerrallaan ylhäältä alas, pohjaveden alla <b>γ′</b> = γ<sub>sat</sub> − 10.</p>
 <p>Tarvitaan: kerrosten paksuudet z, tilavuuspainot γ ja pohjavedenpinnan taso.</p>
 <p>Esimerkki: A 2 m · 21 = 42 · B 3 m · 11 → 75 · C 2,5 m · 10 → <b>100 kN/m²</b>.</p><svg class="kuva" viewBox="0 0 640 290" role="img" aria-label="Maaprofiili ja sigmaviiva kurssin esimerkistä"><rect x="90" y="20.0" width="220" height="64.0" fill="var(--sr)" opacity=".4" stroke="var(--ink)"/><text x="100.0" y="50.0" font-size="14" text-anchor="start" fill="var(--ink)" font-weight="700">A   γ = 21 kN/m³</text><text x="100.0" y="68.0" font-size="12" text-anchor="start" fill="var(--ink)"><tspan text-decoration="overline">σ</tspan> = 2 · 21 = 42</text><rect x="90" y="84.0" width="220" height="96.0" fill="var(--hk)" opacity=".4" stroke="var(--ink)"/><text x="100.0" y="130.0" font-size="14" text-anchor="start" fill="var(--ink)" font-weight="700">B   γ′ = 11 kN/m³</text><text x="100.0" y="148.0" font-size="12" text-anchor="start" fill="var(--ink)"><tspan text-decoration="overline">σ</tspan> = 42 + 3 · 11 = 75</text><rect x="90" y="180.0" width="220" height="80.0" fill="var(--sa)" opacity=".4" stroke="var(--ink)"/><text x="100.0" y="218.0" font-size="14" text-anchor="start" fill="var(--ink)" font-weight="700">C   γ′ = 10 kN/m³</text><text x="100.0" y="236.0" font-size="12" text-anchor="start" fill="var(--ink)"><tspan text-decoration="overline">σ</tspan> = 75 + 2,5 · 10 = 100</text><text x="82.0" y="24.0" font-size="12" text-anchor="end" fill="var(--ink)">0 m</text><text x="82.0" y="88.0" font-size="12" text-anchor="end" fill="var(--ink)">2 m</text><text x="82.0" y="184.0" font-size="12" text-anchor="end" fill="var(--ink)">5 m</text><text x="82.0" y="264.0" font-size="12" text-anchor="end" fill="var(--ink)">7,5 m</text><line x1="90" x2="340" y1="84.0" y2="84.0" stroke="var(--water)" stroke-width="2" stroke-dasharray="7 4"/><path d="M322,73.0 l7,11 l7,-11 z" fill="var(--water)"/><text x="312.0" y="70.0" font-size="12" text-anchor="start" fill="var(--water)" font-weight="700">PVP</text><line x1="390" x2="390" y1="20" y2="260" stroke="var(--ink)"/><line x1="390" x2="610" y1="20" y2="20" stroke="var(--ink)"/><text x="500.0" y="280.0" font-size="12" text-anchor="middle" fill="var(--muted)"><tspan text-decoration="overline">σ</tspan> [kN/m²]</text><polyline fill="none" stroke="var(--soil)" stroke-width="2.5" points="390.0,20.0 482.4,84.0 555.0,180.0 610.0,260.0"/><circle cx="482.4" cy="84.0" r="3.5" fill="var(--soil)"/><text x="488.4" y="79.0" font-size="12" text-anchor="start" fill="var(--ink)" font-weight="700">42</text><circle cx="555.0" cy="180.0" r="3.5" fill="var(--soil)"/><text x="561.0" y="175.0" font-size="12" text-anchor="start" fill="var(--ink)" font-weight="700">75</text><circle cx="610.0" cy="260.0" r="3.5" fill="var(--soil)"/><text x="616.0" y="255.0" font-size="12" text-anchor="start" fill="var(--ink)" font-weight="700">100</text></svg></section>
 
@@ -406,7 +406,7 @@ D = 19,2 / 20,0 · 100 % = <b>96 %</b>. Tulosta verrataan työselityksen vähimm
 <li>τ = σ̄ · tan φ<sub>D</sub> = 42 · tan 30,3° = 42 · 0,584 ≈ <b>24,5 kN/m²</b>.</li></ol>
 <p class="pieni2">Laskimella: tan⁻¹ on yleensä SHIFT + tan. Laskimen pitää olla asteissa (DEG).</p>
 <p><b>Esimerkki 2, koko ketju</b> (σ̄ lasketaan ensin itse): työnaikainen kaivanto, tiivis hiekka (painokairaus 70 pk/0,2 m). Pinnasta 2 m hiekkaa pohjavedenpinnan yläpuolella γ = 18 kN/m³, sen alla hiekkaa γ<sub>sat</sub> = 20 kN/m³. Laske τ 3 m:n syvyydellä.</p>
-<ol><li>σ̄ = 2 · 18 + 1 · (20 − 10) = 36 + 10 = <b>46 kN/m²</b> (pohjaveden alla γ' = γ<sub>sat</sub> − 10).</li>
+<ol><li>σ̄ = 2 · 18 + 1 · (20 − 10) = 36 + 10 = <b>46 kN/m²</b> (pohjaveden alla <b>γ′</b> = γ<sub>sat</sub> − 10).</li>
 <li>Taulukosta tiivis hiekka (yli 60 pk) → φ = 38°.</li>
 <li>Työnaikainen → γ<sub>φ</sub> = 1,1 → φ<sub>D</sub> = tan⁻¹(tan 38° / 1,1) = tan⁻¹(0,781 / 1,1) = tan⁻¹(0,710) ≈ <b>35,4°</b>.</li>
 <li>τ = 46 · tan 35,4° = 46 · 0,710 ≈ <b>32,7 kN/m²</b>.</li></ol>

@@ -234,7 +234,7 @@ table.pysty th:first-child{text-align:center}
     <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 4 p</span><span class="pill">Rakeisuuskäyrä 6 p</span><span class="pill">Tilavuus ja paino 4 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 3 p</span><span class="pill">Mustiksen spessu 3 p</span>
   </div>
 </header>
-<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 23.05 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 23.08 · korjauksia saattaa vielä tulla</span></p>
 <main id="koe"></main>
 <section class="tulos" id="tulos" hidden></section>
 
@@ -324,7 +324,7 @@ const MERKIT = {
   gd: ['γd', 'kuivatilavuuspaino = kuivan maan paino kuutiota kohti (kN/m³). Lausutaan "gamma d"'],
   g: ['γ', 'tilavuuspaino = maan paino kuutiota kohti (kN/m³). Lausutaan "gamma"'],
   gsat: ['γsat', 'märän (vedellä kyllästetyn) maan tilavuuspaino, käytetään pohjaveden alla'],
-  gp: ["γ'", 'pohjaveden alla käytettävä tilavuuspaino = γsat − 10 (veden noste vähennetty)'],
+  gp: ["γ′", '<b>tehokas</b> tilavuuspaino pohjaveden alla = γsat − 10 (veden noste vähennetty)'],
   gw: ['γw', 'veden tilavuuspaino, noin 10 kN/m³'],
   sig: ['σ̄', '"sigma viiva" = paljonko yläpuolinen maa painaa neliömetriä kohti (kN/m²)'],
   pvp: ['PVP ▽', 'pohjavedenpinta'],
@@ -362,7 +362,7 @@ const NAIN = {
     <p><b>Kurssin esimerkki:</b> käyrä A: 0,002 mm:llä 32 % → Sa · käyrä C: 0,063 mm:llä 26 % ja 2 mm:llä 62 % → moreeni, d₅₀ hiekan alueella → HkMr.</p>`],
   til: ['Tilavuus- ja painolasku', `<ol><li><b>I</b> md = m ÷ (1 + w) (w desimaalina).</li><li><b>II</b> mw = m − md.</li><li><b>III</b> Vs = md ÷ ρs, Vw = mw ÷ 1, Vilma = V − Vs − Vw.</li><li><b>IV</b> Vh = Vw + Vilma, n = Vh ÷ V · 100 %.</li><li><b>V</b> γd = md · 9,81 ÷ V.</li></ol>
     <p><b>Kurssin esimerkki:</b> V = 10 l, m = 22,7 kg, w = 6,5 %, ρs = 2,68 → md = 21,3 kg · mw = 1,4 kg · Vs = 7,9 l · Vw = 1,4 l · Vilma = 0,7 l · Vh = 2,1 l · n = 21 % · γd = 20,9 kN/m³.</p>`],
-  sig: ['Sigma viiva', `<ol><li>Mene ylhäältä alas kerros kerrallaan.</li><li>Jokaisesta kerroksesta: <b>paksuus z (m) × tilavuuspaino γ (kN/m³)</b>.</li><li>Pohjaveden alla käytä tehokasta tilavuuspainoa: jos γ′ on annettu, käytä sitä; jos γsat on annettu, käytä <b>γsat − 10</b>.</li><li><b>Laske yhteen</b> ja kirjoita σ̄ jokaisen kerroksen alapinnan kohdalle. Piirrä sigmaviiva: suora viiva pisteestä toiseen.</li></ol>
+  sig: ['Sigma viiva', `<ol><li>Mene ylhäältä alas kerros kerrallaan.</li><li>Jokaisesta kerroksesta: <b>paksuus z (m) × tilavuuspaino γ (kN/m³)</b>.</li><li>Pohjaveden alla käytä tehokasta tilavuuspainoa: jos <b>γ′</b> on annettu, käytä sitä; jos γsat on annettu, käytä <b>γsat − 10</b>.</li><li><b>Laske yhteen</b> ja kirjoita σ̄ jokaisen kerroksen alapinnan kohdalle. Piirrä sigmaviiva: suora viiva pisteestä toiseen.</li></ol>
     <p><b>Kurssin esimerkki:</b> A 2 m · 21 = <b>42</b> (PV A:n alapinnassa) · B 3 m · 11 → 42 + 33 = <b>75</b> · C 2,5 m · 10 → 75 + 25 = <b>100 kN/m²</b>.</p>`],
   pai: ['Painuma', `<ol><li>Alkujännitys σ₀ = kerroksen tehokas raepaine σ̄. Loppujännitys <b>σ₁ = σ₀ + lisäkuorma Δσ</b>.</li><li>Lue ödometrikäyrältä <b>ε(σ₀)</b> ja <b>ε(σ₁)</b>.</li><li><b>Δε = ε(σ₁) − ε(σ₀)</b>, desimaaliksi (24 % = 0,24).</li><li><b>sk = z · Δε</b> (z = savikerroksen paksuus).</li></ol>
     <p><b>Kurssin esimerkki:</b> 8 m savi, lisäkuorma 150 kN/m², σ₀ = 100 → σ₁ = 250 kN/m², ε 5 % → 29 % → Δε = 0,24 → sk = 8 · 0,24 = <b>1,92 m</b>.</p>`],
@@ -915,7 +915,7 @@ function uusiKoe(alkuSiemen) {
       <div class="tw"><table><tr><th>Kerros</th><th>z [m]</th><th>γ [kN/m³]</th><th>σ̄ alapinnassa [kN/m²]</th></tr>${S.kerrokset.map((k, i) => `<tr><td>${k.nimi}</td><td class="num">${sk(k.h)}</td><td class="num">${k.alla ? (S.annettuTeh ? k.g + ' <b>(γ′)</b>' : k.g + ' (γsat)') : k.g}</td><td><input type="text" inputmode="decimal" id="s${i}" aria-label="sigma viiva kerroksen ${k.nimi} alapinnassa"></td></tr>`).join('')}</table></div>
       ${nain('sig')}${merkit(['sig', 'g', 'gsat', 'gp', 'pvp', 'z'])}${vinkit('v5', [
         'σ̄ lasketaan ylhäältä alas ja <b>summataan</b>: jokainen kerros lisää paksuus · tilavuuspaino.',
-        S.annettuTeh ? 'Pohjaveden alla käytä taulukon γ′-arvoa sellaisenaan (noste on jo vähennetty).' : 'Pohjaveden alla käytä <b>γsat − 10</b> (veden noste).',
+        S.annettuTeh ? 'Pohjaveden alla käytä taulukon <b>γ′</b>-arvoa sellaisenaan (noste on jo vähennetty).' : 'Pohjaveden alla käytä <b>γsat − 10</b> (veden noste).',
         'Kirjoita jokainen välisumma taulukkoon: ensimmäisen kerroksen alapinta = z · γ, seuraava = edellinen + z · γ jne.'])}
       ${rivi('o5')}`) +
 
