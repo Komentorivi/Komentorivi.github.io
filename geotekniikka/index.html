@@ -54,7 +54,7 @@ header.hero .pieni{font-size:15.5px}
 .hero-yla{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:24px 40px;align-items:center}
 .hero-teksti{display:grid;gap:12px;min-width:0}
 .hero-teksti .meta{max-width:none}
-.nappi-linkki{display:inline-flex;gap:8px;align-items:baseline;flex-wrap:wrap;font:600 17px var(--f-body);color:#fff;background:var(--water);border-radius:10px;padding:10px 18px;text-decoration:none}
+.nappi-linkki{display:inline-flex;gap:8px;align-items:baseline;flex-wrap:wrap;font:600 17px var(--f-body);color:var(--paper);background:var(--water);border-radius:10px;padding:10px 18px;text-decoration:none}
 .nappi-linkki .pieni{color:inherit;opacity:.85}
 .nappi-linkki:hover{filter:brightness(1.1)}
 .nappi-linkki.pieni-nappi{font-size:15px;padding:8px 14px}
@@ -218,7 +218,7 @@ table.pysty th:first-child{text-align:center}
     <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 2 p</span><span class="pill">Rakeisuuskäyrä 3 p</span><span class="pill">Tilavuus ja paino 2 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 4 p</span><span class="pill">Mustiksen spessu 3 p</span>
   </div>
 </header>
-<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.0</b> · päivitetty 27.11.2026 klo 14.45 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.0</b> · päivitetty 27.11.2026 klo 14.53 · korjauksia saattaa vielä tulla</span></p>
 <main id="koe"></main>
 <section class="tulos" id="tulos" hidden></section>
 
@@ -251,7 +251,7 @@ function paivitaPisteet() {
   const laskut = ['o2', 'o3', 'o4', 'o5', 'o6', 'o7'].every(k => k in pisteet), o1kesken = !('o1' in pisteet);
   const t = $('#tulos');
   if (laskut) {
-    t.hidden = false; t.className = 'tulos ' + (s >= 11 ? 'lapi' : 'hyl');
+    t.hidden = false; t.className = 'tulos ' + (o1kesken ? '' : s >= 11 ? 'lapi' : 'hyl');
     // arvosana 0–5 (arvio: läpi 11 p, välit tasaisesti 23 p:iin; ei opettajan virallinen asteikko)
     const RAJAT = [11, 14, 16, 18.5, 21], as = RAJAT.filter(r => s >= r).length;
     const KOMMENTIT = [
@@ -264,7 +264,7 @@ function paivitaPisteet() {
     const MAX = { o1: 6, o2: 3, o3: 2, o4: 2, o5: 3, o6: 4, o7: 3 };
     const heikoin = Object.keys(MAX).filter(k => k in pisteet).sort((x, y) => pisteet[x] / MAX[x] - pisteet[y] / MAX[y])[0];
     const heikNimi = heikoin && pisteet[heikoin] < MAX[heikoin] ? (document.querySelector('#' + heikoin + ' h2')?.textContent || '').replace(/^\d+\.\s*/, '') : '';
-    t.innerHTML = `<div class="pieni">TULOS</div><div class="arvosana"><div><div class="iso num">${fi(s, s % 1 ? 1 : 0)} / 23</div><div class="pieni">pistettä</div></div><div class="as-luku as${as}"><div class="iso num">${as}</div><div class="pieni">arvosana (arvio)</div></div></div>
+    t.innerHTML = `<div class="pieni">TULOS</div><div class="arvosana"><div><div class="iso num">${fi(s, s % 1 ? 1 : 0)} / 23</div><div class="pieni">pistettä</div></div><div class="as-luku as${as}"><div class="iso num">${as}</div><div class="pieni">arvosana (${o1kesken ? 'väliarvio' : 'arvio'})</div></div></div>
       <div class="as-kommentti"><b>${KOMMENTIT[as][0]}</b> ${KOMMENTIT[as][1]}</div>
       ${heikNimi ? `<div>Kertaa seuraavaksi: <b>${heikNimi}</b> (${fi(pisteet[heikoin], pisteet[heikoin] % 1 ? 1 : 0)} / ${MAX[heikoin]} p).</div>` : ''}
       ${o1kesken ? `<div><b>Kysymykset (6 p) arvioimatta.</b> Avaa kysymysosion mallivastaukset ja arvioi itsesi, niin pisteet ja arvosana päivittyvät.</div>` : ''}
