@@ -234,7 +234,7 @@ table.pysty th:first-child{text-align:center}
     <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 4 p</span><span class="pill">Rakeisuuskäyrä 6 p</span><span class="pill">Tilavuus ja paino 4 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 3 p</span><span class="pill">Mustiksen spessu 3 p</span>
   </div>
 </header>
-<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 22.03 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 23.02 · korjauksia saattaa vielä tulla</span></p>
 <main id="koe"></main>
 <section class="tulos" id="tulos" hidden></section>
 
@@ -1106,7 +1106,7 @@ function nollaaKaikki() {
 }
 let varmistus = null;
 $('#uusi').onclick = () => {
-  const kesken = koeTila && (Object.keys(koeTila.arvot || {}).length || (koeTila.tarkistetut || []).length || loppu);
+  const kesken = koeTila && !koeTila.debug && (Object.keys(koeTila.arvot || {}).length || (koeTila.tarkistetut || []).length || loppu);
   if (kesken && !varmistus) { $('#uusi').textContent = 'Varmasti? Paina uudelleen'; $('#uusi').classList.add('bad'); varmistus = setTimeout(() => { varmistus = null; $('#uusi').textContent = 'Uudet luvut'; $('#uusi').classList.remove('bad'); }, 3500); return; }
   clearTimeout(varmistus); varmistus = null; $('#uusi').textContent = 'Uudet luvut'; $('#uusi').classList.remove('bad');
   nollaaKaikki();
@@ -1136,6 +1136,7 @@ $('#debug').onclick = () => {
   aseta('p1', T.P.s1); aseta('p2', T.P.s2);
   aseta('e1s', T.E.su, 0); aseta('e1c', T.E.cD, 2); { const l = document.getElementById('e3'); if (l) l.value = T.E.kys.oikea; }
   document.querySelectorAll('[data-nayta]').forEach(b => b.click());   // kysymysten mallivastaukset auki
+  if (koeTila) { koeTila.debug = true; tallennaKoe(); }   // Uudet luvut ilman varmistusta (Mikko 27.11.2026)
   document.querySelectorAll('[data-tarkista]').forEach(b => b.click());   // ratkaisut, apuviivat (d₁₀/d₅₀/d₆₀) ja pisteet näkyviin heti
 };
 
