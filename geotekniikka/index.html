@@ -169,7 +169,7 @@ table.pysty th:first-child{text-align:center}
 <div class="top"><div class="in">
   <strong style="font-family:var(--f-disp);font-size:20px">Geotekniikka</strong>
   <span class="pill num koe-vain" id="kello">100:00</span>
-  <span class="pill num koe-vain" id="pisteet">0 / 23 p</span>
+  <span class="pill num koe-vain" id="pisteet">0 / 29 p</span>
   <span class="sp"></span>
   <a class="nappi-linkki pieni-nappi koe-vain" href="https://komentorivi.github.io/geotekniikka/apumateriaali.html" target="_blank" rel="noopener" title="Apumateriaali aukeaa uuteen välilehteen">📘 Apumateriaali</a>
   <button id="aloita" class="main koe-vain">Aloita kello</button>
@@ -182,7 +182,7 @@ table.pysty th:first-child{text-align:center}
   <div class="hero-yla">
   <div class="hero-teksti">
   <h1>Geotekniikan harjoituskoe</h1>
-  <p class="meta">Harjoitus kurssiin <b>Geotekniikan ja pohjarakentamisen perusteet</b>. Koealueet ja pisteet kuten kokeessa (opettajan ilmoitus luennolla): <b>23 pistettä, läpi 11 p, aikaa 100 min</b>. Kysymykset ovat opettajan koekysymyslistalta, ja vastaukset perustuvat vain kurssimateriaaliin. Mustiksen spessun sisältöä ei ole kerrottu; harjoituksessa se on siipikairaustehtävä kuten tuntiharjoituksessa. Laskutehtävien luvut arvotaan joka kerta uudelleen, joten kokeen voi tehdä monta kertaa. Tarkista jokainen osa omalla napillaan, ja ratkaisu aukeaa heti.</p>
+  <p class="meta">Harjoitus kurssiin <b>Geotekniikan ja pohjarakentamisen perusteet</b>. Koealueet ja pisteet kuten kokeessa (opettajan ilmoitus luennolla): <b>29 pistettä, läpi 11 p, aikaa 100 min</b>. Kysymykset ovat opettajan koekysymyslistalta, ja vastaukset perustuvat vain kurssimateriaaliin. Mustiksen spessun sisältöä ei ole kerrottu; harjoituksessa se on siipikairaustehtävä kuten tuntiharjoituksessa. Laskutehtävien luvut arvotaan joka kerta uudelleen, joten kokeen voi tehdä monta kertaa. Tarkista jokainen osa omalla napillaan, ja ratkaisu aukeaa heti.</p>
   </div>
   <svg class="maskotti" viewBox="0 0 240 300" role="img" aria-label="Piirroshahmo: geoteknikko kypärässä ja huomioliivissä, kairatanko kädessä">
   <!-- maakerrokset jalkojen alla -->
@@ -231,10 +231,10 @@ table.pysty th:first-child{text-align:center}
 </svg>
   </div>
   <div class="rakenne">
-    <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 2 p</span><span class="pill">Rakeisuuskäyrä 3 p</span><span class="pill">Tilavuus ja paino 2 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 4 p</span><span class="pill">Mustiksen spessu 3 p</span>
+    <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 4 p</span><span class="pill">Rakeisuuskäyrä 6 p</span><span class="pill">Tilavuus ja paino 4 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 3 p</span><span class="pill">Mustiksen spessu 3 p</span>
   </div>
 </header>
-<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 17.56 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 18.04 · korjauksia saattaa vielä tulla</span></p>
 <main id="koe"></main>
 <section class="tulos" id="tulos" hidden></section>
 
@@ -262,14 +262,14 @@ const lahella = (v, oikea, tol = 0.03, abs = 0) => isFinite(v) && Math.abs(v - o
 const pisteet = {};
 function paivitaPisteet() {
   const s = Object.values(pisteet).reduce((a, b) => a + b, 0);
-  const p = $('#pisteet'); p.textContent = `${fi(s, s % 1 ? 1 : 0)} / 23 p`;
+  const p = $('#pisteet'); p.textContent = `${fi(s, s % 1 ? 1 : 0)} / 29 p`;
   p.className = 'pill num' + (s >= 11 ? ' ok' : '');
   const laskut = ['o2', 'o3', 'o4', 'o5', 'o6', 'o7'].every(k => k in pisteet), o1kesken = !('o1' in pisteet);
   const t = $('#tulos');
   if (laskut) {
     t.hidden = false; t.className = 'tulos ' + (o1kesken ? '' : s >= 11 ? 'lapi' : 'hyl');
-    // arvosana 0–5 (arvio: läpi 11 p, välit tasaisesti 23 p:iin; ei opettajan virallinen asteikko)
-    const RAJAT = [11, 14, 16, 18.5, 21], as = RAJAT.filter(r => s >= r).length;
+    // arvosana 0–5 (arvio: läpi 11 p, välit tasaisesti 29 p:iin; ei opettajan virallinen asteikko)
+    const RAJAT = [11, 15, 19, 22.5, 26], as = RAJAT.filter(r => s >= r).length;
     const KOMMENTIT = [
       ['Maaperä petti tällä kertaa', 'Ei hätää: perustukset rakennetaan uudelleen. Käy ratkaisut läpi ja paina "Tee uusi koe". Savikin konsolidoituu ajan kanssa, ja niin sinäkin. 💪'],
       ['Läpi!', 'Kantavuus riittää, vähän reunalla mutta riittää. Pieni lisätiivistys (yksi kertauskierros) ja seisot tukevammalla pohjalla.'],
@@ -277,14 +277,14 @@ function paivitaPisteet() {
       ['Hienoa!', 'Olet kuin keskitiivis hiekka: luotettava ja kantava. Kertaa heikoin tehtävä, niin nouset vielä pykälän.'],
       ['Erinomaista!', 'Raepainekäyrä nousee suoraan kohti vitosta. Pieni painuma on vielä jäljellä, joten yksi kierros lisää.'],
       ['Täydellistä! 🏆', 'Olet kallio: et painu etkä häiriinny. Mustiskin nostaisi kypärää. Muista nukkua kunnolla ennen koetta.']];
-    const MAX = { o1: 6, o2: 3, o3: 2, o4: 2, o5: 3, o6: 4, o7: 3 };
+    const MAX = { o1: 6, o2: 6, o3: 4, o4: 4, o5: 3, o6: 3, o7: 3 };
     const heikoin = Object.keys(MAX).filter(k => k in pisteet).sort((x, y) => pisteet[x] / MAX[x] - pisteet[y] / MAX[y])[0];
     const heikNimi = heikoin && pisteet[heikoin] < MAX[heikoin] ? (document.querySelector('#' + heikoin + ' h2')?.textContent || '').replace(/^\d+\.\s*/, '') : '';
-    t.innerHTML = `<div class="pieni">TULOS</div><div class="arvosana"><div><div class="iso num">${fi(s, s % 1 ? 1 : 0)} / 23</div><div class="pieni">pistettä</div></div><div class="as-luku as${as}"><div class="iso num">${as}</div><div class="pieni">arvosana (${o1kesken ? 'väliarvio' : 'arvio'})</div></div></div>
+    t.innerHTML = `<div class="pieni">TULOS</div><div class="arvosana"><div><div class="iso num">${fi(s, s % 1 ? 1 : 0)} / 29</div><div class="pieni">pistettä</div></div><div class="as-luku as${as}"><div class="iso num">${as}</div><div class="pieni">arvosana (${o1kesken ? 'väliarvio' : 'arvio'})</div></div></div>
       <div class="as-kommentti"><b>${KOMMENTIT[as][0]}</b> ${KOMMENTIT[as][1]}</div>
       ${heikNimi ? `<div>Kertaa seuraavaksi: <b>${heikNimi}</b> (${fi(pisteet[heikoin], pisteet[heikoin] % 1 ? 1 : 0)} / ${MAX[heikoin]} p).</div>` : ''}
       ${o1kesken ? `<div><b>Kysymykset (6 p) arvioimatta.</b> Avaa kysymysosion mallivastaukset ja arvioi itsesi, niin pisteet ja arvosana päivittyvät.</div>` : ''}
-      <div class="pieni">Asteikko on arvio, ei opettajan virallinen: hylätty alle 11 p · 1 = 11 p · 2 = 14 p · 3 = 16 p · 4 = 18,5 p · 5 = 21 p.</div>
+      <div class="pieni">Asteikko on arvio, ei opettajan virallinen: hylätty alle 11 p · 1 = 11 p · 2 = 15 p · 3 = 19 p · 4 = 22,5 p · 5 = 26 p.</div>
       <div><button id="uusi2" class="main">Tee uusi koe</button></div>`;
     $('#uusi2').onclick = () => nollaaKaikki();
   } else t.hidden = true;
@@ -849,6 +849,8 @@ function palautaKoe() {
   tallennaKoe(); window.scrollTo(0, 0);
   return true;
 }
+/* Kokeen pisteet 29 (Mikko 27.11.2026): laskut 14 p (rakeisuus 6, nimeäminen 4, tilavuus 4), kysymykset 6, sigma 3, painumat 3, spessu 3. Tarkistukset laskevat vanhalla asteikolla, kerroin skaalaa. */
+const KERROIN = { o2: 2, o3: 2, o4: 2, o6: 0.75 };
 function uusiKoe(alkuSiemen) {
   for (const k in pisteet) delete pisteet[k];
   siemen = alkuSiemen || (Date.now() + Math.floor(Math.random() * 1e6)) % 2147483647 || 1;
@@ -864,7 +866,7 @@ function uusiKoe(alkuSiemen) {
       ${q.v && q.v.length ? vinkit('vk' + i, q.v.map(esc)) : ''}<div class="arvio"><button data-nayta="${i}">Näytä mallivastaus</button><span hidden data-arvio="${i}"><button data-p="1">1 p</button> <button data-p="0.5">½ p</button> <button data-p="0">0 p</button></span></div>
       <div class="ratk" hidden id="mv${i}"><b>Mallivastaus:</b> ${lihavoi(q.a)}${q.s ? `<br><span class="pieni">${lihavoi(q.s)}</span>` : ''}</div></div>`).join('')) +
 
-    osa('o3', '2. Maalajin nimeäminen', 2, `<p class="tehtava">Nimeä rakeisuuskäyrien A–D maalajit (kuten kurssin tehtävässä). Pisteisiin riittää päämaalaji lyhenteenä, esim. Sa, Si, HkMr tai Sr. Moreenin täydestä nimestä lisänimineen (esim. hkSrMr) tulee merkintä ⭐ (ei lisäpisteitä). Vie hiiri kaavion päälle, niin näet jokaisen käyrän läpäisyn osoittimen raekoolla (esim. 0,002 mm, 0,063 mm ja 2 mm).</p>
+    osa('o3', '2. Maalajin nimeäminen', 4, `<p class="tehtava">Nimeä rakeisuuskäyrien A–D maalajit (kuten kurssin tehtävässä). Pisteisiin riittää päämaalaji lyhenteenä, esim. Sa, Si, HkMr tai Sr. Moreenin täydestä nimestä lisänimineen (esim. hkSrMr) tulee merkintä ⭐ (ei lisäpisteitä). Vie hiiri kaavion päälle, niin näet jokaisen käyrän läpäisyn osoittimen raekoolla (esim. 0,002 mm, 0,063 mm ja 2 mm).</p>
       <div id="kkuva">${kayratSVG(KY, false)}</div>
       <div class="vast">${KY.map(k => `<label>Käyrä ${k.kirjain}<input type="text" id="n${k.kirjain}" autocomplete="off" spellcheck="false"></label>`).join('')}</div>
       ${nain('nimi')}${merkit(['f063', 'mr', 'lyh'])}${vinkit('v3', [
@@ -873,7 +875,7 @@ function uusiKoe(alkuSiemen) {
         '<b>3. Päänimi d₅₀:stä:</b> katso, mihin väriin käyrä osuu 50 %:n kohdalla: Si (siltti), Hk (hiekka) vai Sr (sora). Moreenille Mr perään (esim. HkMr).'])}
       ${rivi('o3')}`) +
 
-    osa('o2', '3. Rakeisuuskäyrä', 3, `<div class="tehtava"><p>Raekoostumuksen määritys (seulonta). Laske ensin <b>kokonaismassa</b>, sitten jokaiselle seulalle <b>jäi %</b> ja <b>läpäisy %</b>, piirrä käyrä, lue d₅₀ ja <b>nimeä maalaji</b>. Käyräsi piirtyy kaavioon sitä mukaa kuin täytät. Vie hiiri kaavion päälle, niin näet raekoon ja läpäisyn osoittimen kohdalla (helpottaa d₅₀:n lukemista). Pisteet: läpäisyt 1 p, d₅₀ 1 p, maalaji 1 p.</p></div>
+    osa('o2', '3. Rakeisuuskäyrä', 6, `<div class="tehtava"><p>Raekoostumuksen määritys (seulonta). Laske ensin <b>kokonaismassa</b>, sitten jokaiselle seulalle <b>jäi %</b> ja <b>läpäisy %</b>, piirrä käyrä, lue d₅₀ ja <b>nimeä maalaji</b>. Käyräsi piirtyy kaavioon sitä mukaa kuin täytät. Vie hiiri kaavion päälle, niin näet raekoon ja läpäisyn osoittimen kohdalla (helpottaa d₅₀:n lukemista). Pisteet: läpäisyt 2 p, d₅₀ 2 p, maalaji 2 p.</p></div>
       <div class="vast"><label>Kokonaismassa (g)<input type="text" inputmode="decimal" id="tot2" aria-label="Kokonaismassa grammoina"></label></div>
       <div class="rak-grid"><div class="tw"><table class="pysty"><tr><th>Seula<br>[mm]</th><th>Jäi<br>[g]</th><th>Jäi<br>[%]</th><th>Läpäisy<br>[%]</th></tr>
       ${R.m.map((v, i) => `<tr><th class="num">${i < SEULAT_K.length ? sk(SEULAT_K[i]) : 'pohja'}</th><td class="num">${v}</td><td><input type="text" inputmode="decimal" id="j${i}" aria-label="Jäi prosenttia ${i < SEULAT_K.length ? SEULAT_K[i] + ' mm' : 'pohja'}"></td><td>${i < SEULAT_K.length ? `<input type="text" inputmode="decimal" id="l${i}" aria-label="Läpäisy seulalla ${SEULAT_K[i]} mm">` : ''}</td></tr>`).join('')}</table></div>
@@ -889,7 +891,7 @@ function uusiKoe(alkuSiemen) {
 
 
 
-    osa('o4', '4. Tilavuus- ja painolasku', 2, `<p class="tehtava">Maanäytteen tilavuus V = <b class="num">${sk(TV.V)} l</b>, massa (kostea) m = <b class="num">${fi(TV.mm, 2)} kg</b>, vesipitoisuus w = <b class="num">${sk(TV.w)} %</b>, kiintotiheys ρs = <b class="num">${fi(TV.rs, 2)} t/m³</b>, ρw = 1,0 t/m³. Laske kiven, veden ja ilman tilavuudet, huokoisuus ja kuivatilavuuspaino.</p>
+    osa('o4', '4. Tilavuus- ja painolasku', 4, `<p class="tehtava">Maanäytteen tilavuus V = <b class="num">${sk(TV.V)} l</b>, massa (kostea) m = <b class="num">${fi(TV.mm, 2)} kg</b>, vesipitoisuus w = <b class="num">${sk(TV.w)} %</b>, kiintotiheys ρs = <b class="num">${fi(TV.rs, 2)} t/m³</b>, ρw = 1,0 t/m³. Laske kiven, veden ja ilman tilavuudet, huokoisuus ja kuivatilavuuspaino.</p>
       <div id="tkuva" class="tkuva">${tilavuusSVG(TV, false)}</div>
       <div class="vast">${syote('vs', 'Kiven tilavuus Vs (l)')}${syote('vw', 'Veden tilavuus Vw (l)')}${syote('vi', 'Ilman tilavuus Vilma (l)')}${syote('n', 'Huokoisuus n (%)')}${syote('gd', 'Kuivatilavuuspaino γd (kN/m³)')}</div>
       <details class="merkit" id="valiv4"><summary>Välivaiheet: laske vaiheittain kuten tunnilla (avaa, jos haluat)</summary>
@@ -917,7 +919,7 @@ function uusiKoe(alkuSiemen) {
         'Kirjoita jokainen välisumma taulukkoon: ensimmäisen kerroksen alapinta = z · γ, seuraava = edellinen + z · γ jne.'])}
       ${rivi('o5')}`) +
 
-    osa('o6', '6. Painumat', 4, `<p class="tehtava">Kaksi eri savikerrosta: kummastakin oma ödometrikäyrä samassa kuvaajassa (<b style="color:var(--water)">A</b> ja <b style="color:var(--soil)">B</b>). Lue ε käyrältä (pisteiden arvot on merkitty). Taitekohta = kerroksen nykyinen tehokas raepaine σ₀.</p>
+    osa('o6', '6. Painumat', 3, `<p class="tehtava">Kaksi eri savikerrosta: kummastakin oma ödometrikäyrä samassa kuvaajassa (<b style="color:var(--water)">A</b> ja <b style="color:var(--soil)">B</b>). Lue ε käyrältä (pisteiden arvot on merkitty). Taitekohta = kerroksen nykyinen tehokas raepaine σ₀.</p>
       <div id="okuva">${odometriSVG(P, null)}</div>
       <p class="tehtava"><b>a) Savikerros A:</b> ${P.z1} m paksu, tehokas raepaine σ₀ = ${P.a1} kN/m² (käyrän A taitekohta). Rakennus aiheuttaa lisäkuorman Δσ = <b>${P.d1} kN/m²</b>. Laske konsolidaatiopainuma.<br><b>b) Savikerros B:</b> ${P.z2} m paksu, tehokas raepaine σ₀ = ${P.a2} kN/m² (käyrän B taitekohta), lisäkuorma Δσ = <b>${P.d2} kN/m²</b>. Laske konsolidaatiopainuma.</p>
       <div class="vast">${syote('p1', 'a) Painuma sk (m)')}${syote('p2', 'b) Painuma sk (m)')}</div>
@@ -985,10 +987,10 @@ function uusiKoe(alkuSiemen) {
       if (ylhaalta >= 3) vihje($('#l9'), 'Laskitko seulalle jääneet yhteen ylhäältä? Läpäisy = mitä meni läpi: aloita alhaalta pohjan osuudesta.');
       const a = dOk(luku($('#d50').value), R.d50); merkitse($('#d50'), a);   // luetaan käyrältä, heitto suuruusluokan mukaan
       ['d60', 'd10'].forEach(id => { const inp = $('#' + id), o = id === 'd60' ? R.d60 : R.d10; if (inp.value.trim() || o === null) { if (o === null) merkitse(inp, inp.value.trim() === '' || /ei|-/.test(inp.value)); else merkitse(inp, dOk(luku(inp.value), o)); } });
-      // nimi: täysi nimi lisänimineen 1 p, päänimi ilman lisänimeä ½ p (seulonnassa ei mitata savea → oletetaan ei savea)
+      // nimi: täysi nimi lisänimineen 2 p, päänimi ilman lisänimeä 1 p (pisteet ×2 KERROIN:lla) (seulonnassa ei mitata savea → oletetaan ei savea)
       const NN = nimea(R.lap[9], R.lap[4], R.d50), perus = NN.paa + (NN.moreeni ? 'Mr' : ''), ninp = $('#nimi2'), nraaka = ninp.value.trim().replace(/[.,;:!]+$/, '').replace(/\s+/g, '');
       const nTay = nraaka === NN.lyh, nPuoli = !nTay && nraaka === perus && perus !== NN.lyh;
-      merkitse(ninp, nTay); viesti(ninp, nTay ? '' : !nraaka ? 'Anna vastaus.' : nPuoli ? 'Päänimi oikein, lisänimi puuttuu (½ p).' : NN.lyh.toLowerCase() === nraaka.toLowerCase() ? 'Kirjaimet oikein, mutta koko väärin (päämaalaji isolla, lisänimi pienellä).' : '');
+      merkitse(ninp, nTay); viesti(ninp, nTay ? '' : !nraaka ? 'Anna vastaus.' : nPuoli ? 'Päänimi oikein, lisänimi puuttuu (1 p).' : NN.lyh.toLowerCase() === nraaka.toLowerCase() ? 'Kirjaimet oikein, mutta koko väärin (päämaalaji isolla, lisänimi pienellä).' : '');
       const p = (okL === 10 ? 1 : okL >= 8 ? 0.5 : 0) + (a ? 1 : 0) + (nTay ? 1 : nPuoli ? 0.5 : 0);
       koe.dataset.r2 = 1; $('#rkuva').innerHTML = rakeisuusSVG(R.lap, omat(), dmR, SEULAT_K);
       const cu = R.d10 ? R.d60 / R.d10 : null;
@@ -1001,7 +1003,7 @@ function uusiKoe(alkuSiemen) {
       return [p, 3, `Kokonaismassa = ${R.m.join(' + ')} = <b class="num">${R.tot} g</b><br>Jäi %: ${R.jai.map((j, i) => `<span class="num">${i < SEULAT_K.length ? sk(SEULAT_K[i]) : 'pohja'}→${fi(j)}</span>`).join(' · ')}<br>
         Läpäisy % (alhaalta ylöspäin summaten): ${SEULAT_K.map((s, i) => `<span class="num">${sk(s)}→${fi(R.lap[i])}</span>`).join(' · ')}<br>
         d₅₀ ≈ <b class="num">${dLuku(R.d50)} mm</b>${R.d60 ? `, d₆₀ ≈ ${dLuku(R.d60)} mm` : ''}${R.d10 ? `, d₁₀ ≈ ${dLuku(R.d10)} mm` : ', d₁₀ ei luettavissa seulonnasta'}${cu ? `, Cu = d₆₀ / d₁₀ = ${dTxt(R.d60)} / ${dTxt(R.d10)} = ${fi(cuNakyva(R))} → <b>${CU_NIMI[cuLuokka(cuNakyva(R))]}</b> (myös omista d-arvoistasi laskettu Cu hyväksytään)` : ' (Cu ei laskettavissa, koska d₁₀ puuttuu)'}. Sininen katkoviiva on oikea käyrä, mustat apuviivat näyttävät lukukohdat. ${(() => { const r = seulavali(R.lap, SEULAT_K, 50), h = dHeitto(R.d50); return r ? `<br><b>d₅₀ luetaan näin:</b> läpäisy 50 % on seulojen ${sk(r[0])} mm (${fi(r[2])} %) ja ${sk(r[1])} mm (${fi(r[3])} %) välissä → lue 50 %:n kohta käyrältä → d₅₀ ≈ <b>${dLuku(R.d50)} mm</b>. Hyväksytään ${dLuku(R.d50 - h)}–${dLuku(R.d50 + h)} mm (lukutarkkuus tällä raekoolla), eli yksi tai kaksi desimaalia käy, esim. ${dTxt(R.d50)} tai ${dLuku(R.d50)}. Sama heitto d₆₀:lle ja d₁₀:lle.` : ''; })()}
-        <br><b>Maalaji: ${NN.lyh} = ${NN.pitka}</b> (hienoaines ${fi(NN.hieno)} %, hiekka ${fi(NN.hiekka)} %, sora ${fi(NN.sora)} %). Pisteet: läpäisyt 1 p, d₅₀ 1 p, maalaji 1 p.
+        <br><b>Maalaji: ${NN.lyh} = ${NN.pitka}</b> (hienoaines ${fi(NN.hieno)} %, hiekka ${fi(NN.hiekka)} %, sora ${fi(NN.sora)} %). Pisteet: läpäisyt 2 p, d₅₀ 2 p, maalaji 2 p.
         ${tulkinta(R.lap[9], R.lap[4], R.d50)}`];
     },
     o3() {
@@ -1074,7 +1076,7 @@ function uusiKoe(alkuSiemen) {
     },
   };
   koe.querySelectorAll('[data-tarkista]').forEach(b => b.onclick = () => {
-    const id = b.dataset.tarkista, [p, max, ratk] = tarkistus[id]();
+    const id = b.dataset.tarkista, [p0, max0, ratk] = tarkistus[id](), kk = KERROIN[id] || 1, p = p0 * kk, max = max0 * kk;   // 29 p:n jakauma (Mikko 27.11.2026)
     if (max) pisteet[id] = p; tila(id.slice(1), p, max); const r = $('#r' + id.slice(1)); r.innerHTML = ratk; r.hidden = false; alaindeksit($('#o' + id.slice(1))); paivitaPisteet();
     if (koeTila && !koeTila.tarkistetut.includes(id)) koeTila.tarkistetut.push(id); tallennaKoe();
   });
