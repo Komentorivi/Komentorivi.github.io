@@ -220,7 +220,7 @@ table.pysty th:first-child{text-align:center}
     <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 2 p</span><span class="pill">Rakeisuuskäyrä 3 p</span><span class="pill">Tilavuus ja paino 2 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 4 p</span><span class="pill">Mustiksen spessu 3 p</span>
   </div>
 </header>
-<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 15.51 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 15.53 · korjauksia saattaa vielä tulla</span></p>
 <main id="koe"></main>
 <section class="tulos" id="tulos" hidden></section>
 
@@ -519,21 +519,16 @@ document.addEventListener('pointermove', (ev) => {
   const pros = (yv) => (1 - (yv - y0) / (y1 - y0)) * 100;
   if (!g) { g = document.createElementNS('http://www.w3.org/2000/svg', 'g'); g.setAttribute('class', 'lukuapu'); g.setAttribute('pointer-events', 'none'); svg.appendChild(g); }
   const oik = pt.x < (x0 + x1) / 2;
-  // useita käyriä (tehtävä 2, A–D): kaikkien läpäisy samalla raekoolla
+  // useita käyriä (tehtävä 2, A–D): pallo liikkuu hiirtä lähimmän käyrän päällä kuten tehtävässä 3 (Mikko 27.11.2026)
   const monta = [...svg.querySelectorAll('path[data-kayra]')];
+  let kayra = null, ky = null, nimi = '';
   if (monta.length) {
-    const lukemat = monta.map(k => [k.dataset.kayra, kayranY(k)]).filter(([, yv]) => yv != null);
-    g.innerHTML = `<line x1="${pt.x}" x2="${pt.x}" y1="${y0}" y2="${y1}" stroke="var(--water)" stroke-width="1.5"/>`
-      + lukemat.map(([, yv]) => `<circle cx="${pt.x}" cy="${yv}" r="4.5" fill="var(--water)" stroke="var(--paper)" stroke-width="1.5"/>`).join('')
-      + `<text x="${oik ? pt.x + 8 : pt.x - 8}" y="${y0 + 18}" text-anchor="${oik ? 'start' : 'end'}" font-size="14" font-weight="700" fill="var(--water)" stroke="var(--paper)" stroke-width="4" paint-order="stroke">d ≈ ${dt} mm${lukemat.length ? ' → ' + lukemat.map(([n, yv]) => `${n} ${fi(pros(yv), 0)} %`).join(' · ') : ''}</text>`;
-    return;
-  }
-  const kayra = [...svg.querySelectorAll('path[fill="none"]')].pop();
-  const ky = kayra ? kayranY(kayra) : null;
+    monta.forEach(k => { const yv = kayranY(k); if (yv != null && (ky == null || Math.abs(yv - pt.y) < Math.abs(ky - pt.y))) { ky = yv; kayra = k; nimi = k.dataset.kayra + ': '; } });
+  } else { kayra = [...svg.querySelectorAll('path[fill="none"]')].pop(); ky = kayra ? kayranY(kayra) : null; }
   const yy = ky ?? pt.y, p = pros(yy);
   g.innerHTML = `<line x1="${pt.x}" x2="${pt.x}" y1="${y0}" y2="${y1}" stroke="var(--water)" stroke-width="1.5"/><line x1="${x0}" x2="${pt.x}" y1="${yy}" y2="${yy}" stroke="var(--water)" stroke-width="1" stroke-dasharray="3 3"/>`
     + (ky != null ? `<circle cx="${pt.x}" cy="${yy}" r="4.5" fill="var(--water)"/>` : '')
-    + `<text x="${oik ? pt.x + 8 : pt.x - 8}" y="${Math.max(y0 + 16, yy - 10)}" text-anchor="${oik ? 'start' : 'end'}" font-size="14" font-weight="700" fill="var(--water)" stroke="var(--paper)" stroke-width="4" paint-order="stroke">d ≈ ${dt} mm${ky != null ? ` → käyrällä ${fi(p, 0)} %` : ` · ${fi(p, 0)} %`}</text>`;
+    + `<text x="${oik ? pt.x + 8 : pt.x - 8}" y="${Math.max(y0 + 16, yy - 10)}" text-anchor="${oik ? 'start' : 'end'}" font-size="14" font-weight="700" fill="var(--water)" stroke="var(--paper)" stroke-width="4" paint-order="stroke">${nimi}d ≈ ${dt} mm${ky != null ? ` → käyrällä ${fi(p, 0)} %` : ` · ${fi(p, 0)} %`}</text>`;
 });
 
 /* ---------- 2. Rakeisuus (OM s. 2, T1 s. 1) ---------- */
