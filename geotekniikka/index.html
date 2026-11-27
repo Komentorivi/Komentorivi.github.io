@@ -1,0 +1,1037 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Geotekniikan harjoituskoe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: yksi palsta kuin koepaperi; osat kortteina, ylhäällä tarttuva pistepalkki ja kello. */
+:root{
+  --bg:#eef0ec; --paper:#fbfbf8; --ink:#1c2420; --muted:#5d6862; --line:#d3d8d1;
+  --soil:#a85a1c; --soil-weak:#f3e3d3; --water:#2b6a8a; --water-weak:#dcebf2;
+  --ok:#2f7d4a; --ok-weak:#dcefe2; --bad:#b3362b; --bad-weak:#f6dfdc; --warn:#9a6b00;
+  --sa:#8c6a54; --si:#b89a6a; --hk:#d9bf7a; --sr:#9aa38c;
+  --f-disp:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Barlow","Segoe UI",Roboto,Arial,sans-serif;
+  --f-num:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141917; --paper:#1c2320; --ink:#e7ece8; --muted:#9aa6a0; --line:#323c37;
+  --soil:#e0904d; --soil-weak:#3a2a1c; --water:#6fb3d6; --water-weak:#1c3340;
+  --ok:#5fc283; --ok-weak:#1c3526; --bad:#ef7a6e; --bad-weak:#3d2220; --warn:#e3b54a;
+  --sa:#a88a72; --si:#c9ad7e; --hk:#c7ad68; --sr:#8f9a80; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141917; --paper:#1c2320; --ink:#e7ece8; --muted:#9aa6a0; --line:#323c37;
+  --soil:#e0904d; --soil-weak:#3a2a1c; --water:#6fb3d6; --water-weak:#1c3340;
+  --ok:#5fc283; --ok-weak:#1c3526; --bad:#ef7a6e; --bad-weak:#3d2220; --warn:#e3b54a;
+  --sa:#a88a72; --si:#c9ad7e; --hk:#c7ad68; --sr:#8f9a80; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+.versio{font-size:14px;color:var(--muted)} .vastuu{border:1px solid var(--warn);background:var(--soil-weak);border-radius:10px;padding:10px 14px;font-size:15px;margin:8px 0 0}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.5 var(--f-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:1040px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-disp);letter-spacing:.01em;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,6vw,48px);line-height:1}
+h2{font-size:26px}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line);margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px))}
+.top .in{max-width:1040px;margin:0 auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.pill{font:600 15.5px var(--f-body);padding:6px 14px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+.pill.ok{background:var(--ok-weak);color:var(--ok);border-color:transparent}
+.pill.bad{background:var(--bad-weak);color:var(--bad);border-color:transparent}
+.sp{flex:1}
+button{font:600 15px var(--f-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer}
+button.main{background:var(--soil);border-color:var(--soil);color:#fff}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--water);outline-offset:2px}
+header.hero{padding:34px 0 18px;display:grid;gap:10px}
+header.hero{position:relative}
+header.hero .pieni{font-size:15.5px}
+.hero-yla{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:24px 40px;align-items:center}
+.hero-teksti{display:grid;gap:12px;min-width:0}
+.hero-teksti .meta{max-width:none}
+.maskotti{width:100%;height:auto;display:block}
+@media (max-width:720px){.hero-yla{grid-template-columns:1fr}.maskotti{width:150px;margin:0 auto;order:-1}}
+.meta{color:var(--muted);font-size:18.5px;line-height:1.6;max-width:62ch}
+.meta b{color:var(--ink)}
+.rakenne{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.osa{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 20px 16px;margin-top:18px}
+.osa-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px}
+.osa-h .p{margin-left:auto;font:600 15px var(--f-body);color:var(--muted)}
+.tehtava{color:var(--ink);max-width:70ch}
+.tehtava p{margin:.4em 0}
+table{border-collapse:collapse;font-size:15px}
+.tw{overflow-x:auto;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:center;white-space:nowrap}
+th{background:var(--bg);font-weight:600}
+input[type=text],input[type=number],select{font:500 16px var(--f-num);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px;width:7.5em}
+select{width:auto;max-width:100%}
+.vast label:has(select){grid-column:1/-1}
+.vast label select{align-self:flex-start}
+input.leveä{width:16em;font-family:var(--f-body)}
+td input{width:5.2em;padding:4px 6px}
+.vast{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 16px;margin:12px 0}
+.vast label{display:flex;flex-direction:column;gap:4px;font-size:15px;color:var(--muted)}
+.vast label span.u{font-size:13px}
+.ok-i{border-color:var(--ok)!important;background:var(--ok-weak)!important}
+.syotevirhe{display:block;font:500 13px var(--f-body);color:var(--bad);margin-top:2px}
+.vaara-i{border-color:var(--warn)!important}
+.bad-i{border-color:var(--bad)!important;background:var(--bad-weak)!important}
+.ratk{margin-top:12px;border-left:4px solid var(--water);background:var(--water-weak);border-radius:0 10px 10px 0;padding:10px 14px;font-size:16px}
+.ratk[hidden]{display:none}
+.kys{border-top:1px solid var(--line);padding:14px 0}
+.kys:first-of-type{border-top:none}
+.kys .q{font-weight:600}
+.kys .aihe{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+textarea{width:100%;min-height:70px;font:400 16px var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:6px}
+.arvio{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.arvio button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.rivi{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.tila{font-weight:600;font-size:15px}
+.tila.ok{color:var(--ok)} .tila.bad{color:var(--bad)}
+svg text{font-family:var(--f-body)}
+.kuva{width:100%;max-width:100%;height:auto;display:block;margin:8px 0}
+.tulos{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:20px;margin-top:22px;display:grid;gap:8px}
+.tulos.lapi{border-color:var(--ok)} .tulos.hyl{border-color:var(--bad)}
+.arvosana{display:flex;gap:28px;align-items:flex-end;flex-wrap:wrap}
+.as-luku{border-radius:14px;padding:6px 18px;background:var(--ok-weak);color:var(--ok);text-align:center}
+.as-luku.as0{background:var(--bad-weak);color:var(--bad)}
+.as-luku .pieni{color:inherit}
+.as-kommentti{font-size:17px;max-width:70ch}
+.iso{font:700 56px/1 var(--f-disp)}
+.pieni{font-size:14px;color:var(--muted)}
+.tabs{display:flex;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px}
+.tabs a{font:600 15px var(--f-body);color:var(--muted);text-decoration:none;padding:5px 12px;border-radius:999px}
+.tabs a.on{background:var(--ink);color:var(--paper)}
+.av .vast label{color:var(--muted)}
+.tulosrivi{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin:12px 0}
+.tulosrivi div{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.tulosrivi b{display:block;font:500 20px var(--f-num)}
+.tulosrivi span{font-size:13px;color:var(--muted)}
+.kerros td input{width:4.6em}
+.vaiheet{font-size:15px;line-height:1.6}
+.merkit{margin:10px 0;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:15px}
+.merkit summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.merkit dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;margin:8px 0 2px}
+.merkit dt{font:600 15px var(--f-num);color:var(--soil)}
+.merkit dd{margin:0}
+.vinkit{margin-top:10px}
+.nain{margin:10px 0;border:1px solid var(--water);border-radius:10px;padding:8px 12px;background:var(--water-weak);font-size:16px}
+.nain summary{cursor:pointer;font-weight:700;color:var(--water)}
+.nain ol{margin:8px 0;padding-left:22px;display:grid;gap:4px}
+.nain p{margin:6px 0}
+.ratk .nain{background:var(--paper)}
+.vinkki{border-left:4px solid var(--warn);background:var(--soil-weak);border-radius:0 10px 10px 0;padding:8px 12px;margin-top:8px;font-size:15px}
+
+/* Rakeisuus: seulat allekkain, käyrä vieressä läppärillä (Mikko 27.11.2026: ei sivuttaisvieritystä) */
+.rak-grid{display:grid;gap:16px;align-items:start;margin:10px 0}
+.rak-grid>*{min-width:0}
+.rak-grid .tw{margin:0}
+table.pysty td input{width:5.4em;padding:3px 6px}
+table.pysty th,table.pysty td{padding:3px 8px}
+table.pysty th:first-child{text-align:center}
+@media (min-width:820px){.rak-grid{grid-template-columns:auto 1fr} #rkuva{position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px)}}
+@media (max-width:520px){ .osa{padding:16px 14px} h2{font-size:23px} }
+.tkuva{max-width:680px}
+.kaavapolku{margin:6px 0 4px;padding-left:4px;list-style:none;display:grid;gap:4px;font-size:15px;color:var(--ink)}
+.vast label span.lab .u{display:block}
+.lukuohje{margin:10px 0;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 14px;font-size:15px}
+.lukuohje ol{margin:6px 0;padding-left:22px;display:grid;gap:3px}
+@media (max-width:520px){ .osa{padding:16px 10px} th{white-space:normal} th,td,table.pysty th,table.pysty td{padding:4px 4px} td input,table.pysty td input,.kerros td input{width:4.1em;padding:3px 4px;font-size:15px} table{font-size:14px} table.pysty td input{width:3.8em} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="in">
+  <strong style="font-family:var(--f-disp);font-size:20px">Geotekniikka</strong>
+  <span class="pill num koe-vain" id="kello">100:00</span>
+  <span class="pill num koe-vain" id="pisteet">0 / 23 p</span>
+  <span class="sp"></span>
+  <button id="aloita" class="main koe-vain">Aloita kello</button>
+  <button id="uusi" class="koe-vain">Uudet luvut</button>
+  <button id="debug" class="koe-vain" hidden title="Täyttää oikeat vastaukset ja tarkistaa kaikki osiot">Debug: oikeat vastaukset</button>
+</div></div>
+
+<div class="wrap">
+<header class="hero koe-vain">
+  <div class="hero-yla">
+  <div class="hero-teksti">
+  <h1>Geotekniikan harjoituskoe</h1>
+  <p class="meta">Harjoitus kurssiin <b>Geotekniikan ja pohjarakentamisen perusteet</b>. Koealueet ja pisteet kuten kokeessa (opettajan ilmoitus luennolla): <b>23 pistettä, läpi 11 p, aikaa 100 min</b>. Kysymykset ovat opettajan koekysymyslistalta, ja vastaukset perustuvat vain kurssimateriaaliin. Mustiksen spessun sisältöä ei ole kerrottu; harjoituksessa se on siipikairaustehtävä kuten tuntiharjoituksessa. Laskutehtävien luvut arvotaan joka kerta uudelleen, joten kokeen voi tehdä monta kertaa. Tarkista jokainen osa omalla napillaan, ja ratkaisu aukeaa heti.</p>
+  </div>
+  <svg class="maskotti" viewBox="0 0 240 300" role="img" aria-label="Piirroshahmo: geoteknikko kypärässä ja huomioliivissä, kairatanko kädessä">
+  <!-- maakerrokset jalkojen alla -->
+  <rect x="10" y="262" width="220" height="14" fill="var(--hk)" opacity=".8"/>
+  <rect x="10" y="276" width="220" height="14" fill="var(--sa)" opacity=".7"/>
+  <rect x="10" y="290" width="220" height="8" fill="var(--sr)" opacity=".7"/>
+  <!-- puhekupla -->
+  <rect x="128" y="8" width="104" height="44" rx="12" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+  <path d="M146 52 l-8 14 l20 -14 z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M141 51 h18" stroke="var(--paper)" stroke-width="3"/>
+  <text x="180" y="27" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">Valmis</text>
+  <text x="180" y="43" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">kokeeseen?</text>
+  <!-- kairatanko -->
+  <rect x="44" y="96" width="7" height="170" rx="2" fill="#9aa0a6" stroke="var(--ink)" stroke-width="1.5"/>
+  <rect x="30" y="92" width="35" height="8" rx="3" fill="#6b7177" stroke="var(--ink)" stroke-width="1.5"/>
+  <path d="M44 266 l3.5 10 l3.5 -10 z" fill="#6b7177" stroke="var(--ink)" stroke-width="1.2"/>
+  <!-- jalat ja saappaat -->
+  <rect x="92" y="208" width="20" height="50" rx="6" fill="#3d4a5c" stroke="var(--ink)" stroke-width="2"/>
+  <rect x="122" y="208" width="20" height="50" rx="6" fill="#3d4a5c" stroke="var(--ink)" stroke-width="2"/>
+  <path d="M86 256 h30 v8 h-34 q0 -8 4 -8 z" fill="#2b2b2b" stroke="var(--ink)" stroke-width="2"/>
+  <path d="M120 256 h30 q4 0 4 8 h-34 z" fill="#2b2b2b" stroke="var(--ink)" stroke-width="2"/>
+  <!-- vartalo: sininen paita ja huomioliivi -->
+  <path d="M84 128 q33 -14 66 0 l4 86 h-74 z" fill="#4a6fa5" stroke="var(--ink)" stroke-width="2"/>
+  <path d="M92 126 q25 -9 50 0 l3 88 h-56 z" fill="#f2a900" stroke="var(--ink)" stroke-width="2"/>
+  <rect x="90" y="166" width="56" height="6" fill="#e9eef2" opacity=".95"/>
+  <rect x="90" y="188" width="56" height="6" fill="#e9eef2" opacity=".95"/>
+  <path d="M117 124 v90" stroke="var(--ink)" stroke-width="1.5" opacity=".6"/>
+  <!-- vasen käsi pitää kairatankoa -->
+  <path d="M86 134 q-26 10 -32 30" fill="none" stroke="#4a6fa5" stroke-width="14" stroke-linecap="round"/>
+  <path d="M86 134 q-26 10 -32 30" fill="none" stroke="var(--ink)" stroke-width="16" stroke-linecap="round" opacity="0"/>
+  <circle cx="50" cy="166" r="9" fill="#f0c7a0" stroke="var(--ink)" stroke-width="2"/>
+  <!-- oikea käsi nyrkki pystyssä -->
+  <path d="M150 134 q24 -6 30 -32" fill="none" stroke="#4a6fa5" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="182" cy="96" r="10" fill="#f0c7a0" stroke="var(--ink)" stroke-width="2"/>
+  <path d="M176 92 h12 M176 97 h12" stroke="var(--ink)" stroke-width="1.2" opacity=".6"/>
+  <!-- pää: pyöreät kasvot, kypärä -->
+  <rect x="110" y="106" width="14" height="14" fill="#f0c7a0" stroke="var(--ink)" stroke-width="2"/>
+  <circle cx="117" cy="88" r="24" fill="#f0c7a0" stroke="var(--ink)" stroke-width="2"/>
+  <circle cx="108" cy="88" r="2.8" fill="var(--ink)"/>
+  <circle cx="126" cy="88" r="2.8" fill="var(--ink)"/>
+  <path d="M107 98 q10 9 20 0" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="102" cy="96" r="3.5" fill="#e8998d" opacity=".6"/><circle cx="132" cy="96" r="3.5" fill="#e8998d" opacity=".6"/>
+  <path d="M90 78 q27 -34 54 0 z" fill="var(--soil)" stroke="var(--ink)" stroke-width="2"/>
+  <rect x="84" y="74" width="66" height="8" rx="4" fill="var(--soil)" stroke="var(--ink)" stroke-width="2"/>
+  <path d="M117 58 v16" stroke="var(--ink)" stroke-width="1.5" opacity=".5"/>
+</svg>
+  </div>
+  <div class="rakenne">
+    <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 2 p</span><span class="pill">Rakeisuuskäyrä 3 p</span><span class="pill">Tilavuus ja paino 2 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 4 p</span><span class="pill">Mustiksen spessu 3 p</span>
+  </div>
+  <p class="pieni">Kaavat: g = 9,81 m/s², γw ≈ 10 kN/m³, pohjaveden alla γ' = γsat − 10. Lukuarvoissa hyväksytään pieni pyöristysero. Harjoitus on opiskelijan tekemä, ei virallinen koe.</p>
+</header>
+<p class="vastuu" role="note"><b>Huom:</b> Tämä harjoitus on tehty tekoälyn avulla. Tekijä ei vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Tarkista aina kurssimateriaalista. Toivottavasti tästä on silti apua kokeeseen lukemisessa!<br><span class="versio"><b>Beta-versio 0.7.8</b> · päivitetty 27.11.2026 klo 14.22 · korjauksia saattaa vielä tulla</span></p>
+<main id="koe"></main>
+<section class="tulos" id="tulos" hidden></section>
+
+</div>
+
+<script>
+const KYS = [{"aihe": "Maaperän synty ja pohjavesi", "q": "Mikä on märkäraja?", "a": "Kapillaarivyöhykkeen yläreuna.", "s": "Pohjavesi nousee maassa kapillaarisesti pohjavedenpinnan yläpuolelle. Tämän kapillaarivyöhykkeen yläreunaa kutsutaan märkärajaksi, ja vyöhykkeen paksuus on maalajin kapillaarinen nousukorkeus.", "v": ["Ajattele vesivyöhykkeitä ylhäältä alas.", "Se liittyy kapillaarivyöhykkeeseen."]}, {"aihe": "Maaperän synty ja pohjavesi", "q": "Miten pitkittäiset ja poikittaiset harjut eroavat toisistaan?", "a": "Harjut ovat jäätikköjokien kerrostumia, ja niiden pituussuunta on yleensä sama kuin jäätikön liikesuunta (pitkittäisiä). Jäätikön kulkusuuntaan nähden poikittaisia ovat reunamoreenit, kuten Salpausselkä. Materiaalin maaperäkartassa mainitaan sekä pitkittäis- että poikittaisharjut, mutta poikittaisharjujen syntyä ei selitetä erikseen.", "s": "Harju muodostui jäätikköjoen suuosaan tai suvantokohtiin, kun virtausnopeus aleni ja karkearakeinen aines kasautui joen pohjaan. Harjut sijoittuvat usein jäätikköjoen kulkusuuntaa noudattaviksi harjuketjuiksi. Reunamoreenit ovat mannerjäätikön reunan eteen jään työntämiä moreenivalleja, jotka sijoittuvat poikittain jäätikön kulkusuuntaan nähden. Salpausselkä on syntytavaltaan reunamoreeni: se muodostui pitkäksi aikaa paikalleen pysähtyneelle jäätikön reunalle, ja aallokko ja sulamisvedet huuhtoivat sen moreeniaineksen suurelta osin soraksi ja hiekaksi.", "v": ["Mihin suuntaan jäätikkö liikkui ja mihin suuntaan jäätikköjoet virtasivat?", "Salpausselkä on esimerkki toisesta tyypistä."]}, {"aihe": "Maaluokitus", "q": "Mikä on eloperäinen maalajiryhmä ja mitkä maat ovat eloperäisiä?", "a": "Ryhmä E: maalaji, joka koostuu pääosin eloperäisestä aineksesta tai jossa on yli 20 paino-% eloperäistä ainesta. Maalajit ovat turve (Tv) ja lieju (Lj).", "s": "Eloperäisiin maalajeihin kuuluvat läheisesti myös muta ja humusmaa (ruokamulta), jossa on eloperäistä ainesta yli 20 %. Turve on muodostunut maatumisasteeltaan vaihtelevista kasvien jätteistä.", "v": ["Muistisäännön E–H–K–M ensimmäinen kirjain.", "Raja on 20 paino-% palavaa ainesta."]}, {"aihe": "Maaluokitus", "q": "Mitä tarkoittaa lyhenne hkSrMr? Miksi hk on kirjoitettu pienellä?", "a": "Hiekkainen soramoreeni. hk on pienellä, koska se on lisänimi ('hiekkainen'). Isolla kirjaimella alkava SrMr on päämaalaji.", "s": "Lisänimi hk annetaan soramoreenille, jonka hiekkapitoisuus on yli 30 %. Materiaalissa lisänimet merkitään pienillä kirjaimilla (esim. lj, sa, si, hk, sr) ja päämaalajit isolla alkukirjaimella (esim. Sa, Si, SrMr).", "v": ["Pilko osiin: hk + Sr + Mr.", "Isot kirjaimet = päänimi, pienet = -inen-sana."]}, {"aihe": "Maaluokitus", "q": "Mikä on raekokosuhde d60/d10 ja mitä sillä määritetään?", "a": "Raekokosuhde Cu = d60/d10 eli läpäisyprosentteja 60 ja 10 vastaavien raeläpimittojen suhde. Sitä käytetään maaluokituksen ohella mm. maan tiivistysominaisuuksien arvostelussa, ja sen perusteella silttejä ja karkearakeisia maalajeja voidaan kuvata lisänimillä: Cu < 5 tasarakeinen, 5–15 sekarakeinen, > 15 suhteistunut.", "s": "d60 ja d10 luetaan rakeisuuskäyrältä läpäisyprosenttien 60 ja 10 kohdalta. Sekarakeisessa maassa pienet rakeet sijoittuvat suurten rakeiden välisiin huokosiin, jolloin huokosluku pienenee ja kuivatilavuuspaino kasvaa. Esim. d60 = 0,8 mm ja d10 = 0,006 mm → Cu = 130.", "v": ["Lue käyrältä raekoot läpäisyillä 60 % ja 10 %.", "Jaa isompi pienemmällä."]}, {"aihe": "Rakeisuus ja seulonta", "q": "Miten hydrometrikoe tehdään?", "a": "Hydrometri- eli areometrikokeessa 50 g savea tai 100 g moreenia sekoitetaan litraan vettä dispergointiaineen (natriumpyrofosfaatin) kanssa. Lietteen tiheys mitataan areometrillä 1 min, 6 min, 1 h, 5 h ja 24 h kohdalla, ja samalla mitataan lämpötila. Raekoot ja läpäisy-% saadaan käyrästöiltä.", "s": "Koe perustuu Stokesin lakiin: rakeen laskeutumisnopeus nesteessä on suoraan verrannollinen rakeen läpimitan neliöön. Hienorakeisten maalajien rakeisuus määritetään miltei poikkeuksetta areometrikokeella (kuivaseulonta sopii vain karkearakeisille). Humuspitoisuudesta riippuen läpäisyprosenteissa voi olla virhettä jopa ±5 %.", "v": ["Mikä luonnonlaki kertoo laskeutumisnopeuden?", "Mitä mitataan areometrillä ja milloin?"]}, {"aihe": "Rakeisuus ja seulonta", "q": "Miten kuivaseulonta eroaa märkäseulonnasta?", "a": "Kuivaseulonnassa kuivattu näyte (0,5–1 kg) ravistellaan seulasarjan läpi (noin 10 min) ja seulakohtaiset massat punnitaan. Se sopii vain karkearakeisille maille, joissa hienoainesta on alle 10 %. Märkä- eli pesuseulonnassa hienoaines pestään ensin vedellä ja pesuaineella hienoimman seulan läpi, kunnes vesi on kirkasta. Jäännös kuivataan ja punnitaan, ja pesutappio vastaa hienoimman seulan läpäisyä. Sen jälkeen jäännös kuivaseulotaan.", "s": "Pesuseulontaa käytetään, kun liian runsas hienoaines vaikeuttaa kuivaseulontaa (seulat tukkeutuvat). Tulos on hienoaineksen osalta tarkempi, mutta pesuseulonnassakin hienoainespitoisuuden tulisi olla alle 10 %.", "v": ["Mitä tehdään, kun hienoaines vaikeuttaa kuivaseulontaa?", "Mitä tarkoittaa pesutappio?"]}, {"aihe": "Maalajien ominaisuudet ja laboratoriokokeet", "q": "Mikä on humuspitoisuus ja miten se määritetään? Kerro useampi menetelmä.", "a": "Humuspitoisuus on eloperäisen aineksen osuus kuivan maan massasta (%). Menetelmiä ovat kuivapoltto (hehkutus noin 800 °C:ssa, hehkutushäviö), märkäpoltto (vetyperoksidi), natriumhydroksidimenetelmä (betonin kiviaines, likimääräinen) ja kolorimetrimenetelmä.", "s": "Hehkutushäviö lasketaan kaavalla Hh = (mk − mh)/(mk − mt) · 100 %. Saven ja hienon siltin hehkutuksessa häviää myös kidevettä, joten se vähennetään hehkutushäviöstä. Märkäpoltossa vetyperoksidi estää kideveden poistumisen. Humus lisää vesipitoisuutta ja kokoonpuristuvuutta, ja märkänä se yleensä heikentää maan lujuutta.", "v": ["Yksi menetelmä polttaa kuivana, toinen märkänä.", "Kemikaalit: vetyperoksidi ja natriumhydroksidi."]}, {"aihe": "Maalajien ominaisuudet ja laboratoriokokeet", "q": "Mitkä ovat kiviaineksen raemuodot?", "a": "Muodon mukaan vakioläpimittaiset (sora, hiekka), litteät tai suomumaiset (siltti, savi) ja neulamaiset (harvinaisia). Särmikkyyden mukaan särmikäs, pyöreäsärmäinen ja pyöristynyt.", "s": "Särmikkäät rakeet ovat tyypillisiä muodostumispaikkansa lähellä sijaitsevissa moreenikerrostumissa. Harju- ja rantamuodostumissa rakeet ovat pyöristyneitä, koska vesi on kuljettanut ja hionut niitä. Särmikkyydellä on merkitystä erityisesti maan lujuusominaisuuksissa ja leikkauslujuudessa.", "v": ["Pallomainen, litteä, neulamainen.", "Kulmikas vai pyöreä?"]}, {"aihe": "Maalajien ominaisuudet ja laboratoriokokeet", "q": "Mitä tarkoittaa Proctor-koe ja miten se tehdään? Mikä on optimivesipitoisuus?", "a": "Proctor-kokeessa maata tiivistetään standardoidusti sylinteriin (parannettu koe: 944 cm³, 4,54 kg:n vasara, 457 mm:n pudotus, 5 kerrosta à 25 iskua). Koe toistetaan 4–6 eri vesipitoisuudella, ja kuivatilavuuspainot piirretään vesipitoisuuden funktiona. Optimivesipitoisuus wopt on käyrän huipun vesipitoisuus, jossa maa tiivistyy parhaiten ja saavuttaa maksimikuivatilavuuspainon γdmax.", "s": "Vesi toimii sullonnassa eräänlaisena voiteluaineena: veden määrästä riippuen rakeet sulloutuvat eri tiiviyteen, vaikka tiivistystyömäärä on sama. Maakerrosten tiivistystyön tulisi tapahtua optimivesipitoisuudessa. γdmax:ia käytetään tiivistystuloksen arvosteluun tiiviysasteella D = γd/γdmax · 100 %.", "v": ["Mitä tapahtuu, kun vettä on liian vähän tai liikaa?", "Käyrän huippukohta."]}, {"aihe": "Maalajien ominaisuudet ja laboratoriokokeet", "q": "Mitä tarkoittaa pyknometrikoe? Mitä muita tapoja on määrittää kiviaineksen kiintotiheys?", "a": "Pyknometrikoetta ei käsitellä kurssimateriaalissa. Materiaalin mukainen tapa on vedessäpunnitus karkearakeiselle kiviainekselle: ρs = Gd/(Gd − G') · ρwT. Muuten kivennäismaiden kiintotiheytenä käytetään arvoa 2,65 t/m³.", "s": "Kiintotiheys ρs on kuivan ja huokosettoman maa-aineksen tiheys, kivennäismailla 2,6–2,8 t/m³ ja eloperäisellä aineksella 1,25 t/m³. Vedessäpunnituksessa kuivattu näyte punnitaan ilmassa (Gd) ja veteen upotettuna (G').", "v": ["Punnitus ilmassa ja vedessä.", "Oletusarvo 2,65 t/m³."]}, {"aihe": "Maalajien ominaisuudet ja laboratoriokokeet", "q": "Mihin kalsiumkarbidimenetelmää käytetään ja mikä on sen periaate? Miten kiviaineksen vesipitoisuus määritetään laboratoriossa?", "a": "Kalsiumkarbidimenetelmällä (karbidometrimenetelmä) määritetään maan vesipitoisuus. Märkä näyte ja kalsiumkarbidi suljetaan painetta kestävään pulloon: CaC2 + 2 H2O → C2H2 + Ca(OH)2. Syntyvän asetyleenikaasun paine on verrannollinen veden määrään. Laboratoriossa näyte punnitaan, kuivataan lämpökaapissa 105 °C:ssa (kivennäismaa 2–4 h) ja punnitaan uudelleen. Vesipitoisuus on w = mw/md · 100 %.", "s": "Karbidometri antaa vesipitoisuuden märästä massasta (wm), ja se muunnetaan kaavalla w = 100·wm/(100 − wm). Eloperäiset maat kuivataan noin 60 °C:ssa noin puoli vuorokautta.", "v": ["Kaasu, paine, suljettu pullo.", "Laboratoriossa: punnitus, uuni, punnitus."]}, {"aihe": "Maalajien ominaisuudet ja laboratoriokokeet", "q": "Mitä suuruusluokkaa on maan tilavuuspaino kuivana?", "a": "Kuivatilavuuspaino on noin 14–23 kN/m³ maalajin ja tiiviyden mukaan. Taulukon mukaan esimerkiksi hiekka 16–18 ja moreeni 19–21 kN/m³ keskitiiviinä, löyhä hiekkainen siltti alle 14. Proctorin maksimiarvot γdmax ovat 14–17 (savi) … 20–23 kN/m³ (moreeni).", "s": "Kuivatilavuuspaino ilmentää selkeimmin maan tiiviyttä. Kirjan taulukon mukaan löyhän hiekkaisen siltin kuivatilavuuspaino on ≤ 14 ja tiiviin moreenin > 21 kN/m³; Proctor-kokeen maksimikuivatilavuuspainot ovat 14–23 kN/m³. Tuntien esimerkkilaskussa saatiin 20,9 kN/m³.", "v": ["Löyhä, keskitiivis, tiivis.", "Tiiviimpi maa painaa enemmän."]}, {"aihe": "Pohjatutkimukset", "q": "Mitkä ovat häiriintyneen maanäytteen ottotavat? Mikä on esimerkiksi kannuotin?", "a": "Materiaalin mukaan häiriintyneitä näytteitä saadaan koekuopasta ja porakonekairauksen huuhteluveden mukana (karkearakeiset maat). Kannuotinta ja muita näytteenottimia ei käsitellä kurssimateriaalissa, joten ne pitää tarkistaa kurssikirjasta.", "s": "Koekuoppa on luotettavin keino tutkia pintakerroksia, ja siitä voi ottaa näytteitä. Porakonekairauksen huuhteluvesi tuo maa-ainesta ylös. Porakonekairoihin on kehitetty myös putkiottimia, joilla saadaan häiriintymättömiä näytteitä.", "v": ["Mistä kaivamalla saa näytettä?", "Mitä huuhteluvesi tuo mukanaan?"]}, {"aihe": "Pohjatutkimukset", "q": "Miten heijarikairaus tehdään? (Koekysymys koskee puristin-heijarikairausta.)", "a": "Kairaa lyödään vapaasti putoavalla 63,5 kg:n heijarilla 0,50 m:n korkeudelta (heijaripukissa 65 kg ja 0,60 m). Kärki on 45 mm:n 90° kartio ja tanko 32 mm. Lyöntien määrä kirjataan jokaisen 0,2 m:n tunkeuman jälkeen, ja tuloksista piirretään kairausvastuskuvaaja. Puristinvaihetta ei kuvata materiaalissa.", "s": "Heijarikaira tunkeutuu tiiviisiin kerroksiin vähän paremmin kuin painokaira. Tuloksista arvioidaan karkearakeisten ja moreenimaiden tiiviyttä, tukipaalujen pituutta ja kaivuluokkaa.", "v": ["Heijarin massa ja pudotuskorkeus.", "Mitä lasketaan 0,2 metriä kohti?"]}, {"aihe": "Pohjatutkimukset", "q": "Miten kallion pinta varmistetaan porakoneella?", "a": "Porataan samanaikaisesti tangolla ja suojaputkella oletettuun kalliopintaan asti. Kun kallio on tavoitettu, kairausta jatketaan tankoporalla niin syvälle, että kallion tavoittaminen todella varmistuu.", "s": "Pöytäkirjaan merkitään mm. kerrosrajat, routakerroksen paksuus, lävistettyjen lohkareiden paksuus ja sijainti, kallion sijainti, tunkeutumisnopeus kalliossa (s/m) ja rikkonaisuusvyöhykkeet.", "v": ["Tanko ja suojaputki.", "Miksi kallioon pitää porata vielä syvemmälle?"]}, {"aihe": "Tehokas raepaine σ̄", "q": "Mitä muuttujia tarvitaan pystysuoran tehokkaan raepaineen määrittämiseen?", "a": "Kunkin maakerroksen paksuus z [m], kunkin kerroksen tilavuuspaino γ [kN/m³] ja pohjavedenpinnan taso (pohjaveden alapuolella käytetään tehokasta tilavuuspainoa γ').", "s": "σ̄ = Σ zᵢ · γᵢ, eli kerrosten paksuuksien ja tilavuuspainojen tulot lasketaan yhteen tarkastelusyvyyteen asti ('summapeli'). Yksikkö on kN/m².", "v": ["Paljonko maa painaa neliömetrillä?", "Paksuus × tilavuuspaino."]}, {"aihe": "Painuma ja ödometri", "q": "Selosta painumalajit tai esimerkiksi mikä on konsolidaatiopainuma.", "a": "Konsolidaatiopainuma sk on painuma, joka syntyy, kun savikerros puristuu kokoon lisäkuorman alla. Se lasketaan kaavalla sk = z · Δε, jossa z on konsolidoituvan kerroksen paksuus ja Δε ödometrikäyrältä luettu muodonmuutoksen muutos. Muita painumalajeja ei käsitellä kurssimateriaalissa.", "s": "Ödometrikäyrän alkuosa on suora ('löysät pois' luonnontilaiseen σ̄:aan asti), ja sen jälkeen tulee konsolidaatiokäyrä. Tuntiesimerkki: 8 m savikerros, lisäkuorma 150 kN/m² (100 → 250), Δε = 29 % − 5 % = 24 %, sk = 8 m · 0,24 = 1,92 m.", "v": ["Mikä kerros painuu kuorman alla?", "sk = z · Δε."]}, {"aihe": "Painuma ja ödometri", "q": "Mitä ödometrilaitteella tehdään?", "a": "Maanäytettä kuormitetaan vivun avulla (10 × vipu: 1 kg punnus = 10 kg puristus) ja painuma mitataan eri kuormilla. Tuloksena saadaan ödometrikäyrä, jossa suhteellinen kokoonpuristuma ε [%] on jännityksen σ [kN/m²] funktiona. Käyrää käytetään painumien laskentaan.", "s": "Käyrän alkuosa on suora ('löysät pois' luonnontilaiseen σ̄:aan asti), ja sen jälkeen tulee konsolidaatiokäyrä.", "v": ["Kuorma ja painuma.", "Mikä käyrä saadaan?"]}, {"aihe": "Leikkauslujuus (Coulomb)", "q": "Mitkä muuttujat ovat Coulombin laissa?", "a": "τ = σ · tan φ + c, jossa τ (tau) on leikkauslujuus [kN/m²], σ (sigma) jännitys (laskuissa tehokas raepaine σ̄) [kN/m²], φ (fii) kitkakulma [°] ja c koheesio [kN/m²].", "s": "Kitkakulma saadaan taulukkoarvona, kun tunnetaan maalaji (esim. Hk, Sr tai Mr) ja esim. painokairausvastus. Savimaat ovat koheesiomaita; koheesio määritetään siipikairalla tai esim. kartiopudotuskokeella. Mitoitettaessa kitkamaana c = 0 ja koheesiomaana φ = 0°.", "v": ["Neljä kreikkalaista tai latinalaista kirjainta.", "Kitka-osa + koheesio-osa."]}];
+const $ = (s, r = document) => r.querySelector(s);
+const fi = (x, d = 1) => (Math.round(x * 10 ** d) / 10 ** d).toFixed(d).replace('.', ',');
+const YKSIKOT = ['', '%', '°', 'astetta', 'kn/m2', 'kn/m²', 'kn/m3', 'kn/m³', 'kpa', 'kg', 'g', 'l', 'm', 'mm', 'cm', 't/m3', 't/m³', 'kg/l', 'n/l', 'metriä', 'metria', 'metri', 'prosenttia', 'litraa', 'kiloa'];
+const luku = (s) => {   // "21,3" "21.3" "21,3 kg" "30kN/m²" → luku; "3O" "30,,0" "3 0" "abc" → NaN
+  const m = String(s ?? '').replace(/\u00a0/g, ' ').trim().match(/^([-+]?\d+(?:[.,]\d+)?)\s*(.*)$/);
+  if (!m) return NaN;
+  if (!YKSIKOT.includes(m[2].toLowerCase().replace(/\s+/g, ''))) return NaN;
+  return parseFloat(m[1].replace(',', '.'));
+};
+let siemen = Date.now() % 2147483647;
+const rnd = () => (siemen = siemen * 16807 % 2147483647) / 2147483647;
+const vali = (a, b, askel = 1) => a + Math.floor(rnd() * ((b - a) / askel + 1)) * askel;
+const sekoita = (a) => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const metreina = (t) => { const v = luku(t), u = String(t).toLowerCase(); return /\bcm\b|\dcm/.test(u) ? v / 100 : /\bmm\b|\dmm/.test(u) ? v / 1000 : v; };
+const vihje = (inp, teksti) => { if (inp && teksti && inp.classList.contains('bad-i')) viesti(inp, '💡 ' + teksti); };
+const lahella = (v, oikea, tol = 0.03, abs = 0) => isFinite(v) && Math.abs(v - oikea) <= Math.max(Math.abs(oikea) * tol, abs);
+const pisteet = {};
+function paivitaPisteet() {
+  const s = Object.values(pisteet).reduce((a, b) => a + b, 0);
+  const p = $('#pisteet'); p.textContent = `${fi(s, s % 1 ? 1 : 0)} / 23 p`;
+  p.className = 'pill num' + (s >= 11 ? ' ok' : '');
+  const valmiit = Object.keys(pisteet).length;
+  const t = $('#tulos');
+  if (valmiit >= 7) {
+    t.hidden = false; t.className = 'tulos ' + (s >= 11 ? 'lapi' : 'hyl');
+    // arvosana 0–5 (arvio: läpi 11 p, välit tasaisesti 23 p:iin; ei opettajan virallinen asteikko)
+    const RAJAT = [11, 14, 16, 18.5, 21], as = RAJAT.filter(r => s >= r).length;
+    const KOMMENTIT = [
+      ['Maaperä petti tällä kertaa', 'Ei hätää: perustukset rakennetaan uudelleen. Käy ratkaisut läpi ja paina "Tee uusi koe". Savikin konsolidoituu ajan kanssa, ja niin sinäkin. 💪'],
+      ['Läpi!', 'Kantavuus riittää, vähän reunalla mutta riittää. Pieni lisätiivistys (yksi kertauskierros) ja seisot tukevammalla pohjalla.'],
+      ['Hyvä!', 'Perustus pitää. Vielä pari kierrosta, niin tiiviysaste nousee yli vaatimuksen.'],
+      ['Hienoa!', 'Olet kuin keskitiivis hiekka: luotettava ja kantava. Kertaa heikoin tehtävä, niin nouset vielä pykälän.'],
+      ['Erinomaista!', 'Raepainekäyrä nousee suoraan kohti vitosta. Pieni painuma on vielä jäljellä, joten yksi kierros lisää.'],
+      ['Täydellistä! 🏆', 'Olet kallio: et painu etkä häiriinny. Mustiskin nostaisi kypärää. Muista nukkua kunnolla ennen koetta.']];
+    const MAX = { o1: 6, o2: 3, o3: 2, o4: 2, o5: 3, o6: 4, o7: 3 };
+    const heikoin = Object.keys(MAX).filter(k => k in pisteet).sort((x, y) => pisteet[x] / MAX[x] - pisteet[y] / MAX[y])[0];
+    const heikNimi = heikoin && pisteet[heikoin] < MAX[heikoin] ? (document.querySelector('#' + heikoin + ' h2')?.textContent || '').replace(/^\d+\.\s*/, '') : '';
+    t.innerHTML = `<div class="pieni">TULOS</div><div class="arvosana"><div><div class="iso num">${fi(s, s % 1 ? 1 : 0)} / 23</div><div class="pieni">pistettä</div></div><div class="as-luku as${as}"><div class="iso num">${as}</div><div class="pieni">arvosana (arvio)</div></div></div>
+      <div class="as-kommentti"><b>${KOMMENTIT[as][0]}</b> ${KOMMENTIT[as][1]}</div>
+      ${heikNimi ? `<div>Kertaa seuraavaksi: <b>${heikNimi}</b> (${fi(pisteet[heikoin], pisteet[heikoin] % 1 ? 1 : 0)} / ${MAX[heikoin]} p).</div>` : ''}
+      <div class="pieni">Asteikko on arvio, ei opettajan virallinen: hylätty alle 11 p · 1 = 11 p · 2 = 14 p · 3 = 16 p · 4 = 18,5 p · 5 = 21 p.</div>
+      <div><button id="uusi2" class="main">Tee uusi koe</button></div>`;
+    $('#uusi2').onclick = uusiKoe;
+  } else t.hidden = true;
+}
+function viesti(inp, teksti) {
+  let v = inp.parentElement.querySelector('.syotevirhe');
+  if (!teksti) { if (v) v.remove(); return; }
+  if (!v) { v = document.createElement('span'); v.className = 'syotevirhe'; inp.insertAdjacentElement('afterend', v); }
+  v.textContent = teksti;
+}
+function merkitse(inp, ok) {
+  inp.classList.remove('ok-i', 'bad-i'); inp.classList.add(ok ? 'ok-i' : 'bad-i');
+  if (inp.tagName === 'INPUT' && inp.inputMode === 'decimal' && inp.id !== 'd10') {
+    const t = inp.value.trim();
+    viesti(inp, !t ? 'Anna vastaus.' : isNaN(luku(t)) ? 'Kirjoita luku, esim. 21,3 (yksikön saa lisätä perään).' : '');
+  }
+}
+
+/* ---------- Merkit ja vinkit (Mikko: "laita erikoisiin merkkeihin mitä ne tarkoittaa", "anna vinkkejä") ---------- */
+const MERKIT = {
+  lap: ['läpäisy %', 'kuinka monta prosenttia näytteestä menee seulan läpi'],
+  d50: ['d₅₀', 'raekoko, jota pienempää on puolet näytteestä (läpäisy 50 %)'],
+  d60: ['d₆₀ ja d₁₀', 'raekoot, joita pienempää on 60 % ja 10 % näytteestä'],
+  cu: ['Cu', 'd₆₀ jaettuna d₁₀:llä. Alle 5 = tasarakeinen, 5–15 = sekarakeinen, yli 15 = suhteistunut'],
+  f063: ['0,063 mm läpäisy', 'hienoaineksen (siltti + savi) osuus prosentteina'],
+  mr: ['Mr', 'moreeni = lajittumaton maa, jossa on sekä hienoainesta että soraa vähintään 5 %'],
+  lyh: ['Sa Si Hk Sr', 'savi, siltti, hiekka, sora. Isolla = päämaalaji, pienellä edessä = lisänimi (hk = hiekkainen)'],
+  V: ['V', 'näytteen tilavuus (litraa)'],
+  m: ['m', 'märän näytteen massa (kg)'],
+  md: ['md', 'kuivamassa = massa ilman vettä (kg)'],
+  mw: ['mw', 'veden massa = m − md (kg)'],
+  w: ['w', 'vesipitoisuus = vettä prosentteina kuivamassasta. Laskussa desimaalina: 6,5 % = 0,065'],
+  rs: ['ρs', 'kiintotiheys = kiven tiheys ilman huokosia (t/m³ = kg/l)'],
+  rw: ['ρw', 'veden tiheys = 1,0'],
+  Vs: ['Vs ja Vw', 'kiven ja veden tilavuus (litraa)'],
+  n: ['n', 'huokoisuus = kuinka monta prosenttia tilavuudesta on vettä ja ilmaa'],
+  gd: ['γd', 'kuivatilavuuspaino = kuivan maan paino kuutiota kohti (kN/m³). Lausutaan "gamma d"'],
+  g: ['γ', 'tilavuuspaino = maan paino kuutiota kohti (kN/m³). Lausutaan "gamma"'],
+  gsat: ['γsat', 'märän (vedellä kyllästetyn) maan tilavuuspaino, käytetään pohjaveden alla'],
+  gp: ["γ'", 'pohjaveden alla käytettävä tilavuuspaino = γsat − 10 (veden noste vähennetty)'],
+  gw: ['γw', 'veden tilavuuspaino, noin 10 kN/m³'],
+  sig: ['σ̄', '"sigma viiva" = paljonko yläpuolinen maa painaa neliömetriä kohti (kN/m²)'],
+  pvp: ['PVP ▽', 'pohjavedenpinta'],
+  z: ['z', 'kerroksen paksuus tai syvyys (m)'],
+  s: ['σ', 'kuormitus eli jännitys (kN/m²). σ₀ = alussa, σ₁ = lopussa'],
+  eps: ['ε', 'kuinka monta prosenttia savi puristuu kokoon, luetaan ödometrikäyrältä. Lausutaan "epsilon"'],
+  de: ['Δε', 'kokoonpuristuman muutos = ε lopussa − ε alussa'],
+  sk: ['sk', 'painuma metreinä (konsolidaatiopainuma)'],
+  tau: ['τ', 'leikkauslujuus (kN/m²). Lausutaan "tau"'],
+  phi: ['φ', 'kitkakulma asteina (ominaisarvo kurssin taulukosta maalajin ja tiiviyden mukaan). Lausutaan "fii"'],
+  phid: ['φD', 'kitkakulman suunnitteluarvo = tan⁻¹(tan φ ÷ γφ)'],
+  gphi: ['γφ ja γc', 'osavarmuuskertoimet. γφ: pysyvä rakenne 1,2, työnaikainen 1,1. γc: pysyvä 1,5, työnaikainen 1,3'],
+  c: ['c', 'koheesio (kN/m²). Hiekalla, soralla ja moreenilla c = 0'],
+  wopt: ['wopt', 'optimivesipitoisuus = vesipitoisuus, jolla maa tiivistyy parhaiten (Proctor-käyrän huippu)'],
+  gdmax: ['γdmax', 'suurin kuivatilavuuspaino Proctor-kokeessa (käyrän huippu)'],
+  D: ['D', 'tiiviysaste = kentän γd / γdmax · 100 %'],
+  su: ['su', 'siipikairalla mitattu leikkauslujuus savessa (kN/m²). Laskenta-arvo cD = su / γc'],
+  pk: ['pk/0,2 m', 'painokairaus: puolikierrokset 0,2 metrillä (oikea puoli). Vasen puoli = painot kiloina. L = lyönti'],
+  g981: ['g', '9,81. Massa (kg) · 9,81 = paino. Kätevä sääntö: kg · 9,81 / litraa = kN/m³'],
+};
+/* Näin lasketaan: lyhyet vaiheet + kurssimateriaalin oma esimerkki (Mikko 27.11.2026: "keep it simple") */
+const NAIN = {
+  rak: ['Rakeisuus', `<ol><li><b>Kokonaismassa</b> = kaikkien seulojen ja pohjan massat yhteenlaskettuna.</li><li><b>Jäi %</b> jokaiselle seulalle = seulalle jäänyt massa ÷ kokonaismassa · 100.</li><li><b>Läpäisy %</b> = kuinka paljon meni seulan läpi. Aloita alhaalta: <b>0,063 mm:n läpäisy = pohjalle jäänyt %</b>.</li><li>Mene ylöspäin: <b>läpäisy = alemman seulan läpäisy + alemmalle seulalle jäänyt %</b>.</li><li>Piirrä pisteet (raekoko vaakaan logaritmisena, läpäisy pystyyn) ja yhdistä.</li><li>Katso käyrältä, missä raekoossa läpäisy on 10, 50 ja 60 % → d₁₀, d₅₀, d₆₀.</li></ol>
+    <p><b>Kurssin esimerkki laskettuna</b> (kokonaismassa 1000 g):</p>
+    <div class="tw"><table><tr><th>Seula</th><th>Jäi g</th><th>Jäi %</th><th>Läpäisy %</th><th>Miten</th></tr>
+    <tr><td>2 mm</td><td>0</td><td>0</td><td><b>100</b></td><td>84 + 16</td></tr>
+    <tr><td>1 mm</td><td>160</td><td>16</td><td><b>84</b></td><td>70 + 14</td></tr>
+    <tr><td>0,5 mm</td><td>140</td><td>14</td><td><b>70</b></td><td>51 + 19</td></tr>
+    <tr><td>0,25 mm</td><td>190</td><td>19</td><td><b>51</b></td><td>28 + 23</td></tr>
+    <tr><td>0,125 mm</td><td>230</td><td>23</td><td><b>28</b></td><td>7 + 21</td></tr>
+    <tr><td>0,063 mm</td><td>210</td><td>21</td><td><b>7</b></td><td>= pohjan osuus</td></tr>
+    <tr><td>pohja</td><td>70</td><td>7</td><td></td><td></td></tr></table></div>
+    <p>Esim. 190 g ÷ 1000 g · 100 = 19 %. Lue taulukkoa alhaalta ylöspäin: läpäisy = alemman rivin läpäisy + alemman rivin "jäi %".</p>`],
+  nimi: ['Nimeäminen', `<ol><li><b>Savi?</b> Katso käyrältä läpäisy 0,002 mm:n kohdalla: <b>30 % tai yli</b> → savi (Sa).</li><li><b>Moreeni?</b> Läpäisy 0,063 mm:n kohdalla ≥ 5 % <b>ja</b> 2 mm:n kohdalla ≤ 95 % → moreeni (Mr).</li><li><b>Päänimi d₅₀:stä</b> (käyrän 50 %:n kohta): alle 0,063 mm siltti, 0,063–2 mm hiekka, 2–60 mm sora. Moreenille Mr perään.</li></ol>
+    <p><b>Kurssin esimerkki:</b> käyrä A: 0,002 mm:llä 32 % → Sa · käyrä C: 0,063 mm:llä 26 % ja 2 mm:llä 62 % → moreeni, d₅₀ hiekan alueella → HkMr.</p>`],
+  til: ['Tilavuus- ja painolasku', `<ol><li><b>I</b> md = m ÷ (1 + w) (w desimaalina).</li><li><b>II</b> mw = m − md.</li><li><b>III</b> Vs = md ÷ ρs, Vw = mw ÷ 1, Vilma = V − Vs − Vw.</li><li><b>IV</b> Vh = Vw + Vilma, n = Vh ÷ V · 100 %.</li><li><b>V</b> γd = md · 9,81 ÷ V.</li></ol>
+    <p><b>Kurssin esimerkki:</b> V = 10 l, m = 22,7 kg, w = 6,5 %, ρs = 2,68 → md = 21,3 kg · mw = 1,4 kg · Vs = 7,9 l · Vw = 1,4 l · Vilma = 0,7 l · Vh = 2,1 l · n = 21 % · γd = 20,9 kN/m³.</p>`],
+  sig: ['Sigma viiva', `<ol><li>Mene ylhäältä alas kerros kerrallaan.</li><li>Jokaisesta kerroksesta: <b>paksuus z (m) × tilavuuspaino γ (kN/m³)</b>.</li><li>Pohjaveden alla käytä tehokasta tilavuuspainoa: jos γ′ on annettu, käytä sitä; jos γsat on annettu, käytä <b>γsat − 10</b>.</li><li><b>Laske yhteen</b> ja kirjoita σ̄ jokaisen kerroksen alapinnan kohdalle. Piirrä sigmaviiva: suora viiva pisteestä toiseen.</li></ol>
+    <p><b>Kurssin esimerkki:</b> A 2 m · 21 = <b>42</b> (PV A:n alapinnassa) · B 3 m · 11 → 42 + 33 = <b>75</b> · C 2,5 m · 10 → 75 + 25 = <b>100 kN/m²</b>.</p>`],
+  pai: ['Painuma', `<ol><li>Alkujännitys σ₀ = kerroksen tehokas raepaine σ̄. Loppujännitys <b>σ₁ = σ₀ + lisäkuorma Δσ</b>.</li><li>Lue ödometrikäyrältä <b>ε(σ₀)</b> ja <b>ε(σ₁)</b>.</li><li><b>Δε = ε(σ₁) − ε(σ₀)</b>, desimaaliksi (24 % = 0,24).</li><li><b>sk = z · Δε</b> (z = savikerroksen paksuus).</li></ol>
+    <p><b>Kurssin esimerkki:</b> 8 m savi, lisäkuorma 150 kN/m², σ₀ = 100 → σ₁ = 250 kN/m², ε 5 % → 29 % → Δε = 0,24 → sk = 8 · 0,24 = <b>1,92 m</b>.</p>`],
+  cou: ['Leikkauslujuus', `<ol><li>Laske ensin σ̄ samalla tavalla kuin sigma viivassa.</li><li>Katso φ kurssin taulukosta (maalaji + tiiviys).</li><li>Suunnitteluarvo: <b>φD = tan⁻¹(tan φ ÷ γφ)</b> (pysyvä rakenne γφ = 1,2).</li><li><b>τ = σ̄ · tan φD + c</b>. Kitkamaassa c = 0, savessa φ = 0 (silloin τ = c ÷ γc).</li></ol>
+    <p><b>Kurssin esimerkki:</b> keskitiivis hiekka → φ = 35°, pysyvä rakenne → φD = tan⁻¹(tan 35° ÷ 1,2) ≈ 30,3°. σ̄ = 42 kN/m² → τ = 42 · tan 30,3° ≈ <b>24,5 kN/m²</b>.</p>`],
+  spe: ['Pohjatutkimustehtävä', `<ol><li><b>Maalaji:</b> savi on koheesiomaa (φ = 0). Hiekalle d₁₀ ≤ 0,06 mm → hienohiekka (hHk), muuten hiekka (Hk).</li><li><b>Tiiviys</b> painokairauksesta (pk/0,2 m) taulukon rajoilla → L / K / T, ja samalta riviltä <b>φ</b>.</li><li><b>Koheesio</b> siipikairasta: cD = su ÷ γc (pysyvä 1,5).</li><li><b>σ̄</b> kyseiseen syvyyteen kuten sigma viivassa.</li><li><b>τ:</b> savessa τ = cD · hiekassa φD = tan⁻¹(tan φ ÷ γφ) ja τ = σ̄ · tan φD.</li></ol>
+    <p><b>Kurssin esimerkit:</b> keskitiivis hiekka (45 pk/0,2 m) → φ = 35°, φD = tan⁻¹(tan 35° ÷ 1,2) ≈ 30,3°, σ̄ = 42 → τ ≈ 24,5 kN/m² · siipikaira 16 kN/m² → cD = 16 ÷ 1,5 ≈ 10,7 kN/m².</p>`],
+  pro: ['Proctor ja tiiviysaste', `<ol><li>Proctor-käyrän <b>huippu</b>: suurin γd = <b>γdmax</b>, sen vesipitoisuus = <b>wopt</b>.</li><li>Kenttänäyte: <b>γ = m · 9,81 ÷ V</b>, sitten <b>γd = γ ÷ (1 + w)</b>.</li><li><b>D = γd ÷ γdmax · 100 %</b>. Vertaa vaatimukseen.</li></ol>`],
+};
+const nain = (k) => `<details class="nain"><summary>📘 Näin lasketaan askel askeleelta</summary>${NAIN[k][1]}</details>`;
+const merkit = (keys, auki = true) => `<details class="merkit" ${auki ? 'open' : ''}><summary>Mitä merkit tarkoittavat?</summary><dl>${keys.map(k => `<dt>${MERKIT[k][0]}</dt><dd>${MERKIT[k][1]}</dd>`).join('')}</dl></details>`;
+const vinkit = (id, arr) => `<div class="vinkit" data-vinkit="${id}"><button data-vbtn="${id}">Anna vinkki (1/${arr.length})</button>${arr.map((t, i) => `<div class="vinkki" hidden data-v="${id}-${i}"><b>Vinkki ${i + 1}:</b> ${t}</div>`).join('')}</div>`;
+function kytkeVinkit(root) {
+  root.querySelectorAll('[data-vbtn]').forEach(b => { let n = 0; const id = b.dataset.vbtn, kaikki = root.querySelectorAll(`[data-v^="${id}-"]`);
+    b.onclick = () => { if (n < kaikki.length) kaikki[n++].hidden = false; b.textContent = n < kaikki.length ? `Seuraava vinkki (${n + 1}/${kaikki.length})` : 'Kaikki vinkit näytetty'; b.disabled = n >= kaikki.length; }; });
+}
+
+/* ---------- Maalajin nimeäminen (kurssin säännöt) ---------- */
+const NIMET = { Si: 'siltti', Hk: 'hiekka', Sr: 'sora' };
+const LISA = { si: 'silttinen', hk: 'hiekkainen', sr: 'sorainen' };
+function nimea(f063, p2, d50) {           // f063 = 0,063 mm läpäisy %, p2 = 2 mm läpäisy %
+  const sora = 100 - p2, hiekka = p2 - f063, hieno = f063;
+  const moreeni = f063 >= 5 && p2 <= 95;
+  const paa = d50 < 0.063 ? 'Si' : d50 < 2 ? 'Hk' : 'Sr';
+  const osat = [['si', hieno], ['hk', hiekka], ['sr', sora]].filter(([k]) => k !== paa.toLowerCase());
+  const ehd = osat.filter(([, v]) => moreeni ? v > 30 : v >= 30 && v <= 50);
+  const lisa = ehd.length ? ehd[0][0] : '';  // järjestys si, hk, sr = hienorakeisin ensin
+  const lyh = lisa + paa + (moreeni ? 'Mr' : '');
+  const pitka = (lisa ? LISA[lisa] + ' ' : '') + NIMET[paa] + (moreeni ? 'moreeni' : '');
+  return { lyh, pitka, moreeni, paa, sora, hiekka, hieno };
+}
+
+/* Näin luet kuvasta maalajin (Mikko 27.11.2026: "osaa opastaa miten kuvaa tulkitaan, mikä maalaji se on") */
+function tulkinta(f063, p2, d50) {
+  if (!isFinite(f063) || !isFinite(p2) || !d50) return '';
+  const n = nimea(f063, p2, d50);
+  const alue = d50 < 0.063 ? 'Si (siltti)' : d50 < 2 ? 'Hk (hiekka)' : 'Sr (sora)';
+  return `<details class="nain" open><summary>🔍 Näin luet kuvasta maalajin</summary><ol>
+    <li><b>Päämaalaji:</b> katso, minkä värisen alueen kohdalle d₅₀-piste osuu. d₅₀ ≈ ${typeof dTxt === "function" ? dTxt(d50) : fi(d50, 2)} mm osuu alueelle <b>${alue}</b>.</li>
+    <li><b>Hienoaines ja sora:</b> hienoaines = läpäisy 0,063 mm:n kohdalla = <b>${fi(f063)} %</b>. Sora = 100 − läpäisy 2 mm:n kohdalla = 100 − ${fi(p2)} = <b>${fi(n.sora)} %</b>. Hiekka = ${fi(p2)} − ${fi(f063)} = <b>${fi(n.hiekka)} %</b>.</li>
+    <li><b>Moreeni?</b> Kyllä, jos sekä hienoainesta että soraa on vähintään 5 %. Tässä ${fi(f063)} % ja ${fi(n.sora)} % → <b>${n.moreeni ? 'moreeni' : 'ei moreeni'}</b>.</li>
+    <li><b>Lisänimi:</b> ${n.moreeni ? 'moreeni saa lisänimen, jos jotain muuta lajitetta on yli 30 %' : 'lajittunut maa saa lisänimen, jos toista lajitetta on 30–50 %'}. ${n.lyh !== n.paa + (n.moreeni ? 'Mr' : '') ? 'Tässä lisänimi tulee, joten nimi on' : 'Tässä lisänimeä ei tule, joten nimi on'} <b>${n.lyh} = ${n.pitka}</b>.</li>
+  </ol></details>`;
+}
+
+/* ---------- Tehtävät kurssin muodossa (Mikko 27.11.2026: "samanlaisia kuin muistiinpanoissa") ----------
+   Lähteet: OM = opettajan muistiinpanot 2025, T1 = tehtävät rakeisuus ja pohjatutkimus, T2 = leikkauslujuus/sigmaviiva/ödometri. */
+const SEULAT = [16, 8, 4, 2, 1, 0.5, 0.25, 0.125, 0.063];             // koeavustaja käyttää tätä
+const SEULAT_K = [32, 16, 8, 4, 2, 1, 0.5, 0.25, 0.125, 0.063];      // T1: lomakkeen seulat
+/* Rakeisuuskäyrä pehmeänä: monotoninen kuutiospline (Fritsch–Carlson) logaritmisella raekokoakselilla.
+   Käyrä kulkee jokaisen mittapisteen kautta, ei heilahda yli eikä ali, ja d-arvot luetaan samalta käyrältä kuin piirretään. */
+const kayra = (seulat, lap) => {
+  const P = seulat.map((d, i) => [Math.log10(d), lap[i]]).filter(([X, Y]) => isFinite(X) && isFinite(Y)).sort((a, b) => a[0] - b[0]);
+  const n = P.length, X = P.map(p => p[0]), Y = P.map(p => p[1]), h = [], dl = [], m = new Array(n).fill(0);
+  for (let i = 0; i < n - 1; i++) { h[i] = X[i + 1] - X[i]; dl[i] = h[i] ? (Y[i + 1] - Y[i]) / h[i] : 0; }
+  if (n > 1) { m[0] = dl[0]; m[n - 1] = dl[n - 2]; }
+  // tasanteen reunalla yksipuolinen kulmakerroin: käyrä tulee tasanteelle kulmassa kuten käsin piirretty (ei mutkaa ennen sitä)
+  for (let i = 1; i < n - 1; i++) m[i] = dl[i - 1] === 0 ? dl[i] : dl[i] === 0 ? dl[i - 1] : dl[i - 1] * dl[i] < 0 ? 0 : (dl[i - 1] + dl[i]) / 2;
+  for (let i = 0; i < n - 1; i++) {
+    if (dl[i] === 0) continue;   // tasainen jakso piirretään suorana
+    const a = m[i] / dl[i], b = m[i + 1] / dl[i], s = a * a + b * b;
+    if (s > 9) { const t = 3 / Math.sqrt(s); m[i] = t * a * dl[i]; m[i + 1] = t * b * dl[i]; }
+  }
+  const arvo = (i, x) => { if (dl[i] === 0) return Y[i]; const t = (x - X[i]) / h[i], t2 = t * t, t3 = t2 * t; return (2 * t3 - 3 * t2 + 1) * Y[i] + (t3 - 2 * t2 + t) * h[i] * m[i] + (-2 * t3 + 3 * t2) * Y[i + 1] + (t3 - t2) * h[i] * m[i + 1]; };
+  return { X, Y, m, h, n, dl, arvo };
+};
+// SVG-polku käyrästä: xf(d) ja yf(p) muuntavat ruutukoordinaateiksi
+const kayraPolku = (seulat, lap, xf, yf) => {
+  const K = kayra(seulat, lap); if (K.n < 2) return '';
+  const r = (v) => Math.round(v * 10) / 10, xs = (X) => xf(10 ** X);
+  let d = `M${r(xs(K.X[0]))},${r(yf(K.Y[0]))}`;
+  for (let i = 0; i < K.n - 1; i++) { const hh = K.h[i] / 3; if (K.dl[i] === 0) { d += ` L${r(xs(K.X[i + 1]))},${r(yf(K.Y[i + 1]))}`; continue; } d += ` C${r(xs(K.X[i] + hh))},${r(yf(K.Y[i] + K.m[i] * hh))} ${r(xs(K.X[i + 1] - hh))},${r(yf(K.Y[i + 1] - K.m[i + 1] * hh))} ${r(xs(K.X[i + 1]))},${r(yf(K.Y[i + 1]))}`; }
+  return d;
+};
+const dDes = (d) => d < 0.1 ? Math.max(1, -Math.floor(Math.log10(d))) : 1;   // d-arvon desimaalit: 0,6 / 3,5 / 0,07
+const dTxt = (d) => { const s = [...SEULAT_K, 0.002, 0.001].find(x => Math.abs(d / x - 1) < 1e-6); if (s) return String(s).replace('.', ','); const r = Number(d.toFixed(dDes(d))); return fi(r, dDes(r)); };   // 0,098 → 0,1 (ei 0,10)
+const dHeitto = (d) => 0.5 * 10 ** Math.floor(Math.log10(d) + 1e-9);   // lukutarkkuus logaritmipaperilla (Mikko 27.11.2026)
+const dOk = (v, d) => isFinite(v) && !!d && Math.abs(v - d) <= dHeitto(d) + 1e-9;
+const cuLuokka = (cu) => cu == null || !isFinite(cu) ? '-' : cu < 5 ? 'tasa' : cu <= 15 ? 'seka' : 'suht';
+const dPyor = (d) => Number(d.toFixed(dDes(d)));   // näkyvä pyöristetty d-arvo
+const cuNakyva = (R) => R.d10 ? dPyor(R.d60) / dPyor(R.d10) : null;   // Cu näkyvistä arvoista (esim. 0,4 / 0,1 = 4,0)
+const CU_NIMI = { tasa: 'tasarakeinen', seka: 'sekarakeinen', suht: 'suhteistunut', '-': 'ei voi laskea' };
+const seulavali = (lap, seulat, q) => {   // [pienempi seula, isompi seula], joiden välissä läpäisy ylittää q %
+  for (let i = 0; i < seulat.length - 1; i++) if (lap[i] >= q && lap[i + 1] < q) return [seulat[i + 1], seulat[i], lap[i + 1], lap[i]];
+  return null;
+};
+const pyorAlas = (d) => { const k = 10 ** dDes(d); return Math.floor(d * k + 1e-9) / k; }, pyorYlos = (d) => { const k = 10 ** dDes(d); return Math.ceil(d * k - 1e-9) / k; };
+// hyväksytään seulaväli + yhden desimaalin pyöristys reunoilla (esim. väli 0,125–0,25 → 0,1–0,3 käy)
+const valiOk = (v, lap, seulat, q) => { const r = seulavali(lap, seulat, q); return isFinite(v) && !!r && v >= Math.min(r[0] * 0.9, pyorAlas(r[0])) - 1e-9 && v <= Math.max(r[1] * 1.1, pyorYlos(r[1])) + 1e-9; };
+const dLue = (lap, seulat, q) => { // käyrältä lukeminen: sama pehmeä käyrä kuin kuvassa (hienoimmasta seulasta ylöspäin)
+  const K = kayra(seulat, lap);
+  for (let i = 0; i < K.n - 1; i++) {
+    if (K.Y[i] <= q && q <= K.Y[i + 1] && K.Y[i + 1] > K.Y[i]) {
+      let a = K.X[i], b = K.X[i + 1];
+      for (let k = 0; k < 50; k++) { const c = (a + b) / 2; if (K.arvo(i, c) < q) a = c; else b = c; }
+      return 10 ** ((a + b) / 2);
+    }
+  }
+  return null;
+};
+/* Taulukko 1 (T2 s. 3): karkearakeiset, tiiviys L/K/T → γ yläpuolella / alapuolella, φ, painokairaus pk/0,2 m */
+const TAULUKKO1 = {
+  hHk: { nimi: 'Hienohiekka (d₁₀ ≤ 0,06 mm)', phi: [30, 33, 36], pk: ['20–50', '50–100', '100–'], raja: [20, 50, 100], yla: ['15–17', '', '16–18'], ala: ['9–', '', '11'] },
+  Hk: { nimi: 'Hiekka (d₁₀ > 0,06 mm)', phi: [32, 35, 38], pk: ['10–30', '30–60', '60–'], raja: [10, 30, 60], yla: ['16–18', '', '17–19'], ala: ['10–', '', '12'] },
+  Sr: { nimi: 'Sora', phi: [34, 37, 40], pk: ['10–25', '25–50', '50–'], raja: [10, 25, 50], yla: ['17–19', '', '18–20'], ala: ['10–', '', '12'] },
+};
+const TIIVIYS = ['löyhä (L)', 'keskitiivis (K)', 'tiivis (T)'];
+const taulukko1HTML = () => `<div class="tw"><table><tr><th>Maalaji</th><th>Tiiviys</th><th>φ (ast.)</th><th>Painokairaus pk/0,2 m</th></tr>${Object.values(TAULUKKO1).map(r => r.phi.map((p, i) => `<tr>${i === 0 ? `<td rowspan="3">${r.nimi}</td>` : ''}<td>${'LKT'[i]}</td><td>${p}</td><td>${r.pk[i]}</td></tr>`).join('')).join('')}</table></div><p class="pieni">Kurssin taulukko 1 (karkearakeisten maalajien arviointi rakeisuuden ja kairausvastuksen perusteella). Osavarmuuskertoimet: kitka γφ = 1,2 pysyvä, 1,1 työnaikainen, 1,25 anturat ja paalut · koheesio γc = 1,5 pysyvä, 1,3 työnaikainen, 1,75 anturat, 2,0 paalut.</p>`;
+
+function rakeisuusSVG(lap, oma, dm, seulat = SEULAT) {
+  const W = 700, L = 52, R = 40, T = 30, B = 42, H = dm ? 404 : 380, Hp = 380;   // Hp = kaavion alareuna ilman selitettä (korkea, jotta luku näkyy noin 5 %:n tarkkuudella)
+  const x = (d) => L + (Math.log10(d) - Math.log10(0.001)) / (Math.log10(60) - Math.log10(0.001)) * (W - L - R);
+  const y = (p) => T + (1 - p / 100) * (Hp - T - B);
+  const vyot = [[0.001, 0.002, 'Sa', 'var(--sa)'], [0.002, 0.063, 'Si', 'var(--si)'], [0.063, 2, 'Hk', 'var(--hk)'], [2, 60, 'Sr', 'var(--sr)']];
+  let s = `<svg class="kuva" viewBox="0 0 ${W} ${H}" role="img" aria-label="Rakeisuuskäyrä, vaaka-akseli raekoko millimetreinä logaritmisena, pystyakseli läpäisy prosentteina">`;
+  vyot.forEach(([a, b, n, c]) => { s += `<rect x="${x(a)}" y="${T}" width="${x(b) - x(a)}" height="${Hp - T - B}" fill="${c}" opacity=".18"/><text x="${(x(a) + x(b)) / 2}" y="${T - 10}" text-anchor="middle" font-size="14" font-weight="600" fill="var(--muted)">${n}</text>`; });
+  for (let e = -4; e <= 1; e++) for (let k = 2; k <= 9; k++) { const d = k * 10 ** e; if (d > 0.001 && d < 60) s += `<line x1="${x(d)}" x2="${x(d)}" y1="${T}" y2="${Hp - B}" stroke="var(--line)" stroke-width=".5"/>`; }   // logaritmipaperin apuviivat kuten kurssin lomakkeessa
+  for (let p = 5; p < 100; p += 10) s += `<line x1="${L}" x2="${W - R}" y1="${y(p)}" y2="${y(p)}" stroke="var(--line)" stroke-width=".5"/>`;
+  for (let p = 0; p <= 100; p += 10) s += `<line x1="${L}" x2="${W - R}" y1="${y(p)}" y2="${y(p)}" stroke="var(--line)" stroke-width="1.2"/><text x="${L - 6}" y="${y(p) + 4}" text-anchor="end" font-size="13" fill="var(--ink)">${p}</text>`;
+  // seulakoot akselille (kurssin lomakkeen tapaan): lukukohdan voi päätellä seulojen välistä
+  [0.001, 0.002, 0.006, 0.02, 0.063, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 60].forEach(d => s += `<line x1="${x(d)}" x2="${x(d)}" y1="${T}" y2="${Hp - B}" stroke="var(--line)" stroke-width="1.2"/><text x="${x(d)}" y="${Hp - B + 17}" text-anchor="middle" font-size="${d >= 0.063 ? 12 : 11}" fill="var(--ink)">${String(d).replace('.', ',')}</text>`);
+  s += `<text x="${(L + W - R) / 2}" y="${Hp - 6}" text-anchor="middle" font-size="13" fill="var(--muted)">raekoko d [mm], logaritminen</text>`;
+  s += `<text transform="translate(14 ${(T + Hp - B) / 2}) rotate(-90)" text-anchor="middle" font-size="12" fill="var(--muted)">läpäisy [%]</text>`;
+  // maalajirajat näkyviin: hienoaines/hiekka 0,063 mm ja hiekka/sora 2 mm; moreenin rajat 5 % ja 95 %, d₅₀ = 50 %
+  [0.063, 2].forEach(d => s += `<line x1="${x(d)}" x2="${x(d)}" y1="${T}" y2="${Hp - B}" stroke="var(--ink)" stroke-width="1.8" opacity=".55"/>`);
+  [[5, 'var(--soil)'], [95, 'var(--soil)'], [50, 'var(--ink)']].forEach(([p, c]) => s += `<line x1="${L}" x2="${W - R}" y1="${y(p)}" y2="${y(p)}" stroke="${c}" stroke-width="1.4" opacity=".6"/><text x="${W - R + 4}" y="${y(p) + 4}" font-size="11" font-weight="700" fill="${c}">${p} %</text>`);
+  const sx = (d) => x(Math.min(d, 60));
+  const viiva = (arr, vari, katko) => { const pts = seulat.map((d, i) => [d, arr[i]]).filter(([, v]) => isFinite(v)); if (pts.length < 2) return ''; return `<path fill="none" stroke="${vari}" stroke-width="2.5" ${katko ? 'stroke-dasharray="6 5"' : ''} d="${kayraPolku(pts.map(p => p[0]), pts.map(p => Math.max(0, Math.min(100, p[1]))), sx, y)}"/>` + pts.map(([d, v]) => `<circle cx="${sx(d)}" cy="${y(Math.max(0, Math.min(100, v)))}" r="3.5" fill="${vari}"/>`).join(''); };
+  if (oma) s += viiva(oma, 'var(--soil)', false);
+  if (lap) s += viiva(lap, 'var(--water)', true);
+  const i063 = seulat.indexOf(0.063), i2 = seulat.indexOf(2), selite = [];
+  if (dm) [[10, dm.d10, 'd₁₀'], [50, dm.d50, 'd₅₀'], [60, dm.d60, 'd₆₀']].forEach(([p, d, n]) => {
+    if (!d || !isFinite(d)) { if (p === 10) selite.push('○ d₁₀: ei luettavissa'); return; }
+    const X = x(d), Y = y(p);
+    s += `<line x1="${L}" x2="${X}" y1="${Y}" y2="${Y}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 4"/>`
+      + `<line x1="${X}" x2="${X}" y1="${Y}" y2="${Hp - B}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 4"/>`
+      + `<circle cx="${X}" cy="${Y}" r="5" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>`;
+    selite.push(`○ ${n} ≈ ${dTxt(d)} mm`);
+  });
+  if (dm && lap) [[0.063, lap[i063]], [2, lap[i2]]].forEach(([d, p]) => {
+    const X = x(d), Y = y(Math.max(0, Math.min(100, p)));
+    s += `<rect x="${X - 5}" y="${Y - 5}" width="10" height="10" fill="var(--soil)" transform="rotate(45 ${X} ${Y})"/>`;
+    selite.push(`◆ ${String(d).replace('.', ',')} mm: ${fi(p)} %`);
+  });
+  if (dm) s += `<text x="${L}" y="${H - 6}" font-size="13" font-weight="700" fill="var(--ink)">${lap ? '' : 'Omalta käyrältäsi:   '}${selite.join('     ')}</text>`;
+  return s + '</svg>';
+}
+
+/* ---------- 2. Rakeisuus (OM s. 2, T1 s. 1) ---------- */
+const POHJAT = [ // seulat 32…0,063 + pohja (g)
+  [0, 0, 0, 8, 24, 56, 152, 280, 176, 72, 32], [0, 40, 70, 90, 120, 110, 120, 130, 120, 100, 100],
+  [0, 60, 110, 150, 160, 110, 90, 70, 60, 50, 20], [0, 0, 10, 20, 40, 60, 110, 190, 230, 210, 130],
+  [0, 30, 60, 80, 110, 120, 130, 140, 120, 90, 120], [90, 110, 187, 170, 482, 331, 240, 254, 213, 187, 138],   // T1 s. 1 -lomakkeen tyyppi (≈ 2400 g)
+  [40, 120, 160, 190, 170, 110, 80, 60, 40, 30, 40]];
+function arvoRakeisuus() {
+  for (let yritys = 0; yritys < 50; yritys++) {   // d₅₀ ei maalajirajojen lähelle (0,063 / 2 mm), muuten nimi ei olisi yksiselitteinen
+    const R = arvoRakeisuus1();
+    if (R.d50 && Math.abs(Math.log10(R.d50 / 2)) > 0.1 && Math.abs(Math.log10(R.d50 / 0.063)) > 0.1 && eiRajalla(R)) return R;
+  }
+  return arvoRakeisuus1();
+}
+function eiRajalla(R) {   // nimi yksiselitteinen myös pyöristetyillä luvuilla
+  const f = R.lap[9], p2 = R.lap[4], n = nimea(f, p2, R.d50);
+  if (Math.abs(f - 5) < 0.6 || Math.abs(p2 - 95) < 0.6) return false;
+  return [n.hieno, n.hiekka, n.sora].every(v => Math.abs(v - 30) > 1 && (n.moreeni || Math.abs(v - 50) > 1));
+}
+function arvoRakeisuus1() {
+  const i0 = Math.floor(rnd() * POHJAT.length), k = i0 === 5 ? 1 : (rnd() < 0.35 ? 2.4 : 1);
+  const m = POHJAT[i0].map(x => x ? Math.max(0, Math.round(x * k * (0.85 + rnd() * 0.3) / 2) * 2) : 0);
+  const alle = (i) => m.slice(i + 1).reduce((a, b) => a + b, 0);
+  const tot = m.reduce((a, b) => a + b, 0), jai = m.map(x => x / tot * 100);
+  const lap = SEULAT_K.map((_, i) => alle(i) / tot * 100);
+  const d50 = dLue(lap, SEULAT_K, 50), d60 = dLue(lap, SEULAT_K, 60), d10 = dLue(lap, SEULAT_K, 10);
+  return { m, tot, jai, lap, d50, d60, d10 };
+}
+
+/* ---------- 3. Nimeäminen: käyrät A–D (OM s. 3–4, T1 s. 2) ---------- */
+const PK = [0.0006, 0.002, 0.006, 0.02, 0.063, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 60];
+function kayraTyyppi(t) {
+  const c = (arr) => { let ed = 0; return arr.map(v => (ed = Math.min(100, Math.max(ed, v, 0)))); };   // läpäisy ei koskaan laske
+  if (t === 'Sa') { const s = vali(36, 58); return c([s - vali(10, 18), s, s + vali(15, 22), Math.min(94, s + vali(30, 38)), 97, 99, 100, 100, 100, 100, 100, 100, 100, 100, 100]); }
+  if (t === 'Si') { const s = vali(3, 8), f = vali(86, 95); return c([s - 2, s, vali(18, 28), vali(52, 66), f, Math.min(99, f + 4), 100, 100, 100, 100, 100, 100, 100, 100, 100]); }
+  if (t === 'Mr') { const f = vali(14, 28), p2 = vali(58, 78); return c([1, 3, 6, f - vali(5, 8), f, f + vali(6, 10), f + vali(14, 20), f + vali(22, 30), Math.min(p2 - 5, f + vali(30, 38)), p2, p2 + vali(6, 10), p2 + vali(12, 16), vali(92, 96), 100, 100]); }
+  if (t === 'Hk') return c([0, 0, 0, 1, vali(1, 2), vali(7, 14), vali(30, 42), vali(65, 78), vali(86, 93), vali(98, 100), 100, 100, 100, 100, 100]);
+  if (t === 'saSi') { const s = vali(15, 24), f = vali(86, 95); return c([s - vali(5, 8), s, s + vali(14, 20), vali(56, 68), f, Math.min(99, f + 4), 100, 100, 100, 100, 100, 100, 100, 100, 100]); }   // savinen siltti (savea 10–30 %)
+  if (t === 'SiMr') { const f = vali(62, 72), p2 = vali(80, 88), v = (o) => Math.round(f + (p2 - f) * o); return c([1, vali(3, 6), vali(12, 18), vali(38, 46), f, v(0.3), v(0.55), v(0.75), v(0.9), p2, p2 + vali(4, 6), p2 + vali(7, 9), vali(96, 98), 100, 100]); }   // silttimoreeni
+  if (t === 'SrMr') { const f = vali(8, 14), p2 = vali(28, 40), v = (o) => Math.round(f + (p2 - f) * o); return c([0, 1, 2, vali(5, 7), f, v(0.2), v(0.4), v(0.6), v(0.8), p2, p2 + vali(14, 18), p2 + vali(26, 32), vali(86, 92), 98, 100]); }   // soramoreeni
+  return c([0, 0, 0, 0, vali(1, 2), 3, vali(4, 7), vali(8, 12), vali(13, 18), vali(20, 30), vali(38, 48), vali(60, 72), vali(84, 92), 100, 100]);   // Sr
+}
+function nimiKayra(arr) {
+  const savi = arr[1], f063 = arr[4], p2 = arr[9], d50 = dLue(arr.slice().reverse(), PK.slice().reverse(), 50);
+  if (savi >= 30) return { savi, f063, p2, d50, paa: 'Sa', hyvaksy: ['Sa', 'laSa', 'liSa'], taysi: 'Sa', nimi: 'Sa (savi)', moreeni: false };
+  const moreeni = f063 >= 5 && p2 <= 95, paa = d50 < 0.063 ? 'Si' : d50 < 2 ? 'Hk' : 'Sr', perus = paa + (moreeni ? 'Mr' : '');
+  const n = nimea(f063, p2, d50), hyvaksy = [perus, n.lyh];
+  if (savi > 10 && savi < 30) hyvaksy.push('sa' + perus);
+  const taysi = moreeni ? n.lyh : perus;   // täysi nimi = moreenin lisänimi (esim. hkSrMr), kuten tunnilla
+  return { savi, f063, p2, d50, paa, perus, n, taysi, hyvaksy: [...new Set(hyvaksy)], nimi: perus + (taysi !== perus ? ` (täysi nimi ${taysi})` : ''), moreeni };
+}
+function kayraSelva(k) {   // nimi yksiselitteinen myös kuvasta noin 3 %:n tarkkuudella luettuna
+  const lg = (a, b) => Math.abs(Math.log10(a / b));
+  if (Math.abs(k.savi - 30) < 4 || Math.abs(k.savi - 10) < 3 || Math.abs(k.savi - 50) < 3) return false;
+  if (k.savi >= 30) return true;
+  if (Math.abs(k.f063 - 5) < 3 || Math.abs(k.p2 - 95) < 3) return false;
+  if (!k.d50 || lg(k.d50, 0.063) < 0.12 || lg(k.d50, 2) < 0.12 || lg(k.d50, 0.002) < 0.12) return false;
+  return [k.n.hieno, k.n.hiekka, k.n.sora].every(v => Math.abs(v - 30) > 3 && (k.moreeni || Math.abs(v - 50) > 3));
+}
+function arvoKayrat() {
+  const kaikki = ['Sa', 'Si', 'SiMr', 'Mr', 'SrMr', 'Hk', 'Sr'];   // Mr = hiekkamoreeni (savinen siltti pois: ei käyty tunnilla)
+  for (let yritys = 0; yritys < 200; yritys++) {
+    const tyypit = sekoita(kaikki.slice()).slice(0, 4);
+    const K = tyypit.map((t, i) => { const arr = kayraTyyppi(t); return { kirjain: 'ABCD'[i], tyyppi: t, arr, ...nimiKayra(arr) }; });
+    if (K.every(kayraSelva)) return K;
+  }
+  return sekoita(['Sa', 'Si', 'Mr', 'Hk']).map((t, i) => { const arr = kayraTyyppi(t); return { kirjain: 'ABCD'[i], tyyppi: t, arr, ...nimiKayra(arr) }; });
+}
+function kayratSVG(K, nayta) {
+  const W = 680, H = 380, L = 52, R = 14, T = 30, B = 42, x0 = Math.log10(0.0006), x1 = Math.log10(60);
+  const x = (d) => L + (Math.log10(d) - x0) / (x1 - x0) * (W - L - R), y = (p) => T + (1 - p / 100) * (H - T - B);
+  let s = `<svg class="kuva" viewBox="0 0 ${W} ${H}" role="img" aria-label="Neljä rakeisuuskäyrää A–D">`;
+  [[0.0006, 0.002, 'Sa', 'var(--sa)'], [0.002, 0.063, 'Si', 'var(--si)'], [0.063, 2, 'Hk', 'var(--hk)'], [2, 60, 'Sr', 'var(--sr)']].forEach(([a, b, n, c]) => { s += `<rect x="${x(a)}" y="${T}" width="${x(b) - x(a)}" height="${H - T - B}" fill="${c}" opacity=".18"/><text x="${(x(a) + x(b)) / 2}" y="${T - 10}" text-anchor="middle" font-size="13" font-weight="600" fill="var(--muted)">${n}</text>`; });
+  for (let e = -4; e <= 1; e++) for (let k = 2; k <= 9; k++) { const d = k * 10 ** e; if (d > 0.0006 && d < 60) s += `<line x1="${x(d)}" x2="${x(d)}" y1="${T}" y2="${H - B}" stroke="var(--line)" stroke-width=".5"/>`; }   // logaritmipaperin apuviivat kuten kurssin lomakkeessa
+  for (let p = 5; p < 100; p += 10) s += `<line x1="${L}" x2="${W - R}" y1="${y(p)}" y2="${y(p)}" stroke="var(--line)" stroke-width=".5"/>`;
+  for (let p = 0; p <= 100; p += 10) s += `<line x1="${L}" x2="${W - R}" y1="${y(p)}" y2="${y(p)}" stroke="var(--line)" stroke-width="1.2"/><text x="${L - 6}" y="${y(p) + 4}" text-anchor="end" font-size="13" fill="var(--ink)">${p}</text>`;
+  [0.0006, 0.002, 0.006, 0.02, 0.063, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 60].forEach(d => s += `<line x1="${x(d)}" x2="${x(d)}" y1="${T}" y2="${H - B}" stroke="var(--line)" stroke-width="1.2"/><text x="${x(d)}" y="${H - B + 17}" text-anchor="middle" font-size="${d >= 0.063 ? 12 : 11}" fill="var(--ink)">${String(d).replace('.', ',')}</text>`);
+  s += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" font-size="13" fill="var(--muted)">raekoko d [mm], logaritminen</text><text transform="translate(14 ${(T + H - B) / 2}) rotate(-90)" text-anchor="middle" font-size="12" fill="var(--muted)">läpäisy [%]</text>`;
+  const tyyli = ['', '7 4', '2 4', '10 3 2 3'];
+  // tiheä näytteistys pehmeästä käyrästä (etäisyyksiä ja lappujen paikkoja varten)
+  const kaikki = K.map(k => { const KK = kayra(PK, k.arr), out = []; for (let i = 0; i < KK.n - 1; i++) for (let s = 0; s < 1; s += 0.1) { const Xx = KK.X[i] + s * KK.h[i]; out.push([x(10 ** Xx), y(KK.arvo(i, Xx)), i, s]); } out.push([x(10 ** KK.X[KK.n - 1]), y(KK.Y[KK.n - 1]), KK.n - 1, 0]); return out; });
+  // etäisyys pisteestä toisen käyrän murtoviivaan (px)
+  const etaisyys = ([px, py], pts) => { let m = Infinity; for (let i = 0; i < pts.length - 1; i++) { const [x1, y1] = pts[i], [x2, y2] = pts[i + 1], dx = x2 - x1, dy = y2 - y1, L2 = dx * dx + dy * dy || 1, t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / L2)); m = Math.min(m, Math.hypot(px - x1 - t * dx, py - y1 - t * dy)); } return m; };
+  const laput = [];
+  K.forEach((k, j) => {
+    const pts = kaikki[j];
+    s += `<g class="oma"><path fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="${tyyli[j]}" d="${kayraPolku(PK, k.arr, x, y)}"/>`;
+    // ehdokkaat: käyrän pisteet ja janojen keskikohdat läpäisyn 8–92 % alueella
+    const ehd = [];
+    const merkit = K.flatMap(kk => [[x(0.002), y(kk.arr[1])], [x(0.063), y(kk.arr[4])], [x(2), y(kk.arr[9])]]);
+    pts.forEach(([qx, qy]) => { if (merkit.some(([mx, my]) => Math.hypot(qx - mx, qy - my) < 19)) return; /* ei minkään käyrän ratkaisupisteen päälle */ if (qy > y(92) && qy < y(8) && qx > L + 14 && qx < W - R - 14) ehd.push([qx, qy]); });
+    let paras = ehd[0] || pts[1], ps = -1;
+    ehd.forEach(q => { const muut = Math.min(...kaikki.filter((_, jj) => jj !== j).map(o => etaisyys(q, o)), ...laput.map(l => Math.hypot(q[0] - l[0], q[1] - l[1]) - 12)); if (muut > ps) { ps = muut; paras = q; } });
+    laput.push(paras);
+    const [lx, ly] = paras;
+    s += `<circle cx="${lx}" cy="${ly}" r="11" fill="var(--paper)" stroke="var(--ink)"/><text x="${lx}" y="${ly + 5}" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">${k.kirjain}</text></g>`;
+    if (nayta) [[0.002, k.savi], [0.063, k.f063], [2, k.p2]].forEach(([d, p]) => s += `<circle cx="${x(d)}" cy="${y(p)}" r="4" fill="var(--soil)"/>`);
+  });
+  return s + '</svg>';
+}
+
+/* ---------- 4. Tilavuus ja paino (OM s. 5–6) ---------- */
+function arvoTilavuus() {
+  const V = rnd() < 0.5 ? 10 : vali(250, 600) / 100, rho = vali(195, 230) / 100;
+  const mm = Math.round(V * rho * 100) / 100, w = rnd() < 0.3 ? vali(400, 1100) / 100 : vali(40, 110) / 10, rs = [2.65, 2.68, 2.70][vali(0, 2)];
+  const md = mm / (1 + w / 100), mw = mm - md, Vs = md / rs, Vw = mw, Vi = V - Vs - Vw, Vh = Vw + Vi, n = Vh / V * 100, gd = md * 9.81 / V;
+  return { V, mm, w, rs, md, mw, Vs, Vw, Vi, n, gd };
+}
+
+/* Alaindeksit kuten muistiinpanoissa (Mikko 27.11.2026): Vilma → V_ilma, md → m_d, ρs → ρ_s, γd → γ_d */
+const ALA_RE = /(?<![A-Za-zäöåÄÖÅ])(Vilma|Vs|Vw|Vh|md|mw|ρs|ρw|γdmax|γsat|γd|γw|γφ|γc|cD|φD|su|sk|wopt)(?![A-Za-zäöåÄÖÅ0-9])/g;
+const svgAla = (t) => t.replace(ALA_RE, (m) => m[0] + '<tspan baseline-shift="sub" font-size="85%">' + m.slice(1) + '</tspan>');
+function alaindeksit(el) {   // tekstisolmut (myös kuvien tekstit), ei kenttiä tai valintoja
+  if (!el) return;
+  const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement.closest('input,select,textarea,script,style,sub,option,tspan[baseline-shift]') ? NodeFilter.FILTER_REJECT : (ALA_RE.lastIndex = 0, ALA_RE.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT) });
+  const solmut = []; while (w.nextNode()) solmut.push(w.currentNode);
+  solmut.forEach(n => {
+    const svgssa = !!n.parentElement.closest('svg'), f = document.createDocumentFragment(); let i = 0;
+    n.nodeValue.replace(ALA_RE, (m, _g, pos) => {
+      f.append(n.nodeValue.slice(i, pos) + m[0]);
+      let s; if (svgssa) { s = document.createElementNS('http://www.w3.org/2000/svg', 'tspan'); s.setAttribute('baseline-shift', 'sub'); s.setAttribute('font-size', '85%'); } else s = document.createElement('sub');
+      s.textContent = m.slice(1); f.append(s); i = pos + m.length; return m;
+    });
+    f.append(n.nodeValue.slice(i)); n.replaceWith(f);
+  });
+}
+/* ---------- 4b. Astiakuva tilavuuslaskuun (OM s. 4): ei mittakaavassa, kaavat → tarkistuksen jälkeen luvut ---------- */
+function tilavuusSVG(TV, r) {
+  const W = 600, H = 352, yT = 34, yA = 84, yV = 136, yB = 262, xa = 150, xb = 330, kal = 16;   // astia levenee ylöspäin
+  const xl = (y) => xa + kal * (y - yB) / (yT - yB) * -1 + kal, xr = (y) => xb - kal * (y - yB) / (yT - yB) * -1 - kal;
+  const kerros = (y1, y2, vari) => `<polygon points="${xl(y1)},${y1} ${xr(y1)},${y1} ${xr(y2)},${y2} ${xl(y2)},${y2}" fill="${vari}" opacity=".55" stroke="var(--ink)" stroke-width="1"/>`;
+  const L = (v, d = 2) => fi(v, d), cx = (xa + xb) / 2;
+  let s = `<svg class="kuva" viewBox="0 0 ${W} ${H}" role="img" aria-label="Maanäytteen osat astiassa: kivi, vesi ja ilma (ei mittakaavassa)">`;
+  s += kerros(yT, yA, 'var(--paper)') + kerros(yA, yV, 'var(--water-weak)') + kerros(yV, yB, 'var(--hk)');
+  s += `<path d="M${xl(yT) - 6},${yT} L${xr(yT) + 6},${yT}" stroke="var(--ink)" stroke-width="2.5" fill="none"/>`;   // astian reuna
+  const rivi2 = (y, a, b) => `<text x="${cx}" y="${y}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">${a}</text><text x="${cx}" y="${y + 18}" text-anchor="middle" font-size="14" fill="var(--ink)">${svgAla(b)}</text>`;
+  s += rivi2((yT + yA) / 2 - 3, 'ILMA', r ? `Vilma = ${L(TV.Vi)} l` : 'Vilma = V − Vs − Vw');
+  s += rivi2((yA + yV) / 2 - 3, 'VESI', r ? `Vw = ${L(TV.Vw)} l` : 'Vw = mw / ρw');
+  s += rivi2((yV + yB) / 2 - 3, 'KIVI', r ? `Vs = ${L(TV.Vs)} l` : 'Vs = md / ρs');
+  // vasen: koko tilavuus V
+  const xV = xa - 26;
+  s += `<line x1="${xV}" x2="${xV}" y1="${yT}" y2="${yB}" stroke="var(--ink)" stroke-width="1.5"/><line x1="${xV - 5}" x2="${xV + 5}" y1="${yT}" y2="${yT}" stroke="var(--ink)" stroke-width="1.5"/><line x1="${xV - 5}" x2="${xV + 5}" y1="${yB}" y2="${yB}" stroke="var(--ink)" stroke-width="1.5"/>`;
+  s += `<text transform="translate(${xV - 10} ${(yT + yB) / 2}) rotate(-90)" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">V = ${String(TV.V).replace('.', ',')} l</text>`;
+  // oikea: huokostilavuus Vh = vesi + ilma
+  const xH = xb + 4;
+  s += `<line x1="${xH}" x2="${xH}" y1="${yT}" y2="${yV}" stroke="var(--water)" stroke-width="1.5"/><line x1="${xH - 5}" x2="${xH + 5}" y1="${yT}" y2="${yT}" stroke="var(--water)" stroke-width="1.5"/><line x1="${xH - 5}" x2="${xH + 5}" y1="${yV}" y2="${yV}" stroke="var(--water)" stroke-width="1.5"/>`;
+  s += `<text x="${xH + 10}" y="${yT + 22}" font-size="14" font-weight="700" fill="var(--water)">Huokostilavuus</text><text x="${xH + 10}" y="${yT + 40}" font-size="14" fill="var(--water)">Vh = Vw + Vilma${r ? ` = ${L(TV.Vw + TV.Vi)} l` : ''}</text>`;
+  s += `<text x="${xH + 10}" y="${yA + 34}" font-size="14" fill="var(--ink)">mw = m − md${r ? ` = ${L(TV.mw)} kg` : ''}</text>`;
+  s += `<text x="${xH + 10}" y="${(yV + yB) / 2 - 4}" font-size="14" fill="var(--ink)">md = m / (1 + w)${r ? ` = ${L(TV.md)} kg` : ''}</text><text x="${xH + 10}" y="${(yV + yB) / 2 + 20}" font-size="13" fill="var(--muted)">(kuiva kiviaines, w desimaalina)</text>`;
+  s += `<text x="${W / 2}" y="${H - 34}" text-anchor="middle" font-size="14" fill="var(--ink)">m = ${fi(TV.mm, 2)} kg (koko näyte, kostea) · w = ${String(TV.w).replace('.', ',')} % · ρs = ${fi(TV.rs, 2)} kg/l · ρw = 1 kg/l</text>`;
+  s += `<text x="${W / 2}" y="${H - 8}" text-anchor="middle" font-size="13" fill="var(--muted)">ei mittakaavassa · huokoisuus n = Vh / V · 100 % · γd = md · 9,81 / V</text>`;
+  return svgAla(s) + '</svg>';
+}
+
+/* ---------- 5. Sigma viiva (OM s. 14, T2 s. 1) ---------- */
+function arvoSigma() {
+  const annettuTeh = rnd() < 0.5, nK = rnd() < 0.5 ? 3 : 4, pvRaja = vali(1, nK - 1);   // pohjavesi kerrosrajalla (OM: A:n alapinnassa)
+  const nimet = ['A', 'B', 'C', 'D'], kerrokset = [];
+  for (let i = 0; i < nK; i++) {
+    const h = vali(10, 35, 5) / 10, alla = i >= pvRaja;
+    const gYla = vali(17, 21), gTeh = vali(8, 12);
+    kerrokset.push({ nimi: nimet[i], h, alla, g: alla ? (annettuTeh ? gTeh : gTeh + 10) : gYla, gLask: alla ? gTeh : gYla });
+  }
+  let z = 0, s = 0; const rajat = kerrokset.map(k => { z += k.h; s += k.h * k.gLask; return { z, s }; });
+  const pv = kerrokset.slice(0, pvRaja).reduce((a, k) => a + k.h, 0);
+  return { annettuTeh, kerrokset, rajat, pv };
+}
+function sigmaProfiiliSVG(S, nayta) {
+  const W = 640, H = 300, top = 18, x0 = 90, w = 230, gx = 400, gw = 210, syv = S.rajat[S.rajat.length - 1].z, sc = (H - top - 28) / syv;
+  const yy = (z) => top + z * sc, smax = S.rajat[S.rajat.length - 1].s, xs = (v) => gx + v / smax * gw;
+  const varit = ['var(--sr)', 'var(--hk)', 'var(--sa)', 'var(--si)'];
+  let s = `<svg class="kuva" viewBox="0 0 ${W} ${H}" role="img" aria-label="Maaprofiili kerroksineen ja pohjavedenpinta${nayta ? ' sekä sigmaviiva' : ''}">`, z = 0;
+  S.kerrokset.forEach((k, i) => { s += `<rect x="${x0}" y="${yy(z)}" width="${w}" height="${k.h * sc}" fill="${varit[i]}" opacity=".35" stroke="var(--ink)"/><text x="${x0 + 10}" y="${yy(z + k.h / 2) + 5}" font-size="14" font-weight="700" fill="var(--ink)">${k.nimi}   ${k.alla ? (S.annettuTeh ? `γ' = ${k.g}` : `γsat = ${k.g}`) : `γ = ${k.g}`} kN/m³</text>`; z += k.h; });
+  [0, ...S.rajat.map(r => r.z)].forEach(zz => s += `<line x1="${x0 - 6}" x2="${x0}" y1="${yy(zz)}" y2="${yy(zz)}" stroke="var(--ink)"/><text x="${x0 - 9}" y="${yy(zz) + 4}" text-anchor="end" font-size="12" fill="var(--ink)">${fi(zz)} m</text>`);
+  s += `<line x1="${x0}" x2="${x0 + w + 30}" y1="${yy(S.pv)}" y2="${yy(S.pv)}" stroke="var(--water)" stroke-width="2" stroke-dasharray="7 4"/><path d="M${x0 + w + 12},${yy(S.pv) - 11} l7,11 l7,-11 z" fill="var(--water)"/><text x="${x0 + w + 2}" y="${yy(S.pv) - 14}" font-size="12" font-weight="600" fill="var(--water)">PVP</text>`;
+  if (nayta) {
+    const pts = [[gx, top], ...S.rajat.map(r => [xs(r.s), yy(r.z)])];
+    s += `<line x1="${gx}" x2="${gx}" y1="${top}" y2="${H - 28}" stroke="var(--ink)"/><line x1="${gx}" x2="${gx + gw}" y1="${top}" y2="${top}" stroke="var(--ink)"/><text x="${gx + gw / 2}" y="${H - 8}" text-anchor="middle" font-size="12" fill="var(--muted)"><tspan text-decoration="overline">σ</tspan> [kN/m²]</text>`
+      + `<polygon fill="var(--soil)" opacity=".18" points="${pts.map(p => p.join(',')).join(' ')} ${gx},${yy(syv)}"/><polyline fill="none" stroke="var(--soil)" stroke-width="2.5" points="${pts.map(p => p.join(',')).join(' ')}"/>`
+      + S.rajat.map(r => { const X = xs(r.s), Y = yy(r.z), vas = X - gx > 52; return `<circle cx="${X}" cy="${Y}" r="3.5" fill="var(--soil)"/><text x="${vas ? X - 8 : X + 8}" y="${vas ? Y + 14 : Y - 6}" text-anchor="${vas ? 'end' : 'start'}" font-size="12" font-weight="700" fill="var(--ink)">${fi(r.s)}</text>`; }).join('');
+  }
+  return s + '</svg>';
+}
+
+/* ---------- 6. Painuma: ödometrikäyrä kuvana, lisäkuorma (OM s. 15, T2 s. 1) ---------- */
+function odoKayra(taite, Amin = 34, Amax = 46) {   // yhden savinäytteen ödometrikäyrä: suora esikuormitettu osa taitekohtaan asti, sitten konsolidaatiokäyrä
+  const sig = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600];   // lukema joka 50 kN/m²
+  const e0 = vali(3, 6), A = vali(Amin, Amax), k = vali(140, 200);
+  const eps = sig.map(s => s <= taite ? Math.round(s / taite * e0) : Math.round(e0 + (A - e0) * (1 - Math.exp(-(s - taite) / k))));
+  for (let i = 1; i < eps.length; i++) eps[i] = Math.max(eps[i], eps[i - 1]);
+  return { sig, eps, taite, e: (s) => eps[sig.indexOf(s)] };
+}
+function arvoPainuma() {
+  // kaksi eri savikerrosta A ja B → kaksi eri viivaa samassa kuvaajassa; σ₀ = kerroksen oma taitekohta kuten tunnilla (OM s. 8)
+  let K1, K2;
+  for (let yritys = 0; yritys < 200; yritys++) {
+    const t = sekoita([[100, 200], [100, 250], [150, 250]][vali(0, 2)]);
+    const [ma, mb] = t[0] > t[1] ? [[24, 31], [38, 46]] : [[38, 46], [24, 31]];   // suurempi taite → ylempi viiva (pienempi ε)
+    K1 = odoKayra(t[0], ma[0], ma[1]); K2 = odoKayra(t[1], mb[0], mb[1]);
+    const ero = K1.sig.map((v, i) => K1.eps[i] - K2.eps[i]).filter((_, i) => K1.sig[i] >= 100);
+    if (ero.every(d => d >= 5) || ero.every(d => d <= -5)) break;   // viivat eivät risteä eivätkä ole liian lähellä
+  }
+  const z1 = vali(4, 9), a1 = K1.taite, d1opt = [100, 150, 200].filter(d => a1 + d <= 600), d1 = d1opt[vali(0, d1opt.length - 1)], b1 = a1 + d1;
+  const z2 = vali(3, 7), a2 = K2.taite, d2opt = [100, 150, 200, 250].filter(d => a2 + d <= 600 && d !== d1), d2 = d2opt[vali(0, d2opt.length - 1)], b2 = a2 + d2;
+  return { K1, K2, z1, a1, d1, b1, s1: z1 * (K1.e(b1) - K1.e(a1)) / 100, z2, a2, d2, b2, s2: z2 * (K2.e(b2) - K2.e(a2)) / 100 };
+}
+function odometriSVG(P, merk) {   // P = { K1, K2 }: A = savikerros 1 (sininen), B = savikerros 2 (oranssi)
+  const W = 660, H = 350, Hp = 306, L = 62, R = 36, T = 36, B = 20, smax = 600;
+  const emax = Math.ceil((Math.max(...P.K1.eps, ...P.K2.eps) + 4) / 10) * 10;
+  const x = (s) => L + s / smax * (W - L - R), y = (e) => T + e / emax * (Hp - T - B);
+  let s = `<svg class="kuva" viewBox="0 0 ${W} ${H}" role="img" aria-label="Ödometrikäyrät A ja B: muodonmuutos ε prosentteina jännityksen σ funktiona">`;
+  for (let e = 0; e <= emax; e += 5) s += `<line x1="${L}" x2="${W - R}" y1="${y(e)}" y2="${y(e)}" stroke="var(--line)" stroke-width="${e % 10 ? 0.5 : 1}"/>${e % 10 ? '' : `<text x="${L - 6}" y="${y(e) + 4}" text-anchor="end" font-size="13" fill="var(--ink)">${e}</text>`}`;
+  for (let v = 0; v <= smax; v += 50) s += `<line x1="${x(v)}" x2="${x(v)}" y1="${T}" y2="${Hp - B}" stroke="var(--line)" stroke-width="${v % 100 ? 0.5 : 1}"/><text x="${x(v)}" y="${T - 8}" text-anchor="middle" font-size="12" fill="var(--ink)">${v}</text>`;
+  s += `<text x="${W - R}" y="${T - 22}" text-anchor="end" font-size="12" fill="var(--muted)" dy="2">σ [kN/m²]</text><text transform="translate(14 ${(T + Hp - B) / 2}) rotate(-90)" text-anchor="middle" font-size="12" fill="var(--muted)">ε [%]</text>`;
+  const ylempi = P.K1.eps[P.K1.eps.length - 1] <= P.K2.eps[P.K2.eps.length - 1] ? P.K1 : P.K2;   // pienempi ε = ylempänä kuvassa
+  [[P.K1, 'A', 'var(--water)'], [P.K2, 'B', 'var(--soil)']].forEach(([K, nimi, vari]) => {
+    const it = K.sig.indexOf(K.taite), pts = K.sig.map((v, i) => x(v) + ',' + y(K.eps[i])), yla = K === ylempi;
+    s += `<polyline fill="none" stroke="${vari}" stroke-width="1.8" points="${pts.slice(0, it + 1).join(' ')}"/><polyline fill="none" stroke="${vari}" stroke-width="3.4" points="${pts.slice(it).join(' ')}"/>`;
+    K.sig.forEach((v, i) => {
+      s += `<circle cx="${x(v)}" cy="${y(K.eps[i])}" r="3.5" fill="${vari}"/>`;
+      if (i < it || i === K.sig.length - 1) return;   // lukemat konsolidaatiokäyrälle taitekohdasta alkaen (lasku alkaa sieltä); viimeisen kohdalla kirjain
+      const tx = yla ? `<text x="${x(v) + 4}" y="${y(K.eps[i]) - 7}"` : `<text x="${x(v) - 4}" y="${y(K.eps[i]) + 16}" text-anchor="end"`;
+      s += `${tx} font-size="11" font-weight="600" fill="${vari}" stroke="var(--paper)" stroke-width="3" paint-order="stroke">${K.eps[i]}</text>`;
+    });
+    const eL = K.eps[K.eps.length - 1];
+    s += `<text x="${x(smax) + 8}" y="${y(eL) + 5}" font-size="15" font-weight="800" fill="${vari}">${nimi}</text>`;
+    s += yla ? `<text x="${x(smax) - 4}" y="${y(eL) - 7}" text-anchor="end" font-size="11" font-weight="600" fill="${vari}" stroke="var(--paper)" stroke-width="3" paint-order="stroke">${eL}</text>`
+      : `<text x="${x(smax) - 4}" y="${y(eL) + 16}" text-anchor="end" font-size="11" font-weight="600" fill="${vari}" stroke="var(--paper)" stroke-width="3" paint-order="stroke">${eL}</text>`;
+  });
+  if (merk) merk.forEach(([K, v, c]) => { const e = K.e(v); s += `<line x1="${x(v)}" x2="${x(v)}" y1="${T}" y2="${y(e)}" stroke="${c}" stroke-dasharray="5 4" stroke-width="1.5"/><line x1="${L}" x2="${x(v)}" y1="${y(e)}" y2="${y(e)}" stroke="${c}" stroke-dasharray="5 4" stroke-width="1.5"/><circle cx="${x(v)}" cy="${y(e)}" r="6" fill="none" stroke="${c}" stroke-width="2"/>`; });
+  s += `<text x="${L}" y="${H - 22}" font-size="12" fill="var(--ink)"><tspan font-weight="800" fill="var(--water)">A</tspan> = savikerros 1 (a-kohta) · <tspan font-weight="800" fill="var(--soil)">B</tspan> = savikerros 2 (b-kohta)</text>`;
+  s += `<text x="${L}" y="${H - 5}" font-size="12" fill="var(--muted)">ohut alkuosa = esikuormitettu ("löysät pois") · paksu osa = konsolidaatiokäyrä taitekohdasta alkaen</text>`;
+  return s + '</svg>';
+}
+
+/* ---------- 7. Mustiksen spessu = siipikairaus (OM s. 6 tuntiharjoitus): lue su → cD = su / 1,5 + käsitekysymys ---------- */
+function arvoSiipi() {
+  const syv = [1, 2, 3, 4, 5];
+  const hton = [vali(30, 45), vali(13, 20), vali(5, 10), vali(13, 22), vali(60, 70)];   // kuivakuori → pehmeä savi → kovenee
+  const htty = hton.map((v, i) => i === 4 ? null : Math.max(1, Math.round(v / (vali(25, 50) / 10))));   // häiriintynyt pienempi; 5 m: ei mitattu
+  const z = [2, 3, 4][vali(0, 2)], su = hton[z - 1];
+  const kys = [
+    { q: 'Kumpi pyöritys antaa häiriintymättömän leikkauslujuuden?', o: [['hidas', 'hidas pyöritys (1° / 10 s)'], ['nopea', 'nopea pyöritys (1 kierros/s)']], oikea: 'hidas', sel: 'Häiriintymätön mitataan hitaalla pyörityksellä (1° / 10 s), häiriintynyt nopealla (1 kierros/s, n. 10 kierrosta).' },
+    { q: 'Mitä nopealla pyörityksellä (n. 10 kierrosta) mitataan?', o: [['htty', 'häiriintynyt leikkauslujuus'], ['hton', 'häiriintymätön leikkauslujuus']], oikea: 'htty', sel: 'Nopea pyöritys rikkoo saven rakenteen ennen mittausta, joten tulos on häiriintynyt leikkauslujuus.' },
+    { q: 'Kumpi kuvan viivoista on häiriintynyt leikkauslujuus?', o: [['katko', 'katkoviiva'], ['yht', 'yhtenäinen viiva']], oikea: 'katko', sel: 'Häiriintynyt (HTTY) on katkoviiva ja aina pienempi kuin häiriintymätön (HTÖN).' }
+  ][vali(0, 2)];
+  return { syv, hton, htty, z, su, cD: su / 1.5, kys };
+}
+function siipiSVG(E, korosta) {
+  const W = 600, H = 360, L = 70, R = 200, T = 50, B = 46, xmax = 80, x = (v) => L + v / xmax * (W - L - R), y = (z) => T + z / 5.5 * (H - T - B);
+  let s = `<svg class="kuva" viewBox="0 0 ${W} ${H}" role="img" aria-label="Siipikairausdiagrammi: kaksi leikkauslujuusmittausta syvyyden funktiona">`;
+  for (let v = 0; v <= xmax; v += 10) s += `<line x1="${x(v)}" x2="${x(v)}" y1="${T}" y2="${H - B}" stroke="var(--line)"/><text x="${x(v)}" y="${T - 8}" text-anchor="middle" font-size="12" fill="var(--ink)">${v}</text>`;
+  for (let z = 0; z <= 5; z++) s += `<line x1="${L}" x2="${W - R}" y1="${y(z)}" y2="${y(z)}" stroke="var(--line)"/><text x="${L - 8}" y="${y(z) + 4}" text-anchor="end" font-size="12" fill="var(--ink)">${z} m</text>`;
+  s += `<text x="${(L + W - R) / 2}" y="${T - 28}" text-anchor="middle" font-size="13" fill="var(--muted)">Leikkauslujuus (kN/m²)</text><text transform="translate(16 ${(T + H - B) / 2}) rotate(-90)" text-anchor="middle" font-size="13" fill="var(--muted)">Siiven syvyys</text>`;
+  s += `<line x1="${L}" x2="${W - R}" y1="${T}" y2="${T}" stroke="var(--ink)"/><line x1="${L}" x2="${L}" y1="${T}" y2="${H - B}" stroke="var(--ink)"/>`;
+  const p1 = E.syv.map((z, i) => `${x(E.hton[i])},${y(z)}`), p2 = E.syv.map((z, i) => E.htty[i] == null ? null : `${x(E.htty[i])},${y(z)}`).filter(Boolean);
+  s += `<polyline fill="none" stroke="var(--ink)" stroke-width="2.6" points="${p1.join(' ')}"/><polyline fill="none" stroke="var(--bad)" stroke-width="2.4" stroke-dasharray="7 5" points="${p2.join(' ')}"/>`;
+  E.syv.forEach((z, i) => {
+    const dp = i > 0 ? E.hton[i - 1] - E.hton[i] : null, dn = i < E.syv.length - 1 ? E.hton[i + 1] - E.hton[i] : null;   // viiva ylös (edellinen) ja alas (seuraava): oikealle > 0
+    const vapaa = [['UR', dp === null || dp <= 0], ['LR', dn === null || dn <= 0], ['UL', dp === null || dp >= 0], ['LL', dn === null || dn >= 0]].find(([, ok]) => ok)?.[0] || 'UR';   // lukema sille neljännekselle, jonne viiva ei kulje
+    const [ox, oy, anc] = { UR: [11, -11, 'start'], LR: [11, 21, 'start'], UL: [-11, -11, 'end'], LL: [-11, 21, 'end'] }[vapaa];
+    s += `<circle cx="${x(E.hton[i])}" cy="${y(z)}" r="4.5" fill="var(--ink)"/><text x="${x(E.hton[i]) + ox}" y="${y(z) + oy}" text-anchor="${anc}" font-size="12" font-weight="700" fill="var(--ink)" stroke="var(--paper)" stroke-width="3" paint-order="stroke">${E.hton[i]}</text>`;
+    if (E.htty[i] != null) { const xx = x(E.htty[i]); s += `<rect x="${xx - 4}" y="${y(z) - 4}" width="8" height="8" fill="var(--bad)"/>`; s += `<text x="${xx}" y="${y(z) + 19}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--bad)" stroke="var(--paper)" stroke-width="3" paint-order="stroke">${E.htty[i]}</text>`; }
+  });
+  if (korosta) s += `<circle cx="${x(E.su)}" cy="${y(E.z)}" r="9" fill="none" stroke="var(--water)" stroke-width="2.5"/><line x1="${L}" x2="${x(E.su)}" y1="${y(E.z)}" y2="${y(E.z)}" stroke="var(--water)" stroke-dasharray="5 4" stroke-width="1.5"/>`;
+  const lx = W - R + 18;
+  // ennen tarkistusta viivoja ei nimetä: opiskelija päättelee itse, kumpi on häiriintymätön (Mikko 27.11.2026)
+  const n1 = korosta ? ['häiriintymätön', '(HTÖN, hidas pyöritys)'] : ['yhtenäinen viiva', ''], n2 = korosta ? ['häiriintynyt', '(HTTY, nopea pyöritys)'] : ['katkoviiva', ''];
+  s += `<line x1="${lx}" x2="${lx + 28}" y1="${T + 20}" y2="${T + 20}" stroke="var(--ink)" stroke-width="2.6"/><circle cx="${lx + 14}" cy="${T + 20}" r="4.5" fill="var(--ink)"/><text x="${lx + 36}" y="${T + 24}" font-size="12" font-weight="700" fill="var(--ink)">${n1[0]}</text><text x="${lx + 36}" y="${T + 40}" font-size="12" fill="var(--muted)">${n1[1]}</text>`;
+  s += `<line x1="${lx}" x2="${lx + 28}" y1="${T + 70}" y2="${T + 70}" stroke="var(--bad)" stroke-width="2.4" stroke-dasharray="7 5"/><rect x="${lx + 10}" y="${T + 66}" width="8" height="8" fill="var(--bad)"/><text x="${lx + 36}" y="${T + 74}" font-size="12" font-weight="700" fill="var(--bad)">${n2[0]}</text><text x="${lx + 36}" y="${T + 90}" font-size="12" fill="var(--muted)">${n2[1]}</text>`;
+  s += `<text x="${lx}" y="${T + 128}" font-size="12" fill="var(--muted)">5 m: kova kerros,</text><text x="${lx}" y="${T + 144}" font-size="12" fill="var(--muted)">${korosta ? 'häiriintynyttä' : 'katkoviivaa'} ei mitattu</text>`;
+  if (!korosta) s += `<text x="${lx}" y="${T + 184}" font-size="12" font-weight="700" fill="var(--ink)">Kumpi on kumpi?</text><text x="${lx}" y="${T + 200}" font-size="12" fill="var(--muted)">Päättele itse.</text>`;
+  return s + '</svg>';
+}
+
+function osa(id, nimi, p, sis) { return `<section class="osa" id="${id}"><div class="osa-h"><h2>${nimi}</h2><span class="p">${p ? p + ' p' : 'ei pisteitä'}</span></div>${sis}</section>`; }
+const rivi = (osaId) => `<div class="rivi"><button class="main" data-tarkista="${osaId}">Tarkista</button><span class="tila" id="t${osaId.slice(1)}"></span></div><div class="ratk" hidden id="r${osaId.slice(1)}"></div>`;
+const syote = (id, lab, leveys) => `<label><span class="lab">${lab}</span><input type="text" inputmode="decimal" id="${id}"${leveys ? ` style="width:${leveys}"` : ''}></label>`;
+function uusiKoe() {
+  for (const k in pisteet) delete pisteet[k];
+  siemen = (Date.now() + Math.floor(Math.random() * 1e6)) % 2147483647 || 1;
+  const R = arvoRakeisuus(), KY = arvoKayrat(), TV = arvoTilavuus(), S = arvoSigma(), P = arvoPainuma(), E = arvoSiipi();
+  const Q = sekoita(KYS).slice(0, 6);
+  window.__testi = { R, KY, TV, S, P, E };  // automaattitesti (ei vaikuta käyttöön)
+  const koe = $('#koe');
+  const sk = (v) => String(v).replace('.', ',');
+  koe.innerHTML =
+    osa('o1', '1. Kysymykset', 6, `<p class="tehtava">Vastaa lyhyesti omin sanoin. Avaa sitten mallivastaus ja arvioi itse: 1 / ½ / 0 p.</p>` +
+      Q.map((q, i) => `<div class="kys" data-i="${i}"><div class="aihe">${esc(q.aihe)}</div><div class="q">${i + 1}. ${esc(q.q)}</div><textarea id="k${i}" aria-label="Vastaus kysymykseen ${i + 1}"></textarea>
+      ${q.v && q.v.length ? vinkit('vk' + i, q.v.map(esc)) : ''}<div class="arvio"><button data-nayta="${i}">Näytä mallivastaus</button><span hidden data-arvio="${i}"><button data-p="1">1 p</button> <button data-p="0.5">½ p</button> <button data-p="0">0 p</button></span></div>
+      <div class="ratk" hidden id="mv${i}"><b>Mallivastaus:</b> ${esc(q.a)}${q.s ? `<br><span class="pieni">${esc(q.s)}</span>` : ''}</div></div>`).join('')) +
+
+    osa('o3', '2. Maalajin nimeäminen', 2, `<p class="tehtava">Nimeä rakeisuuskäyrien A–D maalajit (kuten kurssin tehtävässä). Pisteisiin riittää päämaalaji lyhenteenä, esim. Sa, Si, HkMr tai Sr. Moreenin täydestä nimestä lisänimineen (esim. hkSrMr) tulee merkintä ⭐ (ei lisäpisteitä).</p>
+      <div id="kkuva">${kayratSVG(KY, false)}</div>
+      <div class="vast">${KY.map(k => `<label>Käyrä ${k.kirjain}<input type="text" id="n${k.kirjain}" autocomplete="off" spellcheck="false"></label>`).join('')}</div>
+      ${nain('nimi')}${merkit(['f063', 'mr', 'lyh'])}${vinkit('v3', [
+        '<b>1. Savi?</b> Katso läpäisy 0,002 mm:n kohdalla. Jos se on 30 % tai yli → savi (Sa).',
+        '<b>2. Moreeni?</b> Katso läpäisy 0,063 mm:n ja 2 mm:n kohdalla. Jos 0,063 mm:n läpäisy ≥ 5 % <b>ja</b> 2 mm:n läpäisy ≤ 95 % → moreeni (Mr).',
+        '<b>3. Päänimi d₅₀:stä:</b> katso, mihin väriin käyrä osuu 50 %:n kohdalla: Si (siltti), Hk (hiekka) vai Sr (sora). Moreenille Mr perään (esim. HkMr).'])}
+      ${rivi('o3')}`) +
+
+    osa('o2', '3. Rakeisuuskäyrä', 3, `<div class="tehtava"><p>Raekoostumuksen määritys (seulonta). Laske ensin <b>kokonaismassa</b>, sitten jokaiselle seulalle <b>jäi %</b> ja <b>läpäisy %</b>, piirrä käyrä, lue d₅₀ ja <b>nimeä maalaji</b>. Käyräsi piirtyy kaavioon sitä mukaa kuin täytät. Pisteet: läpäisyt 1 p, d₅₀ 1 p, maalaji 1 p.</p></div>
+      <div class="vast"><label>Kokonaismassa (g)<input type="text" inputmode="decimal" id="tot2" aria-label="Kokonaismassa grammoina"></label></div>
+      <div class="rak-grid"><div class="tw"><table class="pysty"><tr><th>Seula<br>[mm]</th><th>Jäi<br>[g]</th><th>Jäi<br>[%]</th><th>Läpäisy<br>[%]</th></tr>
+      ${R.m.map((v, i) => `<tr><th class="num">${i < SEULAT_K.length ? sk(SEULAT_K[i]) : 'pohja'}</th><td class="num">${v}</td><td><input type="text" inputmode="decimal" id="j${i}" aria-label="Jäi prosenttia ${i < SEULAT_K.length ? SEULAT_K[i] + ' mm' : 'pohja'}"></td><td>${i < SEULAT_K.length ? `<input type="text" inputmode="decimal" id="l${i}" aria-label="Läpäisy seulalla ${SEULAT_K[i]} mm">` : ''}</td></tr>`).join('')}</table></div>
+      <div id="rkuva">${rakeisuusSVG(null, null, null, SEULAT_K)}</div></div>
+      <div id="lue2" class="lukuohje" hidden></div>
+      <div class="vast">${syote('d50', 'Keskiraekoko d₅₀ (mm)')}<label>Maalaji (lyhenne, esim. HkMr)<input type="text" id="nimi2" autocomplete="off" spellcheck="false"></label>${syote('d60', 'Raekoko d₆₀ (mm) <span class="u">(valinnainen, ei pisteitä)</span>')}${syote('d10', 'Tehollinen raekoko d₁₀ (mm) <span class="u">(valinnainen; tyhjä, jos ei luettavissa)</span>')}${syote('cu2', 'Raekokosuhde Cu = d₆₀ / d₁₀ <span class="u">(valinnainen; tyhjä, jos d₁₀ ei luettavissa)</span>')}<label>Mitä Cu kertoo? <span class="u">(valinnainen)</span><select id="cuL"><option value="">valitse</option><option value="tasa">tasarakeinen (Cu &lt; 5)</option><option value="seka">sekarakeinen (Cu 5–15)</option><option value="suht">suhteistunut (Cu &gt; 15)</option><option value="-">ei voi laskea (d₁₀ puuttuu)</option></select></label></div>
+      ${nain('rak')}${merkit(['lap', 'd50', 'd60', 'cu'])}${vinkit('v2', [
+        'Laske ensin kokonaismassa: kaikkien seulojen ja pohjan massat yhteen. Jäi % = seulalle jäänyt massa / kokonaismassa · 100.',
+        'Läpäisy lasketaan <b>alhaalta ylöspäin</b>: 0,063 mm:n seulan läpäisy = pohjalle jääneen osuus. Seuraava seula ylöspäin = edellisen läpäisy + edelliselle (pienemmälle) seulalle jäänyt %.',
+        'Tarkistus: jäi-prosentit yhteensä = 100 % ja läpäisy kasvaa ylöspäin mentäessä.',
+        'd₅₀: katso, minkä kahden seulan läpäisyjen välissä 50 % on, ja lue kohta käyrältä (vaaka-akseli on logaritminen: apuviivat 0,2 · 0,3 · … · 0,9 ovat sitä tiheämmässä mitä isompi luku). Pieni heitto sallitaan.'])}
+      ${rivi('o2')}`) +
+
+
+
+    osa('o4', '4. Tilavuus- ja painolasku', 2, `<p class="tehtava">Maanäytteen tilavuus V = <b class="num">${sk(TV.V)} l</b>, massa (kostea) m = <b class="num">${fi(TV.mm, 2)} kg</b>, vesipitoisuus w = <b class="num">${sk(TV.w)} %</b>, kiintotiheys ρs = <b class="num">${fi(TV.rs, 2)} t/m³</b>, ρw = 1,0 t/m³. Laske kiven, veden ja ilman tilavuudet, huokoisuus ja kuivatilavuuspaino.</p>
+      <div id="tkuva" class="tkuva">${tilavuusSVG(TV, false)}</div>
+      <div class="vast">${syote('vs', 'Kiven tilavuus Vs (l)')}${syote('vw', 'Veden tilavuus Vw (l)')}${syote('vi', 'Ilman tilavuus Vilma (l)')}${syote('n', 'Huokoisuus n (%)')}${syote('gd', 'Kuivatilavuuspaino γd (kN/m³)')}</div>
+      <details class="merkit" id="valiv4"><summary>Välivaiheet: laske vaiheittain kuten tunnilla (avaa, jos haluat)</summary>
+        <ol class="kaavapolku">
+          <li><b>I</b> kuivamassa md = m / (1 + w) <span class="pieni">(w desimaalina)</span></li>
+          <li><b>II</b> veden massa mw = m − md</li>
+          <li><b>III</b> tilavuudet Vs = md / ρs · Vw = mw / ρw · Vilma = V − Vs − Vw <span class="pieni">(kentät yllä)</span></li>
+          <li><b>IV</b> huokostilavuus Vh = Vw + Vilma → huokoisuus n = Vh / V · 100 %</li>
+          <li><b>V</b> kuivatilavuuspaino γd = md · 9,81 / V</li></ol>
+        <div class="vast">${syote('md2', 'I Kuivamassa md = m / (1 + w) (kg)')}${syote('mw2', 'II Veden massa mw = m − md (kg)')}${syote('vh2', 'IV Huokostilavuus Vh = Vw + Vilma (l)')}</div>
+        <p class="pieni">Välivaiheet tarkistetaan, mutta ne eivät vaikuta pisteisiin.</p>
+      </details>
+      ${nain('til')}${merkit(['V', 'm', 'md', 'mw', 'w', 'rs', 'Vs', 'n', 'gd', 'g981'])}${vinkit('v4', [
+        '<b>I</b> Kuivamassa md = m / (1 + w), w desimaalina (esim. 6,5 % → 0,065). <b>II</b> mw = m − md.',
+        '<b>III</b> Vs = md / ρs, Vw = mw / ρw (litroina), Vilma = V − Vs − Vw.',
+        '<b>IV</b> Vh = Vw + Vilma, n = Vh / V · 100 %. <b>V</b> γd = md · 9,81 / V (kN/m³).'])}
+      ${rivi('o4')}`) +
+
+    osa('o5', '5. Sigma viiva', 3, `<p class="tehtava">Laske pystysuora tehokas raepaine σ̄ jokaisen kerroksen alapinnassa (taulukko) ja hahmottele sigmaviiva. ${S.annettuTeh ? 'Pohjaveden alapuolisille kerroksille on annettu valmiiksi tehokas tilavuuspaino γ′.' : 'Pohjaveden alapuolisille kerroksille on annettu γsat.'}</p>
+      <div id="skuva">${sigmaProfiiliSVG(S, false)}</div>
+      <div class="tw"><table><tr><th>Kerros</th><th>z [m]</th><th>γ [kN/m³]</th><th>σ̄ alapinnassa [kN/m²]</th></tr>${S.kerrokset.map((k, i) => `<tr><td>${k.nimi}</td><td class="num">${sk(k.h)}</td><td class="num">${k.alla ? (S.annettuTeh ? k.g + ' (γ′)' : k.g + ' (γsat)') : k.g}</td><td><input type="text" inputmode="decimal" id="s${i}" aria-label="sigma viiva kerroksen ${k.nimi} alapinnassa"></td></tr>`).join('')}</table></div>
+      ${nain('sig')}${merkit(['sig', 'g', 'gsat', 'gp', 'pvp', 'z'])}${vinkit('v5', [
+        'σ̄ lasketaan ylhäältä alas ja <b>summataan</b>: jokainen kerros lisää paksuus · tilavuuspaino.',
+        S.annettuTeh ? 'Pohjaveden alla käytä taulukon γ′-arvoa sellaisenaan (noste on jo vähennetty).' : 'Pohjaveden alla käytä <b>γsat − 10</b> (veden noste).',
+        'Kirjoita jokainen välisumma taulukkoon: ensimmäisen kerroksen alapinta = z · γ, seuraava = edellinen + z · γ jne.'])}
+      ${rivi('o5')}`) +
+
+    osa('o6', '6. Painumat', 4, `<p class="tehtava">Kaksi eri savikerrosta: kummastakin oma ödometrikäyrä samassa kuvaajassa (<b style="color:var(--water)">A</b> ja <b style="color:var(--soil)">B</b>). Lue ε käyrältä (pisteiden arvot on merkitty). Taitekohta = kerroksen nykyinen tehokas raepaine σ₀.</p>
+      <div id="okuva">${odometriSVG(P, null)}</div>
+      <p class="tehtava"><b>a) Savikerros A:</b> ${P.z1} m paksu, tehokas raepaine σ₀ = ${P.a1} kN/m² (käyrän A taitekohta). Rakennus aiheuttaa lisäkuorman Δσ = <b>${P.d1} kN/m²</b>. Laske konsolidaatiopainuma.<br><b>b) Savikerros B:</b> ${P.z2} m paksu, tehokas raepaine σ₀ = ${P.a2} kN/m² (käyrän B taitekohta), lisäkuorma Δσ = <b>${P.d2} kN/m²</b>. Laske konsolidaatiopainuma.</p>
+      <div class="vast">${syote('p1', 'a) Painuma sk (m)')}${syote('p2', 'b) Painuma sk (m)')}</div>
+      ${nain('pai')}${merkit(['s', 'eps', 'de', 'sk', 'z'])}${vinkit('v6', [
+        'Loppujännitys σ₁ = σ₀ + Δσ (esim. ' + P.a1 + ' + ' + P.d1 + ' = ' + P.b1 + ' kN/m²).',
+        'Lue ödometrikäyrältä ε alkujännityksen ja loppujännityksen kohdalta. Δε = ε(σ₁) − ε(σ₀).',
+        '<b>sk = z · Δε</b>, Δε desimaalina (24 % = 0,24). Tulos metreinä.'])}
+      ${rivi('o6')}`) +
+
+    osa('o7', '7. Mustiksen spessu: siipikairaus', 3, `<p class="tehtava">Siipikairaus savikerroksessa (kuten tuntiharjoituksessa). Rakenne on pysyvä, joten koheesion osavarmuuskerroin γc = 1,5.</p>
+      <div id="siipikuva">${siipiSVG(E, false)}</div>
+      <p class="tehtava">a) Lue <b>häiriintymätön</b> leikkauslujuus su syvyydellä <b>${E.z} m</b>.<br>b) Laske koheesion laskenta-arvo cD = su / γc.<br>c) ${E.kys.q}</p>
+      <div class="vast">${syote('e1s', 'a) Häiriintymätön leikkauslujuus su (kN/m²)')}${syote('e1c', 'b) Koheesion laskenta-arvo cD (kN/m²)')}<label><span class="lab">c) Valitse</span><select id="e3"><option value="">valitse</option>${E.kys.o.map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select></label></div>
+      ${merkit(['su', 'c', 'tau'])}${vinkit('v7', [
+        '<b>a)</b> Häiriintynyt lujuus on aina pienempi kuin häiriintymätön, koska sekoitettu savi on heikompaa. Kumpi viiva on siis oikealla? Mene kysytylle syvyydelle ja lue arvo.',
+        '<b>b)</b> Savi on koheesiomaa: cD = su / γc = su / 1,5. Savessa leikkauslujuus τ = cD.',
+        '<b>c)</b> Hidas pyöritys (1° / 10 s) → häiriintymätön. Nopea pyöritys (1 kierros/s, n. 10 kierrosta) → häiriintynyt, aina pienempi.'])}
+      ${rivi('o7')}`);
+
+  alaindeksit(koe);   // merkinnät alaindekseinä kaikissa tehtävissä
+  // Rakeisuuskäyrä piirtyy syötteistä
+  const omat = () => SEULAT_K.map((_, i) => luku($('#l' + i).value));
+  // kun kaikki läpäisyt on syötetty, apuviivat piirretään opiskelijan OMALLE käyrälle (väärillä arvoilla väärä tulos, ei paljasta vastausta)
+  const dmOma = () => { const o = omat(); if (!o.every(v => isFinite(v))) return null; return { d10: dLue(o, SEULAT_K, 10), d50: dLue(o, SEULAT_K, 50), d60: dLue(o, SEULAT_K, 60) }; };
+  const dmR = { d10: R.d10, d50: R.d50, d60: R.d60 };
+  const lueTaulukosta = () => {
+    const o = omat(), el = $('#lue2'); if (!el) return;
+    if (!o.every(v => isFinite(v))) { el.hidden = true; return; }
+    const f = o[9], p2 = o[4], sora = 100 - p2, hiekka = p2 - f;
+    const alue = f >= 50 ? 'siltin (hienoaineksen) alueella → päänimi Si' : p2 < 50 ? 'soran alueella → päänimi Sr' : 'hiekan alueella → päänimi Hk';
+    el.innerHTML = `<b>Lue maalaji taulukosta</b> (omista luvuistasi):<ol>
+      <li>Hienoaines = läpäisy 0,063 mm:llä = <b>${fi(f)} %</b> → ${f >= 5 ? '≥ 5 %' : '< 5 %'}</li>
+      <li>Sora = 100 − läpäisy 2 mm:llä = 100 − ${fi(p2)} = <b>${fi(sora)} %</b> → ${sora >= 5 ? '≥ 5 %' : '< 5 %'}${f >= 5 && sora >= 5 ? ' → molempia ≥ 5 % → <b>moreeni</b>' : ' → ei moreeni'}</li>
+      <li>d₅₀:n alue: läpäisy 0,063 mm:llä ${fi(f)} % ja 2 mm:llä ${fi(p2)} % → 50 % ylittyy ${alue}</li>
+      <li>Lisänimi: lajitteet hienoaines ${fi(f)} %, hiekka ${fi(hiekka)} %, sora ${fi(sora)} %. Onko jotain muuta kuin päälajitetta ${f >= 5 && sora >= 5 ? 'yli 30 %' : '30–50 %'}?</li></ol>
+      <span class="pieni">Seulonnassa ei mitata savea (0,002 mm), joten oletetaan, ettei näyte ole savea.</span>`;
+    el.hidden = false;
+  };
+  koe.querySelectorAll('[id^=l]').forEach(inp => inp.addEventListener('input', lueTaulukosta));
+  koe.querySelectorAll('[id^=l]').forEach(inp => inp.addEventListener('input', () => { $('#rkuva').innerHTML = koe.dataset.r2 ? rakeisuusSVG(R.lap, omat(), dmR, SEULAT_K) : rakeisuusSVG(null, omat(), dmOma(), SEULAT_K); }));
+  kytkeVinkit(koe);
+  koe.addEventListener('input', (ev) => {
+    const inp = ev.target;
+    if (!(inp instanceof HTMLInputElement) || inp.inputMode !== 'decimal') return;
+    const t = inp.value.trim(), huono = t && !(inp.id === 'd10' && /^(ei|-)$/i.test(t)) && isNaN(luku(t));
+    inp.classList.toggle('vaara-i', !!huono);
+    viesti(inp, huono ? 'Kirjoita luku, esim. 21,3 (yksikön saa lisätä perään).' : '');
+  });
+  koe.querySelectorAll('[data-nayta]').forEach(b => b.onclick = () => { const i = b.dataset.nayta; $('#mv' + i).hidden = false; $(`[data-arvio="${i}"]`).hidden = false; b.hidden = true; });
+  const kp = {};
+  koe.querySelectorAll('[data-arvio]').forEach(sp => sp.querySelectorAll('button').forEach(b => b.onclick = () => {
+    sp.querySelectorAll('button').forEach(x => x.classList.remove('on')); b.classList.add('on'); kp[sp.dataset.arvio] = +b.dataset.p;
+    pisteet.o1 = Object.values(kp).reduce((a, c) => a + c, 0);
+    paivitaPisteet(); }));
+  const tila = (n, p, max) => { const t = $('#t' + n); t.textContent = max ? `${fi(p, p % 1 ? 1 : 0)} / ${max} p` : (p ? 'oikein' : 'tarkista vastaukset'); t.className = 'tila ' + ((max ? p >= max : p) ? 'ok' : 'bad'); };
+  const ok = (id, oikea, tol, abs) => { const inp = $('#' + id); const y = lahella(luku(inp.value), oikea, tol, abs); merkitse(inp, y); return y; };
+  const puoliksi = (x) => Math.round(x * 2) / 2;
+  const tarkistus = {
+    o2() {
+      let okL = 0, ylhaalta = 0; SEULAT_K.forEach((_, i) => { const inp = $('#l' + i), v = luku(inp.value), y = lahella(v, R.lap[i], 0, 1.05); merkitse(inp, y); okL += y; if (!y && lahella(v, 100 - R.lap[i], 0, 1.05)) ylhaalta++; });
+      R.jai.forEach((j, i) => { const inp = $('#j' + i); if (inp.value.trim()) merkitse(inp, lahella(luku(inp.value), j, 0, 0.55)); });
+      { const ti = $('#tot2'), tv = luku(ti.value); merkitse(ti, lahella(tv, R.tot, 0, 0.5)); viesti(ti, !ti.value.trim() ? 'Laske kokonaismassa: kaikki seulat + pohja.' : lahella(tv, R.tot, 0, 0.5) ? '' : lahella(tv, R.tot - R.m[10], 0, 0.5) ? 'Pohja puuttuu summasta.' : ''); }
+      if (ylhaalta >= 3) vihje($('#l9'), 'Laskitko seulalle jääneet yhteen ylhäältä? Läpäisy = mitä meni läpi: aloita alhaalta pohjan osuudesta.');
+      const a = dOk(luku($('#d50').value), R.d50); merkitse($('#d50'), a);   // luetaan käyrältä, heitto suuruusluokan mukaan
+      ['d60', 'd10'].forEach(id => { const inp = $('#' + id), o = id === 'd60' ? R.d60 : R.d10; if (inp.value.trim() || o === null) { if (o === null) merkitse(inp, inp.value.trim() === '' || /ei|-/.test(inp.value)); else merkitse(inp, dOk(luku(inp.value), o)); } });
+      // nimi: täysi nimi lisänimineen 1 p, päänimi ilman lisänimeä ½ p (seulonnassa ei mitata savea → oletetaan ei savea)
+      const NN = nimea(R.lap[9], R.lap[4], R.d50), perus = NN.paa + (NN.moreeni ? 'Mr' : ''), ninp = $('#nimi2'), nraaka = ninp.value.trim().replace(/[.,;:!]+$/, '').replace(/\s+/g, '');
+      const nTay = nraaka === NN.lyh, nPuoli = !nTay && nraaka === perus && perus !== NN.lyh;
+      merkitse(ninp, nTay); viesti(ninp, nTay ? '' : !nraaka ? 'Anna vastaus.' : nPuoli ? 'Päänimi oikein, lisänimi puuttuu (½ p).' : NN.lyh.toLowerCase() === nraaka.toLowerCase() ? 'Kirjaimet oikein, mutta koko väärin (päämaalaji isolla, lisänimi pienellä).' : '');
+      const p = (okL === 10 ? 1 : okL >= 8 ? 0.5 : 0) + (a ? 1 : 0) + (nTay ? 1 : nPuoli ? 0.5 : 0);
+      koe.dataset.r2 = 1; $('#rkuva').innerHTML = rakeisuusSVG(R.lap, omat(), dmR, SEULAT_K);
+      const cu = R.d10 ? R.d60 / R.d10 : null;
+      { // Cu (valinnainen, ei pisteitä): hyväksytään oikea ±25 % tai opiskelijan omista d₆₀/d₁₀-arvoista laskettu; luokka oikea tai rajan lähellä viereinen
+        const ci = $('#cu2'), cv = luku(ci.value), d6 = luku($('#d60').value), d1 = luku($('#d10').value), oma = isFinite(d6) && isFinite(d1) && d1 > 0 ? d6 / d1 : NaN;
+        if (ci.value.trim() || cu === null) merkitse(ci, cu === null ? (ci.value.trim() === '' || /ei|-/.test(ci.value)) : (lahella(cv, cu, 0.25) || lahella(cv, oma, 0.03) || lahella(cv, cuNakyva(R), 0.03)));
+        const li = $('#cuL'), hyv = new Set([cuLuokka(cu)]); if (cu !== null) { if (Math.abs(cu - 5) < 1) { hyv.add('tasa'); hyv.add('seka'); } if (Math.abs(cu - 15) < 2) { hyv.add('seka'); hyv.add('suht'); } if (isFinite(oma)) hyv.add(cuLuokka(oma)); hyv.add(cuLuokka(cuNakyva(R))); }
+        if (li.value) merkitse(li, hyv.has(li.value));
+      }
+      return [p, 3, `Kokonaismassa = ${R.m.join(' + ')} = <b class="num">${R.tot} g</b><br>Jäi %: ${R.jai.map((j, i) => `<span class="num">${i < SEULAT_K.length ? sk(SEULAT_K[i]) : 'pohja'}→${fi(j)}</span>`).join(' · ')}<br>
+        Läpäisy % (alhaalta ylöspäin summaten): ${SEULAT_K.map((s, i) => `<span class="num">${sk(s)}→${fi(R.lap[i])}</span>`).join(' · ')}<br>
+        d₅₀ ≈ <b class="num">${dTxt(R.d50)} mm</b>${R.d60 ? `, d₆₀ ≈ ${dTxt(R.d60)} mm` : ''}${R.d10 ? `, d₁₀ ≈ ${dTxt(R.d10)} mm` : ', d₁₀ ei luettavissa seulonnasta'}${cu ? `, Cu = d₆₀ / d₁₀ = ${dTxt(R.d60)} / ${dTxt(R.d10)} = ${fi(cuNakyva(R))} → <b>${CU_NIMI[cuLuokka(cuNakyva(R))]}</b> (myös omista d-arvoistasi laskettu Cu hyväksytään)` : ' (Cu ei laskettavissa, koska d₁₀ puuttuu)'}. Sininen katkoviiva on oikea käyrä, mustat apuviivat näyttävät lukukohdat. ${(() => { const r = seulavali(R.lap, SEULAT_K, 50), h = dHeitto(R.d50); return r ? `<br><b>d₅₀ luetaan näin:</b> läpäisy 50 % on seulojen ${sk(r[0])} mm (${fi(r[2])} %) ja ${sk(r[1])} mm (${fi(r[3])} %) välissä → lue 50 %:n kohta käyrältä → d₅₀ ≈ <b>${dTxt(R.d50)} mm</b>. Hyväksytään ${dTxt(R.d50)} ± ${String(h).replace('.', ',')} mm (lukutarkkuus tällä raekoolla). Sama heitto d₆₀:lle ja d₁₀:lle.` : ''; })()}
+        <br><b>Maalaji: ${NN.lyh} = ${NN.pitka}</b> (hienoaines ${fi(NN.hieno)} %, hiekka ${fi(NN.hiekka)} %, sora ${fi(NN.sora)} %). Pisteet: läpäisyt 1 p, d₅₀ 1 p, maalaji 1 p.
+        ${tulkinta(R.lap[9], R.lap[4], R.d50)}`];
+    },
+    o3() {
+      let okN = 0, tayNimi = 0;
+      const sel = KY.map(k => {
+        const inp = $('#n' + k.kirjain), raaka = inp.value.trim().replace(/[.,;:!]+$/, '').replace(/\s+/g, '');
+        const y = k.hyvaksy.includes(raaka); merkitse(inp, y); okN += y; if (y && raaka === k.taysi && k.taysi !== k.hyvaksy[0]) tayNimi++;
+        viesti(inp, y ? '' : !raaka ? 'Anna vastaus.' : k.hyvaksy.map(h => h.toLowerCase()).includes(raaka.toLowerCase()) ? 'Kirjaimet oikein, mutta koko väärin (päämaalaji isolla, esim. HkMr).' : '');
+        return `<b>${k.kirjain} = ${k.nimi}</b>: 0,002 mm läpäisy ${fi(k.savi, 0)} % ${k.savi >= 30 ? '≥ 30 % → savi' : '< 30 %'}${k.savi >= 30 ? '' : ` · 0,063 mm ${fi(k.f063, 0)} % ja 2 mm ${fi(k.p2, 0)} % → ${k.moreeni ? 'moreeni' : 'ei moreeni'} · d₅₀ ≈ ${dTxt(k.d50)} mm → ${NIMET[k.paa] || 'savi'}`}`;
+      });
+      $('#kkuva').innerHTML = kayratSVG(KY, true);
+      return [okN * 0.5, 2, sel.join('<br>') + (tayNimi ? `<br>⭐ Täysi nimi lisänimineen oikein ${tayNimi} käyrässä.` : '') + '<br><span class="pieni">Pisteisiin riittää päänimi. Moreenin täysi nimi: muuta lajitetta yli 30 % → lisänimi pienellä (esim. hkSrMr = hiekkainen soramoreeni). Oranssit pisteet kuvassa: läpäisy 0,002, 0,063 ja 2 mm:n kohdalla.</span>'];
+    },
+    o4() {
+      const t = [['vs', TV.Vs], ['vw', TV.Vw], ['vi', TV.Vi]].map(([id, o]) => ok(id, o, 0.03, 0.11));
+      const yn = ok('n', TV.n, 0.03, 0.8), yg = ok('gd', TV.gd, 0.015, 0.25);
+      const okT = t.filter(Boolean).length + yn + yg;
+      [['md2', TV.md, 0.02, 0.06], ['mw2', TV.mw, 0.03, 0.06], ['vh2', TV.Vw + TV.Vi, 0.03, 0.11]].forEach(([id, o, tol, abs]) => { const inp = $('#' + id); if (inp.value.trim()) merkitse(inp, lahella(luku(inp.value), o, tol, abs)); });
+      if (lahella(luku($('#md2').value), TV.mm / (1 + TV.w), 0.02)) vihje($('#md2'), `w desimaalina: ${String(TV.w).replace('.', ',')} % = ${fi(TV.w / 100, 4)} → md = m / ${fi(1 + TV.w / 100, 4)}.`);
+      if (lahella(luku($('#md2').value), TV.mm * (1 - TV.w / 100), 0.005)) vihje($('#md2'), 'Ei m · (1 − w), vaan m / (1 + w): vesipitoisuus lasketaan kuivamassasta.');
+      if (lahella(luku($('#vh2').value), TV.Vi, 0.03, 0.05)) vihje($('#vh2'), 'Huokoset = vesi + ilma: Vh = Vw + Vilma.');
+      $('#tkuva').innerHTML = tilavuusSVG(TV, true); setTimeout(() => alaindeksit($('#o4')), 0);
+      const mdPros = TV.mm / (1 + TV.w);
+      if (lahella(luku($('#vs').value), mdPros / TV.rs, 0.03)) vihje($('#vs'), `Käytitkö w:n prosentteina? ${sk(TV.w)} % = ${fi(TV.w / 100, 4)} desimaalina.`);
+      if (lahella(luku($('#gd').value), TV.md / TV.V, 0.03)) vihje($('#gd'), 'Muista kertoa g:llä: γd = md · 9,81 / V.');
+      if (lahella(luku($('#n').value), TV.Vi / TV.V * 100, 0.03, 0.3)) vihje($('#n'), 'Huokoset = vesi + ilma: n = (Vw + Vilma) / V.');
+      return [Math.round(okT * 0.4 * 10) / 10, 2, `<b>I</b> md = m / (1 + w) = ${fi(TV.mm, 2)} / ${fi(1 + TV.w / 100, 4)} = ${fi(TV.md, 2)} kg · <b>II</b> mw = m − md = ${fi(TV.mw, 2)} kg<br>
+        <b>III</b> Vs = md / ρs = <b class="num">${fi(TV.Vs, 2)} l</b> · Vw = mw / ρw = <b class="num">${fi(TV.Vw, 2)} l</b> · Vilma = V − Vs − Vw = <b class="num">${fi(TV.Vi, 2)} l</b><br>
+        <b>IV</b> Vh = Vw + Vilma = ${fi(TV.Vw + TV.Vi, 2)} l · n = Vh / V · 100 % = <b class="num">${fi(TV.n)} %</b> · <b>V</b> γd = md · 9,81 / V = <b class="num">${fi(TV.gd)} kN/m³</b><br><span class="pieni">Kurssin tapaan välivaiheet voi pyöristää yhteen desimaaliin; pieni ero hyväksytään.</span>`];
+    },
+    o5() {
+      const okS = S.rajat.map((r, i) => ok('s' + i, r.s, 0.01, 0.2)).filter(Boolean).length;
+      if (!S.annettuTeh) { let s = 0; const ilman = S.kerrokset.map(k => (s += k.h * k.g)); S.kerrokset.forEach((k, i) => { if (k.alla && lahella(luku($('#s' + i).value), ilman[i], 0.01, 0.2)) vihje($('#s' + i), 'Pohjaveden alla käytetään γsat − 10. Muistitko vähentää 10?'); }); }
+      $('#skuva').innerHTML = sigmaProfiiliSVG(S, true);
+      let edel = 0;
+      return [puoliksi(3 * okS / S.rajat.length), 3, S.kerrokset.map((k, i) => { const r = S.rajat[i], t = `${k.nimi}: ${fi(edel)} + ${sk(k.h)} · ${k.alla && !S.annettuTeh ? `(${k.g} − 10)` : k.gLask} = <b class="num">${fi(r.s)}</b> kN/m² (${fi(r.z)} m)`; edel = r.s; return t; }).join('<br>') + '<br><span class="pieni">Sigmaviiva on piirretty kuvaan: σ̄ kasvaa suoraviivaisesti kerroksen sisällä.</span>'];
+    },
+    o6() {
+      const v1 = metreina($('#p1').value), v2 = metreina($('#p2').value);
+      const y1 = lahella(v1, P.s1, 0.03, 0.01), y2 = lahella(v2, P.s2, 0.03, 0.01);
+      merkitse($('#p1'), y1); merkitse($('#p2'), y2);
+      [[v1, P.s1, '#p1', P.z1, P.d1], [v2, P.s2, '#p2', P.z2, P.d2]].forEach(([v, o, id]) => { if (lahella(v, o * 100, 0.03)) vihje($(id), 'Muuta Δε prosenteista desimaaliksi (13 % = 0,13). Vastaus metreinä.'); });
+      const e1 = P.K1.e, e2 = P.K2.e;
+      [[v1, '#p1', P.z1, P.a1, P.d1, P.b1, P.s1, P.K1, P.K2], [v2, '#p2', P.z2, P.a2, P.d2, P.b2, P.s2, P.K2, P.K1]].forEach(([v, id, z, a0, d, b1, oik, K, muu]) => { const e = K.e;
+        const vaaraSigma = K.sig.includes(d) && d > a0 ? z * (e(d) - e(a0)) / 100 : NaN, pelkkaD = K.sig.includes(d) ? z * e(d) / 100 : NaN, toisesta = z * (muu.e(b1) - muu.e(a0)) / 100;
+        if ((lahella(v, vaaraSigma, 0.02) || lahella(v, pelkkaD, 0.02)) && !lahella(v, oik, 0.03, 0.01)) vihje($(id), `Loppujännitys σ₁ = σ₀ + Δσ = ${a0} + ${d} = ${b1} kN/m². Lue ε sen kohdalta, ei pelkän lisäkuorman kohdalta.`);
+        else if (lahella(v, toisesta, 0.02) && !lahella(v, oik, 0.03, 0.01)) vihje($(id), 'Lue oman kerroksen käyrältä: a-kohta käyrä A, b-kohta käyrä B.');
+      });
+      $('#okuva').innerHTML = odometriSVG(P, [[P.K1, P.a1, 'var(--water)'], [P.K1, P.b1, 'var(--water)'], [P.K2, P.a2, 'var(--soil)'], [P.K2, P.b2, 'var(--soil)']]);
+      return [(y1 ? 2 : 0) + (y2 ? 2 : 0), 4, `a) käyrä A: σ₁ = ${P.a1} + ${P.d1} = ${P.b1} kN/m² · ε(${P.a1}) = ${e1(P.a1)} %, ε(${P.b1}) = ${e1(P.b1)} % → Δε = ${e1(P.b1) - e1(P.a1)} % → sk = ${P.z1} · ${fi((e1(P.b1) - e1(P.a1)) / 100, 2)} = <b class="num">${fi(P.s1, 2)} m</b><br>
+        b) käyrä B: σ₁ = ${P.a2} + ${P.d2} = ${P.b2} kN/m² · ε(${P.a2}) = ${e2(P.a2)} %, ε(${P.b2}) = ${e2(P.b2)} % → Δε = ${e2(P.b2) - e2(P.a2)} % → sk = ${P.z2} · ${fi((e2(P.b2) - e2(P.a2)) / 100, 2)} = <b class="num">${fi(P.s2, 2)} m</b><br><span class="pieni">Lukukohdat on merkitty käyrille (sininen = A, oranssi = B).</span>`];
+    },
+    o7() {
+      const su = luku($('#e1s').value), cd = luku($('#e1c').value);
+      const ys = lahella(su, E.su, 0, 0.5), yc = lahella(cd, E.cD, 0.02, 0.15), y3 = $('#e3').value === E.kys.oikea;
+      merkitse($('#e1s'), ys); merkitse($('#e1c'), yc); merkitse($('#e3'), y3);
+      const ht = E.htty[E.z - 1];
+      if (!ys && ht != null && lahella(su, ht, 0, 0.5)) vihje($('#e1s'), 'Tämä on häiriintynyt arvo (katkoviiva). Kysytty on häiriintymätön = yhtenäinen viiva.');
+      if (!ys && E.syv.some((z, i) => z !== E.z && lahella(su, E.hton[i], 0, 0.5))) vihje($('#e1s'), `Tarkista syvyys: kysytty on ${E.z} m.`);
+      if (!yc && lahella(cd, E.su * 1.5, 0.02)) vihje($('#e1c'), 'Jaetaan, ei kerrota: cD = su / 1,5.');
+      if (!yc && lahella(cd, E.su / 1.2, 0.02)) vihje($('#e1c'), 'Koheesiolle γc = 1,5 (1,2 on kitkakulman γφ).');
+      if (!yc && lahella(cd, E.su, 0, 0.1)) vihje($('#e1c'), 'Muista osavarmuuskerroin: cD = su / 1,5.');
+      if (!yc && ht != null && (lahella(cd, ht, 0, 0.1) || lahella(cd, ht / 1.5, 0.02))) vihje($('#e1c'), `Käytit häiriintynyttä arvoa (punainen ${ht}). Koheesio lasketaan a-kohdan häiriintymättömästä: ${E.su} / 1,5.`);
+      $('#siipikuva').innerHTML = siipiSVG(E, true);
+      return [(ys ? 1 : 0) + (yc ? 1 : 0) + (y3 ? 1 : 0), 3, `a) Häiriintymätön on aina suurempi (ehjä savi on lujempaa kuin sekoitettu), joten se on oikeanpuoleinen eli yhtenäinen viiva. Syvyydellä ${E.z} m → <b class="num">su = ${E.su} kN/m²</b> (merkitty sinisellä).<br>
+        b) Koheesio lasketaan <b>a-kohdan häiriintymättömästä</b> arvosta (ei punaisesta): cD = su / γc = ${E.su} / 1,5 = <b class="num">${fi(E.cD, 1)} kN/m²</b>.<br>
+        <span class="pieni">Miksi jaetaan 1,5:llä? su on mitattu arvo. Mitoituksessa siitä otetaan varmuuden vuoksi vain osa, ja koheesion osavarmuusluku on γc = 1,5. Savella kitkakulma φ = 0, joten koko lujuus on koheesiota: τ = cD.</span><br>
+        c) <b>${E.kys.o.find(([v]) => v === E.kys.oikea)[1]}</b>. ${E.kys.sel}<br>
+        <span class="pieni">Muistisääntö: <b>hidas = häiriintymätön</b> (savi saa olla rauhassa, mitataan luonnontilainen lujuus). <b>Nopea = häiriintynyt</b> (siipi pyöritetään ensin n. 10 kierrosta, savi sekoittuu kuin vatkattu ja rakenne rikkoutuu, joten lujuus putoaa). Siksi punainen katkoviiva on aina vasemmalla eli pienempi.</span>`];
+    },
+  };
+  koe.querySelectorAll('[data-tarkista]').forEach(b => b.onclick = () => {
+    const id = b.dataset.tarkista, [p, max, ratk] = tarkistus[id]();
+    if (max) pisteet[id] = p; tila(id.slice(1), p, max); const r = $('#r' + id.slice(1)); r.innerHTML = ratk; r.hidden = false; alaindeksit($('#o' + id.slice(1))); paivitaPisteet();
+  });
+  paivitaPisteet(); window.scrollTo(0, 0);
+}
+
+/* ---------- Kello ---------- */
+let loppu = null, ajastin = null;
+$('#aloita').onclick = () => {
+  if (ajastin) { clearInterval(ajastin); ajastin = null; loppu = null; $('#aloita').textContent = 'Aloita kello'; $('#kello').textContent = '100:00'; $('#kello').className = 'pill num'; return; }
+  loppu = Date.now() + 100 * 60000; $('#aloita').textContent = 'Pysäytä';
+  ajastin = setInterval(() => { const s = Math.max(0, Math.round((loppu - Date.now()) / 1000)); $('#kello').textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`; $('#kello').className = 'pill num' + (s < 600 ? ' bad' : ''); if (!s) clearInterval(ajastin); }, 1000);
+};
+$('#uusi').onclick = uusiKoe;
+uusiKoe();
+/* Debug (Mikko 27.11.2026): näkyy vain osoitteella …#debug, täyttää oikeat vastaukset kenttiin. Ei vaikuta tavalliseen käyttöön. */
+let debugTila = (() => { try { return localStorage.getItem('geo_debug') === '1'; } catch (e) { return false; } })();
+const debugMuisti = () => debugTila;
+const debugNakyy = () => { const b = $('#debug'); if (b) b.hidden = !(location.hash === '#debug' || debugMuisti()); };
+debugNakyy(); window.addEventListener('hashchange', debugNakyy);
+// piilotettu avaus: 3 klikkausta versioriviin (Beta-versio …) näyttää tai piilottaa debug-napin, valinta muistetaan tässä selaimessa
+let debugKlikit = [];
+document.addEventListener('click', (e) => { if (!e.target.closest('.versio')) return; const nyt = Date.now(); debugKlikit = debugKlikit.filter(t => nyt - t < 1500).concat(nyt);
+  if (debugKlikit.length >= 3) { debugKlikit = []; debugTila = !debugTila; try { localStorage.setItem('geo_debug', debugTila ? '1' : '0'); } catch (err) {} debugNakyy(); const b = $('#debug'); if (b && !b.hidden) b.scrollIntoView({ block: 'nearest' }); } });
+$('#debug').onclick = () => {
+  const T = window.__testi; if (!T) return;
+  const aseta = (id, v, des = 3) => { const el = document.getElementById(id); if (!el || v == null || (typeof v === 'number' && !isFinite(v))) return; el.value = typeof v === 'number' ? String(Math.round(v * 10 ** des) / 10 ** des).replace('.', ',') : v; el.dispatchEvent(new Event('input', { bubbles: true })); };
+  const dd = (v) => v == null ? 1 : dDes(v);
+  aseta('tot2', T.R.tot, 0); T.R.jai.forEach((v, i) => aseta('j' + i, v, 1)); T.R.lap.forEach((v, i) => aseta('l' + i, v, 1));
+  aseta('d50', T.R.d50, dd(T.R.d50)); aseta('d60', T.R.d60, dd(T.R.d60)); aseta('d10', T.R.d10, dd(T.R.d10));
+  if (T.R.d10) aseta('cu2', cuNakyva(T.R), 1); { const l = document.getElementById('cuL'); if (l) l.value = cuLuokka(cuNakyva(T.R)); }
+  T.KY.forEach(c => aseta('n' + c.kirjain, c.hyvaksy[0]));
+  aseta('nimi2', nimea(T.R.lap[9], T.R.lap[4], T.R.d50).lyh);
+  { const d = document.getElementById('valiv4'); if (d) d.open = true; } aseta('md2', T.TV.md, 2); aseta('mw2', T.TV.mw, 2); aseta('vh2', T.TV.Vw + T.TV.Vi, 2); aseta('vs', T.TV.Vs); aseta('vw', T.TV.Vw); aseta('vi', T.TV.Vi); aseta('n', T.TV.n); aseta('gd', T.TV.gd);
+  T.S.rajat.forEach((r, i) => aseta('s' + i, r.s));
+  aseta('p1', T.P.s1); aseta('p2', T.P.s2);
+  aseta('e1s', T.E.su, 0); aseta('e1c', T.E.cD, 2); { const l = document.getElementById('e3'); if (l) l.value = T.E.kys.oikea; }
+  document.querySelectorAll('[data-nayta]').forEach(b => b.click());   // kysymysten mallivastaukset auki
+  document.querySelectorAll('[data-tarkista]').forEach(b => b.click());   // ratkaisut, apuviivat (d₁₀/d₅₀/d₆₀) ja pisteet näkyviin heti
+};
+
+</script>
+
+</body>
+</html>
