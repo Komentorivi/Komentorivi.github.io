@@ -220,7 +220,7 @@ table.pysty th:first-child{text-align:center}
     <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 2 p</span><span class="pill">Rakeisuuskäyrä 3 p</span><span class="pill">Tilavuus ja paino 2 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 4 p</span><span class="pill">Mustiksen spessu 3 p</span>
   </div>
 </header>
-<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 15.42 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 15.43 · korjauksia saattaa vielä tulla</span></p>
 <main id="koe"></main>
 <section class="tulos" id="tulos" hidden></section>
 
@@ -459,7 +459,7 @@ const TIIVIYS = ['löyhä (L)', 'keskitiivis (K)', 'tiivis (T)'];
 const taulukko1HTML = () => `<div class="tw"><table><tr><th>Maalaji</th><th>Tiiviys</th><th>φ (ast.)</th><th>Painokairaus pk/0,2 m</th></tr>${Object.values(TAULUKKO1).map(r => r.phi.map((p, i) => `<tr>${i === 0 ? `<td rowspan="3">${r.nimi}</td>` : ''}<td>${'LKT'[i]}</td><td>${p}</td><td>${r.pk[i]}</td></tr>`).join('')).join('')}</table></div><p class="pieni">Kurssin taulukko 1 (karkearakeisten maalajien arviointi rakeisuuden ja kairausvastuksen perusteella). Osavarmuuskertoimet: kitka γφ = 1,2 pysyvä, 1,1 työnaikainen, 1,25 anturat ja paalut · koheesio γc = 1,5 pysyvä, 1,3 työnaikainen, 1,75 anturat, 2,0 paalut.</p>`;
 
 function rakeisuusSVG(lap, oma, dm, seulat = SEULAT) {
-  const W = 700, L = 52, R = 40, T = 30, B = 42, H = dm ? 404 : 380, Hp = 380;   // Hp = kaavion alareuna ilman selitettä (korkea, jotta luku näkyy noin 5 %:n tarkkuudella)
+  const W = 700, L = 52, R = 40, T = 30, B = 42, H = dm ? 420 : 380, Hp = 380;   // Hp = kaavion alareuna ilman selitettä (korkea, jotta luku näkyy noin 5 %:n tarkkuudella)
   const x = (d) => L + (Math.log10(d) - Math.log10(0.001)) / (Math.log10(60) - Math.log10(0.001)) * (W - L - R);
   const y = (p) => T + (1 - p / 100) * (Hp - T - B);
   const vyot = [[0.001, 0.002, 'Sa', 'var(--sa)'], [0.002, 0.063, 'Si', 'var(--si)'], [0.063, 2, 'Hk', 'var(--hk)'], [2, 60, 'Sr', 'var(--sr)']];
@@ -492,7 +492,9 @@ function rakeisuusSVG(lap, oma, dm, seulat = SEULAT) {
     s += `<rect x="${X - 5}" y="${Y - 5}" width="10" height="10" fill="var(--soil)" transform="rotate(45 ${X} ${Y})"/>`;
     selite.push(`◆ ${String(d).replace('.', ',')} mm: ${fi(p)} %`);
   });
-  if (dm) s += `<text x="${L}" y="${H - 6}" font-size="13" font-weight="700" fill="var(--ink)">${lap ? '' : 'Omalta käyrältäsi:   '}${selite.join('     ')}</text>`;
+  // luetut arvot omaan laatikkoon kuvan alle, ettei niitä ohita (Mikko 27.11.2026: "tota ei heti huomaa")
+  if (dm) s += `<rect x="4" y="${Hp + 4}" width="${W - 8}" height="${H - Hp - 8}" rx="8" fill="var(--water-weak)" stroke="var(--water)" stroke-width="1.5"/>`
+    + `<text x="${W / 2}" y="${Hp + 4 + (H - Hp - 8) / 2 + 5}" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--ink)">${lap ? 'Käyrältä luettu:   ' : 'Omalta käyrältäsi:   '}${selite.join('    ')}</text>`;
   return s + '</svg>';
 }
 
