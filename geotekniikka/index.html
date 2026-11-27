@@ -234,7 +234,7 @@ table.pysty th:first-child{text-align:center}
     <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 4 p</span><span class="pill">Rakeisuuskäyrä 6 p</span><span class="pill">Tilavuus ja paino 4 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 3 p</span><span class="pill">Mustiksen spessu 3 p</span>
   </div>
 </header>
-<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 23.02 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 23.05 · korjauksia saattaa vielä tulla</span></p>
 <main id="koe"></main>
 <section class="tulos" id="tulos" hidden></section>
 
@@ -716,7 +716,7 @@ function sigmaProfiiliSVG(S, nayta) {
   const yy = (z) => top + z * sc, smax = S.rajat[S.rajat.length - 1].s, xs = (v) => gx + v / smax * gw;
   const varit = ['var(--sr)', 'var(--hk)', 'var(--sa)', 'var(--si)'];
   let s = `<svg class="kuva" viewBox="0 0 ${W} ${H}" role="img" aria-label="Maaprofiili kerroksineen ja pohjavedenpinta${nayta ? ' sekä sigmaviiva' : ''}">`, z = 0;
-  S.kerrokset.forEach((k, i) => { s += `<rect x="${x0}" y="${yy(z)}" width="${w}" height="${k.h * sc}" fill="${varit[i]}" opacity=".35" stroke="var(--ink)"/><text x="${x0 + 10}" y="${yy(z + k.h / 2) + 5}" font-size="14" font-weight="700" fill="var(--ink)">${k.nimi}   ${k.alla ? (S.annettuTeh ? `γ' = ${k.g}` : `γsat = ${k.g}`) : `γ = ${k.g}`} kN/m³</text>`; z += k.h; });
+  S.kerrokset.forEach((k, i) => { s += `<rect x="${x0}" y="${yy(z)}" width="${w}" height="${k.h * sc}" fill="${varit[i]}" opacity=".35" stroke="var(--ink)"/><text x="${x0 + 10}" y="${yy(z + k.h / 2) + 5}" font-size="14" font-weight="700" fill="var(--ink)">${k.nimi}   ${k.alla ? (S.annettuTeh ? `<tspan fill="var(--water)" font-size="17" font-weight="900">γ′</tspan> = ${k.g}` : `γsat = ${k.g}`) : `γ = ${k.g}`} kN/m³</text>`; z += k.h; });
   [0, ...S.rajat.map(r => r.z)].forEach(zz => s += `<line x1="${x0 - 6}" x2="${x0}" y1="${yy(zz)}" y2="${yy(zz)}" stroke="var(--ink)"/><text x="${x0 - 9}" y="${yy(zz) + 4}" text-anchor="end" font-size="12" fill="var(--ink)">${fi(zz)} m</text>`);
   s += `<line x1="${x0}" x2="${x0 + w + 30}" y1="${yy(S.pv)}" y2="${yy(S.pv)}" stroke="var(--water)" stroke-width="2" stroke-dasharray="7 4"/><path d="M${x0 + w + 12},${yy(S.pv) - 11} l7,11 l7,-11 z" fill="var(--water)"/><text x="${x0 + w + 2}" y="${yy(S.pv) - 14}" font-size="12" font-weight="600" fill="var(--water)">PVP</text>`;
   if (nayta) {
@@ -910,9 +910,9 @@ function uusiKoe(alkuSiemen) {
         '<b>IV</b> Vh = Vw + Vilma, n = Vh / V · 100 %. <b>V</b> γd = md · 9,81 / V (kN/m³).'])}
       ${rivi('o4')}`) +
 
-    osa('o5', '5. Sigma viiva', 3, `<p class="tehtava">Laske pystysuora tehokas raepaine σ̄ jokaisen kerroksen alapinnassa (taulukko) ja hahmottele sigmaviiva. ${S.annettuTeh ? 'Pohjaveden alapuolisille kerroksille on annettu valmiiksi tehokas tilavuuspaino γ′.' : 'Pohjaveden alapuolisille kerroksille on annettu γsat.'}</p>
+    osa('o5', '5. Sigma viiva', 3, `<p class="tehtava">Laske pystysuora tehokas raepaine σ̄ jokaisen kerroksen alapinnassa (taulukko) ja hahmottele sigmaviiva. ${S.annettuTeh ? 'Pohjaveden alapuolisille kerroksille on annettu valmiiksi <b>tehokas tilavuuspaino γ′</b> (noste on jo vähennetty).' : 'Pohjaveden alapuolisille kerroksille on annettu γsat.'}</p>
       <div id="skuva">${sigmaProfiiliSVG(S, false)}</div>
-      <div class="tw"><table><tr><th>Kerros</th><th>z [m]</th><th>γ [kN/m³]</th><th>σ̄ alapinnassa [kN/m²]</th></tr>${S.kerrokset.map((k, i) => `<tr><td>${k.nimi}</td><td class="num">${sk(k.h)}</td><td class="num">${k.alla ? (S.annettuTeh ? k.g + ' (γ′)' : k.g + ' (γsat)') : k.g}</td><td><input type="text" inputmode="decimal" id="s${i}" aria-label="sigma viiva kerroksen ${k.nimi} alapinnassa"></td></tr>`).join('')}</table></div>
+      <div class="tw"><table><tr><th>Kerros</th><th>z [m]</th><th>γ [kN/m³]</th><th>σ̄ alapinnassa [kN/m²]</th></tr>${S.kerrokset.map((k, i) => `<tr><td>${k.nimi}</td><td class="num">${sk(k.h)}</td><td class="num">${k.alla ? (S.annettuTeh ? k.g + ' <b>(γ′)</b>' : k.g + ' (γsat)') : k.g}</td><td><input type="text" inputmode="decimal" id="s${i}" aria-label="sigma viiva kerroksen ${k.nimi} alapinnassa"></td></tr>`).join('')}</table></div>
       ${nain('sig')}${merkit(['sig', 'g', 'gsat', 'gp', 'pvp', 'z'])}${vinkit('v5', [
         'σ̄ lasketaan ylhäältä alas ja <b>summataan</b>: jokainen kerros lisää paksuus · tilavuuspaino.',
         S.annettuTeh ? 'Pohjaveden alla käytä taulukon γ′-arvoa sellaisenaan (noste on jo vähennetty).' : 'Pohjaveden alla käytä <b>γsat − 10</b> (veden noste).',
