@@ -1115,7 +1115,8 @@ if (!palautaKoe()) uusiKoe();
 /* Debug (Mikko 27.11.2026): näkyy vain osoitteella …#debug, täyttää oikeat vastaukset kenttiin. Ei vaikuta tavalliseen käyttöön. */
 let debugTila = (() => { try { return localStorage.getItem('geo_debug') === '1'; } catch (e) { return false; } })();
 const debugMuisti = () => debugTila;
-const debugNakyy = () => { const b = $('#debug'); if (b) b.hidden = !(location.hash === '#debug' || debugMuisti()); };
+const debugNakyy = () => { const b = $('#debug'); if (!b) return; b.hidden = !(location.hash === '#debug' || debugMuisti());
+  if (b.hidden && koeTila && koeTila.debug) nollaaKaikki(); };   // debugista poistuminen: debugilla täytetty koe pois, uusi tyhjä koe (Mikko 27.11.2026)
 debugNakyy(); window.addEventListener('hashchange', debugNakyy);
 // piilotettu avaus: 3 klikkausta versioriviin (Beta-versio …) näyttää tai piilottaa debug-napin, valinta muistetaan tässä selaimessa
 let debugKlikit = [];
