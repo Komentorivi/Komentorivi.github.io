@@ -54,6 +54,9 @@ header.hero .pieni{font-size:15.5px}
 .hero-yla{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:24px 40px;align-items:center}
 .hero-teksti{display:grid;gap:12px;min-width:0}
 .hero-teksti .meta{max-width:none}
+.nappi-linkki{display:inline-flex;gap:8px;align-items:baseline;flex-wrap:wrap;font:600 17px var(--f-body);color:#fff;background:var(--water);border-radius:10px;padding:10px 18px;text-decoration:none}
+.nappi-linkki .pieni{color:inherit;opacity:.85}
+.nappi-linkki:hover{filter:brightness(1.1)}
 .maskotti{width:100%;height:auto;display:block}
 @media (max-width:720px){.hero-yla{grid-template-columns:1fr}.maskotti{width:150px;margin:0 auto;order:-1}}
 .meta{color:var(--muted);font-size:18.5px;line-height:1.6;max-width:62ch}
@@ -69,9 +72,8 @@ table{border-collapse:collapse;font-size:15px}
 th,td{border:1px solid var(--line);padding:6px 8px;text-align:center;white-space:nowrap}
 th{background:var(--bg);font-weight:600}
 input[type=text],input[type=number],select{font:500 16px var(--f-num);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px;width:7.5em}
-select{width:auto;max-width:100%}
-.vast label:has(select){grid-column:1/-1}
-.vast label select{align-self:flex-start}
+.vast label.valinta{grid-column:1/-1}
+.vast label.valinta select{width:auto;max-width:100%;align-self:flex-start}
 input.leveä{width:16em;font-family:var(--f-body)}
 td input{width:5.2em;padding:4px 6px}
 .vast{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 16px;margin:12px 0}
@@ -163,6 +165,7 @@ table.pysty th:first-child{text-align:center}
   <div class="hero-teksti">
   <h1>Geotekniikan harjoituskoe</h1>
   <p class="meta">Harjoitus kurssiin <b>Geotekniikan ja pohjarakentamisen perusteet</b>. Koealueet ja pisteet kuten kokeessa (opettajan ilmoitus luennolla): <b>23 pistettä, läpi 11 p, aikaa 100 min</b>. Kysymykset ovat opettajan koekysymyslistalta, ja vastaukset perustuvat vain kurssimateriaaliin. Mustiksen spessun sisältöä ei ole kerrottu; harjoituksessa se on siipikairaustehtävä kuten tuntiharjoituksessa. Laskutehtävien luvut arvotaan joka kerta uudelleen, joten kokeen voi tehdä monta kertaa. Tarkista jokainen osa omalla napillaan, ja ratkaisu aukeaa heti.</p>
+  <p><a class="nappi-linkki" href="https://komentorivi.github.io/geotekniikka/apumateriaali.html" target="_blank" rel="noopener">📘 Apumateriaali: kaavat ja taulukot <span class="pieni">(aukeaa uuteen välilehteen)</span></a></p>
   </div>
   <svg class="maskotti" viewBox="0 0 240 300" role="img" aria-label="Piirroshahmo: geoteknikko kypärässä ja huomioliivissä, kairatanko kädessä">
   <!-- maakerrokset jalkojen alla -->
@@ -215,7 +218,7 @@ table.pysty th:first-child{text-align:center}
   </div>
   <p class="pieni">Kaavat: g = 9,81 m/s², γw ≈ 10 kN/m³, pohjaveden alla γ' = γsat − 10. Lukuarvoissa hyväksytään pieni pyöristysero. Harjoitus on opiskelijan tekemä, ei virallinen koe.</p>
 </header>
-<p class="vastuu" role="note"><b>Huom:</b> Tämä harjoitus on tehty tekoälyn avulla. Tekijä ei vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Tarkista aina kurssimateriaalista. Toivottavasti tästä on silti apua kokeeseen lukemisessa!<br><span class="versio"><b>Beta-versio 0.7.8</b> · päivitetty 27.11.2026 klo 14.22 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Tämä harjoitus on tehty tekoälyn avulla. Tekijä ei vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Tarkista aina kurssimateriaalista. Toivottavasti tästä on silti apua kokeeseen lukemisessa!<br><span class="versio"><b>Beta-versio 0.7.9</b> · päivitetty 27.11.2026 klo 14.35 · korjauksia saattaa vielä tulla</span></p>
 <main id="koe"></main>
 <section class="tulos" id="tulos" hidden></section>
 
@@ -245,9 +248,9 @@ function paivitaPisteet() {
   const s = Object.values(pisteet).reduce((a, b) => a + b, 0);
   const p = $('#pisteet'); p.textContent = `${fi(s, s % 1 ? 1 : 0)} / 23 p`;
   p.className = 'pill num' + (s >= 11 ? ' ok' : '');
-  const valmiit = Object.keys(pisteet).length;
+  const laskut = ['o2', 'o3', 'o4', 'o5', 'o6', 'o7'].every(k => k in pisteet), o1kesken = !('o1' in pisteet);
   const t = $('#tulos');
-  if (valmiit >= 7) {
+  if (laskut) {
     t.hidden = false; t.className = 'tulos ' + (s >= 11 ? 'lapi' : 'hyl');
     // arvosana 0–5 (arvio: läpi 11 p, välit tasaisesti 23 p:iin; ei opettajan virallinen asteikko)
     const RAJAT = [11, 14, 16, 18.5, 21], as = RAJAT.filter(r => s >= r).length;
@@ -264,6 +267,7 @@ function paivitaPisteet() {
     t.innerHTML = `<div class="pieni">TULOS</div><div class="arvosana"><div><div class="iso num">${fi(s, s % 1 ? 1 : 0)} / 23</div><div class="pieni">pistettä</div></div><div class="as-luku as${as}"><div class="iso num">${as}</div><div class="pieni">arvosana (arvio)</div></div></div>
       <div class="as-kommentti"><b>${KOMMENTIT[as][0]}</b> ${KOMMENTIT[as][1]}</div>
       ${heikNimi ? `<div>Kertaa seuraavaksi: <b>${heikNimi}</b> (${fi(pisteet[heikoin], pisteet[heikoin] % 1 ? 1 : 0)} / ${MAX[heikoin]} p).</div>` : ''}
+      ${o1kesken ? `<div><b>Kysymykset (6 p) arvioimatta.</b> Avaa kysymysosion mallivastaukset ja arvioi itsesi, niin pisteet ja arvosana päivittyvät.</div>` : ''}
       <div class="pieni">Asteikko on arvio, ei opettajan virallinen: hylätty alle 11 p · 1 = 11 p · 2 = 14 p · 3 = 16 p · 4 = 18,5 p · 5 = 21 p.</div>
       <div><button id="uusi2" class="main">Tee uusi koe</button></div>`;
     $('#uusi2').onclick = uusiKoe;
@@ -848,7 +852,7 @@ function uusiKoe() {
     osa('o7', '7. Mustiksen spessu: siipikairaus', 3, `<p class="tehtava">Siipikairaus savikerroksessa (kuten tuntiharjoituksessa). Rakenne on pysyvä, joten koheesion osavarmuuskerroin γc = 1,5.</p>
       <div id="siipikuva">${siipiSVG(E, false)}</div>
       <p class="tehtava">a) Lue <b>häiriintymätön</b> leikkauslujuus su syvyydellä <b>${E.z} m</b>.<br>b) Laske koheesion laskenta-arvo cD = su / γc.<br>c) ${E.kys.q}</p>
-      <div class="vast">${syote('e1s', 'a) Häiriintymätön leikkauslujuus su (kN/m²)')}${syote('e1c', 'b) Koheesion laskenta-arvo cD (kN/m²)')}<label><span class="lab">c) Valitse</span><select id="e3"><option value="">valitse</option>${E.kys.o.map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select></label></div>
+      <div class="vast">${syote('e1s', 'a) Häiriintymätön leikkauslujuus su (kN/m²)')}${syote('e1c', 'b) Koheesion laskenta-arvo cD (kN/m²)')}<label class="valinta"><span class="lab">c) Valitse</span><select id="e3"><option value="">valitse</option>${E.kys.o.map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select></label></div>
       ${merkit(['su', 'c', 'tau'])}${vinkit('v7', [
         '<b>a)</b> Häiriintynyt lujuus on aina pienempi kuin häiriintymätön, koska sekoitettu savi on heikompaa. Kumpi viiva on siis oikealla? Mene kysytylle syvyydelle ja lue arvo.',
         '<b>b)</b> Savi on koheesiomaa: cD = su / γc = su / 1,5. Savessa leikkauslujuus τ = cD.',

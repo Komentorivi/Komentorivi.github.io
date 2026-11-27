@@ -54,6 +54,9 @@ header.hero .pieni{font-size:15.5px}
 .hero-yla{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:24px 40px;align-items:center}
 .hero-teksti{display:grid;gap:12px;min-width:0}
 .hero-teksti .meta{max-width:none}
+.nappi-linkki{display:inline-flex;gap:8px;align-items:baseline;flex-wrap:wrap;font:600 17px var(--f-body);color:#fff;background:var(--water);border-radius:10px;padding:10px 18px;text-decoration:none}
+.nappi-linkki .pieni{color:inherit;opacity:.85}
+.nappi-linkki:hover{filter:brightness(1.1)}
 .maskotti{width:100%;height:auto;display:block}
 @media (max-width:720px){.hero-yla{grid-template-columns:1fr}.maskotti{width:150px;margin:0 auto;order:-1}}
 .meta{color:var(--muted);font-size:18.5px;line-height:1.6;max-width:62ch}
@@ -69,9 +72,8 @@ table{border-collapse:collapse;font-size:15px}
 th,td{border:1px solid var(--line);padding:6px 8px;text-align:center;white-space:nowrap}
 th{background:var(--bg);font-weight:600}
 input[type=text],input[type=number],select{font:500 16px var(--f-num);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px;width:7.5em}
-select{width:auto;max-width:100%}
-.vast label:has(select){grid-column:1/-1}
-.vast label select{align-self:flex-start}
+.vast label.valinta{grid-column:1/-1}
+.vast label.valinta select{width:auto;max-width:100%;align-self:flex-start}
 input.leveä{width:16em;font-family:var(--f-body)}
 td input{width:5.2em;padding:4px 6px}
 .vast{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 16px;margin:12px 0}
@@ -203,7 +205,7 @@ table.pysty th:first-child{text-align:center}
   <rect x="84" y="74" width="66" height="8" rx="4" fill="var(--soil)" stroke="var(--ink)" stroke-width="2"/>
   <path d="M117 58 v16" stroke="var(--ink)" stroke-width="1.5" opacity=".5"/>
 </svg></div>
-<p class="vastuu" role="note"><b>Huom:</b> Tämä on koottu tekoälyn avulla. Tekijä ei vastaa siitä, että kaikki on oikein. Tarkista aina kurssimateriaalista.<br><span class="versio"><b>Beta-versio 0.7.8</b> · päivitetty 27.11.2026 klo 14.22 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Tämä on koottu tekoälyn avulla. Tekijä ei vastaa siitä, että kaikki on oikein. Tarkista aina kurssimateriaalista.<br><span class="versio"><b>Beta-versio 0.7.9</b> · päivitetty 27.11.2026 klo 14.35 · korjauksia saattaa vielä tulla</span></p>
 <nav class="sisalto"><a href="#merkit">Merkit</a><a href="#synty">Maaperä ja pohjavesi</a><a href="#maalajit">Maalajit</a><a href="#nimeaminen">Nimeäminen</a><a href="#rakeisuus">Rakeisuus</a><a href="#tilavuus">Tilavuus ja paino</a><a href="#proctor">Proctor</a><a href="#tutkimukset">Pohjatutkimukset</a><a href="#sigma">Sigma viiva</a><a href="#painuma">Painuma</a><a href="#leikkaus">Leikkauslujuus</a><a href="#kysymykset">Koekysymykset</a></nav>
 </header>
 
@@ -319,7 +321,7 @@ table.pysty th:first-child{text-align:center}
 <li><b>γ<sub>dmax</sub></b> = maksimikuivatilavuuspaino: käyrän korkein arvo (tiiviimpi ei saada tällä työllä).</li></ul>
 <p><b>Tiiviysaste D</b> kertoo, kuinka lähelle maksimia työmaalla päästiin: <span class="kaava">D = γ<sub>d</sub> / γ<sub>dmax</sub> · 100 %</span></p>
 <p><b>Kaavat, joilla Proctor-pisteen γ<sub>d</sub> lasketaan</b> (kurssin tilavuus- ja painokaavat):</p>
-<p><span class="kaava">m<sub>d</sub> = mm / (1 + w)</span> &nbsp; <span class="kaava">γ<sub>d</sub> = m<sub>d</sub> · g / V</span> &nbsp; <span class="kaava">γ<sub>d</sub> = γ / (1 + w)</span></p>
+<p><span class="kaava">m<sub>d</sub> = m<sub>m</sub> / (1 + w)</span> &nbsp; <span class="kaava">γ<sub>d</sub> = m<sub>d</sub> · g / V</span> &nbsp; <span class="kaava">γ<sub>d</sub> = γ / (1 + w)</span></p>
 <p class="pieni2">m<sub>m</sub> = märkä massa, m<sub>d</sub> = kuiva massa, w desimaalina (9 % = 0,09), V litroina (944 cm³ = 0,944 l), 1 N/l = 1 kN/m³.</p>
 <p><b>Esimerkki</b></p>
 <ol><li><b>Yksi Proctor-piste:</b> sylinteriin tiivistetyn märän maan massa m<sub>m</sub> = 2,10 kg, vesipitoisuus w = 9 %.<br>
