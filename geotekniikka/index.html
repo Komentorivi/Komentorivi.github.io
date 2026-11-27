@@ -220,7 +220,7 @@ table.pysty th:first-child{text-align:center}
     <span class="pill">Kysymykset 6 p</span><span class="pill">Nimeäminen 2 p</span><span class="pill">Rakeisuuskäyrä 3 p</span><span class="pill">Tilavuus ja paino 2 p</span><span class="pill">Sigma viiva 3 p</span><span class="pill">Painumat 4 p</span><span class="pill">Mustiksen spessu 3 p</span>
   </div>
 </header>
-<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 15.43 · korjauksia saattaa vielä tulla</span></p>
+<p class="vastuu" role="note"><b>Huom:</b> Harjoitus on opiskelijan tekemä, ei virallinen koe. Se on tehty tekoälyn avulla, eikä tekijä vastaa siitä, että laskut, tarkistukset tai vastaukset ovat oikein. Lähteenä on käytetty Moodlessa jaettua kurssimateriaalia, joten tarkista epäselvät kohdat sieltä. Toivottavasti tästä on apua kokeeseen harjoitteluun. Ainakin tekijälle oli: geotekniikka painui päähän nopeammin kuin savi konsolidoituu.<br>Palautteet, korjaukset ja kehitysideat: <a href="mailto:mikko.kauppinen3@metropolia.fi">mikko.kauppinen3@metropolia.fi</a><br><span class="versio"><b>Beta-versio 0.8.1</b> · päivitetty 27.11.2026 klo 15.45 · korjauksia saattaa vielä tulla</span></p>
 <main id="koe"></main>
 <section class="tulos" id="tulos" hidden></section>
 
@@ -485,7 +485,7 @@ function rakeisuusSVG(lap, oma, dm, seulat = SEULAT) {
     const X = x(d), Y = y(p);
     s += `<line x1="${L}" x2="${X}" y1="${Y}" y2="${Y}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 4"/>`
       + `<line x1="${X}" x2="${X}" y1="${Y}" y2="${Hp - B}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 4"/>`
-      + `<circle cx="${X}" cy="${Y}" r="5" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>`;    selite.push(`○ ${n} ≈ ${dTxt(d)} mm`);
+      + `<circle cx="${X}" cy="${Y}" r="5" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>`;    selite.push(`○ ${n} ≈ ${dLuku(d)} mm`);   // sama tarkkuus kuin lukuviivassa, ettei synny näennäistä heittoa
   });
   if (dm && lap) [[0.063, lap[i063]], [2, lap[i2]]].forEach(([d, p]) => {
     const X = x(d), Y = y(Math.max(0, Math.min(100, p)));
@@ -500,6 +500,7 @@ function rakeisuusSVG(lap, oma, dm, seulat = SEULAT) {
 
 /* Lukuapu rakeisuuskäyrään: osoittimen kohdalle pystyviiva ja raekoko (≈ 0,21 mm) sekä läpäisy-%. Ei kerro vastausta,
    vaan auttaa lukemaan logaritmiasteikolta pääviivojen välistä (Mikko 27.11.2026: "vaikea lukea d50"). */
+const dLuku = (d) => (d < 0.01 ? d.toFixed(4) : d < 0.1 ? d.toFixed(3) : d < 10 ? Number(d.toPrecision(2)).toString() : d.toFixed(0)).replace('.', ',');   // kaksi merkitsevää: 0,57 · 1,4 · 0,083
 document.addEventListener('pointermove', (ev) => {
   const svg = ev.target.closest && ev.target.closest('svg[data-lukuapu]');
   document.querySelectorAll('svg[data-lukuapu] .lukuapu').forEach(g => { if (!svg || !svg.contains(g)) g.remove(); });
@@ -508,12 +509,19 @@ document.addEventListener('pointermove', (ev) => {
   const pt = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(m.inverse());
   let g = svg.querySelector('.lukuapu');
   if (pt.x < x0 || pt.x > x1 || pt.y < y0 || pt.y > y1) { if (g) g.remove(); return; }
-  const lg = Math.log10(0.001) + (pt.x - x0) / (x1 - x0) * (Math.log10(60) - Math.log10(0.001)), d = 10 ** lg, p = (1 - (pt.y - y0) / (y1 - y0)) * 100;
-  const dt = (d < 0.01 ? d.toFixed(4) : d < 0.1 ? d.toFixed(3) : d < 10 ? Number(d.toPrecision(2)).toString() : d.toFixed(0)).replace('.', ',');
+  const lg = Math.log10(0.001) + (pt.x - x0) / (x1 - x0) * (Math.log10(60) - Math.log10(0.001)), d = 10 ** lg;
+  const dt = dLuku(d);
+  // käyrän kohta samalla raekoolla (Mikko 27.11.2026: "pientä heittoa"): luetaan käyrältä eikä osoittimen korkeudelta
+  const kayra = [...svg.querySelectorAll('path[fill="none"]')].pop();
+  let ky = null;
+  if (kayra) { const Lk = kayra.getTotalLength(), a0 = kayra.getPointAtLength(0).x, a1 = kayra.getPointAtLength(Lk).x;
+    if (pt.x >= Math.min(a0, a1) && pt.x <= Math.max(a0, a1)) { let lo = 0, hi = Lk; for (let i = 0; i < 30; i++) { const mid = (lo + hi) / 2, mx = kayra.getPointAtLength(mid).x; if ((mx < pt.x) === (a0 < a1)) lo = mid; else hi = mid; } ky = kayra.getPointAtLength((lo + hi) / 2).y; } }
+  const yy = ky ?? pt.y, p = (1 - (yy - y0) / (y1 - y0)) * 100;
   if (!g) { g = document.createElementNS('http://www.w3.org/2000/svg', 'g'); g.setAttribute('class', 'lukuapu'); g.setAttribute('pointer-events', 'none'); svg.appendChild(g); }
   const oik = pt.x < (x0 + x1) / 2;
-  g.innerHTML = `<line x1="${pt.x}" x2="${pt.x}" y1="${y0}" y2="${y1}" stroke="var(--water)" stroke-width="1.5"/><line x1="${x0}" x2="${x1}" y1="${pt.y}" y2="${pt.y}" stroke="var(--water)" stroke-width="1" stroke-dasharray="3 3"/>`
-    + `<text x="${oik ? pt.x + 8 : pt.x - 8}" y="${Math.max(y0 + 16, pt.y - 8)}" text-anchor="${oik ? 'start' : 'end'}" font-size="14" font-weight="700" fill="var(--water)" stroke="var(--paper)" stroke-width="4" paint-order="stroke">d ≈ ${dt} mm · ${Math.round(p)} %</text>`;
+  g.innerHTML = `<line x1="${pt.x}" x2="${pt.x}" y1="${y0}" y2="${y1}" stroke="var(--water)" stroke-width="1.5"/><line x1="${x0}" x2="${pt.x}" y1="${yy}" y2="${yy}" stroke="var(--water)" stroke-width="1" stroke-dasharray="3 3"/>`
+    + (ky != null ? `<circle cx="${pt.x}" cy="${yy}" r="4.5" fill="var(--water)"/>` : '')
+    + `<text x="${oik ? pt.x + 8 : pt.x - 8}" y="${Math.max(y0 + 16, yy - 10)}" text-anchor="${oik ? 'start' : 'end'}" font-size="14" font-weight="700" fill="var(--water)" stroke="var(--paper)" stroke-width="4" paint-order="stroke">d ≈ ${dt} mm${ky != null ? ` → käyrällä ${fi(p, 0)} %` : ` · ${fi(p, 0)} %`}</text>`;
 });
 
 /* ---------- 2. Rakeisuus (OM s. 2, T1 s. 1) ---------- */
